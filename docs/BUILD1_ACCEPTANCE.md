@@ -13,7 +13,7 @@ A fresh environment with canonical version-controlled seed/config data supports 
 - [ ] reroll an AVAILABLE Standard quest and receive a persisted replacement with interaction history.
 - [ ] use 🔥 when an approved active higher family variant exists, including a missing-tier skip.
 - [ ] accept a Standard quest and receive its accepted snapshots and 24/48/72-hour deadline.
-- [ ] complete it and immediately receive correct Overall XP, distributed Skill XP, Lifetime Skill XP, derived levels, qualifying streak updates, immutable ledger rows, and a replacement in the same slot.
+- [ ] complete it and immediately receive correct Overall XP, largest-remainder distributed Skill XP, Lifetime Skill XP, applicable +10% Catch-Up XP, post-current-day streak bonus, immutable ledger rows, and a replacement in the same slot.
 - [ ] accept and abandon another quest, immediately receive only the configured Current Skill XP penalty, and receive a replacement.
 - [ ] let an accepted Standard quest expire, see its stored unapplied penalty and blocked slot, and incur no penalty merely by loading the application.
 - [ ] clear the expired quest, apply its stored penalty once, and receive a replacement.
@@ -21,7 +21,7 @@ A fresh environment with canonical version-controlled seed/config data supports 
 - [ ] receive three Daily Challenges in unique skills and five Weekly Challenges in unique skills, with no simultaneous same-definition overlap across the two pools.
 - [ ] explicitly accept and complete SINGLE Challenges.
 - [ ] increment/decrement accepted COUNT Challenges and automatically complete atomically at target without partial XP.
-- [ ] receive configured Daily/Weekly Challenge XP bonuses and full-set Overall-only bonuses exactly once.
+- [ ] receive +10% Daily / +15% Weekly individual Challenge bonuses and +100 / +300 Overall-only full-set bonuses exactly once via persisted Challenge set/window state.
 - [ ] build Skill streaks using local calendar-day boundaries, including every rewarded skill on a multi-skill completion.
 - [ ] freely respec all Focus Points with history recorded and only future recommendation/selection affected.
 - [ ] use all critical workflows at desktop and phone-sized responsive layouts without hover-only controls.
@@ -47,5 +47,4 @@ An authorized administrator can list/search/filter, create/edit/validate, submit
 
 Unit, integration, API, and end-to-end tests cover the workflows above. At minimum test boundary XP values, all reward splits after the rounding decision is resolved, every status transition, timezone/DST boundaries, all streak tiers, every level band, all feedback modifiers, eligibility filtering, family-tier skipping, and invalid/duplicate/concurrent requests.
 
-Build 1 cannot be accepted while any gameplay-affecting **OPEN DECISION** in the authoritative docs remains unresolved.
-
+Build 1 cannot be accepted until the documented Overall and Skill XP level curves are resolved during the XP/progression implementation phase.

@@ -28,6 +28,8 @@ Modules may share one deployable and database while exposing explicit services a
 
 Keep `User` and provider `AuthAccount` identity separate from `Player` game state. MVP is one User to one Player without unnecessarily blocking future expansion. Named environment placeholders may include `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_SECRET`, and `DATABASE_URL`; real values belong only in ignored local environment files.
 
+Build 1 User roles are `PLAYER` and `ADMIN`. Both `/admin` and admin mutation endpoints enforce `ADMIN` authorization on the server.
+
 ## Atomic gameplay operations
 
 Use database transactions and row locking where appropriate for completion, abandonment, expired clearing, COUNT progress, slot replacement, and Daily/Weekly set bonuses. Use UUID `operation_id` values for action grouping/idempotency.
@@ -71,6 +73,10 @@ Centralize and version:
 
 Configuration versions used by accepted/rewarded quests should be identifiable where necessary for reproducibility. Admin-editable balance configuration is not MVP.
 
+## Canonical seed workflow
+
+Version-controlled repository seed files are canonical and validated before persistence. Stable human-readable identifiers coexist with database primary keys. Seeding upserts definitions and never silently hard-deletes existing QuestDefinitions; removed runtime content is deactivated where appropriate. Direct admin database edits do not automatically rewrite repository files.
+
 ## Testing strategy
 
 Require unit tests for pure XP/level/scoring/time calculations; integration tests against PostgreSQL for constraints, locks, transactions, idempotency, and resets; API contract tests for validation and authorization; and Playwright tests for essential desktop/mobile journeys.
@@ -84,4 +90,3 @@ Record structured events/metrics for lifecycle transitions, XP operations, sched
 ## Security and reliability baseline
 
 Enforce authn/authz and resource ownership on the server; validate input at API boundaries; use CSRF-safe Auth.js patterns; do not trust client timestamps, status, rewards, or XP; keep secrets out of source; make important mutations retry-safe; and use database uniqueness/check constraints plus transactional validation as described in [DATA_MODEL.md](DATA_MODEL.md).
-

@@ -12,13 +12,13 @@ Status: authoritative gameplay contract for Build 1. Data enforcement is specifi
 
 ### Skill progression
 
-- Current Skill XP determines Current Skill Level and may rise or fall.
+- Current Skill XP determines Current Skill Level and may rise or fall, but has a hard floor of 0.
 - Lifetime Skill XP is monotonically increasing.
 - Skill Level may rise or fall and is capped at 100 for MVP.
 - All eight skills use the same skill-level curve.
 - Failure penalties reduce Current Skill XP only, never Lifetime Skill XP.
 
-Level curves and the behavior at a Current Skill XP floor are **OPEN DECISION**. The chosen curves/floor rule must be centralized in configuration before progression is implemented.
+**OPEN DECISION — resolve during the XP/progression implementation phase:** exact Overall and Skill XP level curves. The configuration boundary must support them without schema redesign. Current Skill XP may never fall below 0.
 
 ### Base XP and difficulty
 
@@ -38,7 +38,7 @@ Each QuestDefinition has exactly one primary skill, up to two secondary skills, 
 
 Streak bonuses apply to each distributed skill share; the sum of final rewarded skill shares contributes to Overall XP, along with any Overall-only set bonus. Catch-Up and Challenge bonus allocation are described below.
 
-**OPEN DECISION:** deterministic integer rounding and residual allocation across skill shares and percentage bonuses. No implementation may invent this rule.
+Whenever integer XP is distributed by percentages, use deterministic **largest-remainder allocation**: calculate proportional raw shares, floor each share, then assign remaining units in descending fractional-remainder order. Ties resolve by FLOURISH Skill code ascending. Distributed shares must reconcile exactly to the intended distributable total. Thus 101 XP at 70%/30% produces integer shares totaling exactly 101.
 
 ## Quest definitions and families
 
@@ -48,7 +48,7 @@ A QuestFamily groups naturally related difficulty variants. It has at most one d
 
 The harder-family action (🔥 in UI) replaces an AVAILABLE Standard quest with the next approved, active, Standard-eligible higher-difficulty member of the same family, skipping absent tiers. It does not generate content and is unavailable after acceptance. The replacement remains in the same skill slot and the interaction is recorded. Do not create artificial families merely to enable this action.
 
-**OPEN DECISION:** whether use of 🔥 has any recommendation-history effect beyond recording the interaction, and the precise behavior when the higher variant’s primary skill does not match the slot (content curation should normally prevent this).
+Using 🔥 records the upgrade interaction but has no additional durable negative recommendation modifier. A higher family variant must have the same primary Skill as the slot; otherwise it is ineligible for the action.
 
 ## Standard Quest slots
 
@@ -80,7 +80,7 @@ After the deadline, lazy or scheduled reconciliation changes `ACCEPTED → EXPIR
 
 Players may leave an expired quest uncleared indefinitely, avoiding the penalty while sacrificing the slot. Opening the application must never silently apply a deadline penalty.
 
-**OPEN DECISION:** failure-penalty formula, its distribution for multi-skill quests, and whether Current Skill XP may fall below zero. These must be decided before abandonment/clear implementation.
+The initial configurable failure penalty is 20% of snapshotted Base XP. For multi-skill quests, distribute that penalty over snapshotted rewarded Skills/percentages using largest remainder. Reduce Current Skill XP only and clamp every Skill at 0; never reduce Overall or Lifetime Skill XP. Expiration stores this calculated distribution without applying it until clear; abandonment applies it immediately.
 
 ## Rerolls
 
@@ -96,19 +96,19 @@ Daily and Weekly pools are independently generated. They may share a skill but t
 
 - Generate three Challenges in three unique skills.
 - Focus/Catch-Up weighted and easier-biased than Standard.
-- Initial configurable Challenge XP bonus: 10%.
+- Initial configurable individual Challenge XP bonus: 10%.
 - Reset at 12:00 AM player local time.
-- Completing 3/3 grants a configurable Overall-only Daily set bonus exactly once.
+- Completing 3/3 grants an initial configurable +100 Overall-only Daily set bonus exactly once.
 
 ### Weekly
 
 - Generate five Challenges in five unique skills.
 - Focus/Catch-Up weighted and harder/value-biased relative to Daily.
-- Use a separate configurable Weekly bonus.
+- Initial configurable individual Weekly Challenge bonus: 15%.
 - Reset Monday at 12:00 AM player local time.
-- Completing 5/5 grants a configurable Overall-only Weekly set bonus exactly once.
+- Completing 5/5 grants an initial configurable +300 Overall-only Weekly set bonus exactly once.
 
-**OPEN DECISION:** initial Weekly challenge bonus, Daily and Weekly set-bonus amounts, and exact Daily/Weekly difficulty distributions.
+Initial configurable Daily weights are Easy 60%, Medium 30%, Hard 8%, Epic 2%, Legendary 0%. Initial configurable Weekly weights are Easy 30%, Medium 40%, Hard 25%, Epic 5%, Legendary 0%.
 
 ## Completion types
 
@@ -116,9 +116,9 @@ Daily and Weekly pools are independently generated. They may share a skill but t
 
 ## Catch-Up
 
-Rank skills by Current Skill Level, then Current Skill XP ascending. The lowest skill receives a configurable Catch-Up XP bonus. For recommendation weighting, initial configurable ranks are: lowest 1.30, second 1.20, third 1.10, all others 1.00. Multi-skill recommendation modifiers are combined by reward percentage. Focus and Catch-Up multiply and neither hard-excludes content.
+Rank skills by Current Skill Level, then Current Skill XP ascending. The single lowest Skill receives an initial configurable +10% Catch-Up XP bonus only when it is among a completed quest’s rewarded Skills. Apply the bonus to that Skill’s distributed XP share; it also contributes to Overall XP. Recommendation weighting remains separate: lowest 1.30, second 1.20, third 1.10, all others 1.00, combined by reward percentage for multi-skill quests. Focus and recommendation Catch-Up multiply and neither hard-excludes content.
 
-**OPEN DECISION:** tie-breaking when both level and Current Skill XP are equal, the Catch-Up XP bonus amount/formula, and how that XP bonus is allocated for multi-skill quests.
+If skills remain tied after Level and Current XP, resolve the single lowest Skill deterministically by FLOURISH Skill code ascending.
 
 ## Streaks
 
@@ -134,11 +134,10 @@ Initial configurable tiers:
 | 14–29 | 15% |
 | 30+ | 20% |
 
-The applicable streak bonus is evaluated per rewarded skill share. **OPEN DECISION:** whether the completion that first reaches a threshold receives the new tier or the previously established tier; define before XP implementation.
+Determine the applicable tier after counting the current qualifying local calendar day. A completion establishing day 3 receives the 3-day +5% bonus. Evaluate the resulting tier independently for each rewarded Skill share.
 
 ## Timezone and reset rules
 
 Store an explicit IANA timezone such as `America/Denver`. Daily boundaries are midnight local time; weekly boundaries are Monday midnight local time. Challenge records store fixed UTC `window_start_at`/`window_end_at`. A later timezone change affects future pools and future streak boundaries, never existing Challenge windows or Standard deadlines.
 
 Use scheduled maintenance plus defensive lazy reconciliation. Correctness must not depend on cron alone.
-

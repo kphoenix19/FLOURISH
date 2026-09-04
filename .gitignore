@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# production and test output
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# local environment files (keep the documented template)
+.env
+.env.*
+!.env.example
+
+# logs and package-manager caches
+*.log
+.pnpm-store/
+
+# editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

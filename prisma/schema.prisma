@@ -1,0 +1,11 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Phase 00B intentionally contains no domain models. Phase 01 implements the
+// authoritative model in docs/DATA_MODEL.md.

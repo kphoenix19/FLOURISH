@@ -69,5 +69,8 @@ Treat intentional recreation, creativity, exploration, and enjoyment as valuable
 
 ## Safety and quality review
 
-Curators must check agency, accessibility, socioeconomic neutrality, medical/financial boundaries, meaningful distinctness, tag validity, realistic completion window, reward distribution, XP/difficulty rationale, and family coherence. Exact enum values for `cost_level`, `social_requirement`, and `safety_category` are an **OPEN DECISION** and must be defined before schema/seed implementation.
+Curators must check agency, accessibility, socioeconomic neutrality, medical/financial boundaries, meaningful distinctness, tag validity, realistic completion window, reward distribution, XP/difficulty rationale, and family coherence.
 
+Build 1 curation metadata values are `CostLevel`: `NONE`, `LOW`, `MODERATE`, `HIGH`; `SocialRequirement`: `NONE`, `OPTIONAL`, `REQUIRED`; and `SafetyCategory`: `GENERAL`, `FITNESS`, `FINANCIAL`, `SPIRITUAL`. These describe content and are not player eligibility gates in Build 1.
+
+Repository seed files are canonical: validate before persistence, use stable human-readable identifiers plus database primary keys, upsert definitions, and deactivate removed runtime content where appropriate rather than silently hard-deleting it. Admin database edits do not automatically rewrite seed files.

@@ -4,7 +4,7 @@
 
 FLOURISH is a browser-based, gamified real-life progression system that rewards constructive actions with overall and life-skill progression. It is not a conventional to-do list. The MVP uses honor-system completion, a curated quest library, and server-authoritative gameplay.
 
-This repository currently contains the authoritative product and engineering specifications only; the application has not been scaffolded.
+The repository contains the authoritative specifications and the minimal Build 1 project foundation. Gameplay systems are intentionally deferred to later phases.
 
 ## Authoritative specifications
 
@@ -21,3 +21,53 @@ This repository currently contains the authoritative product and engineering spe
 
 Rules labeled **LOCKED MVP** are authoritative for Build 1. Values labeled **initial configurable value** belong in version-controlled configuration and may be tuned without redefining the underlying rule. Unresolved product behavior is labeled **OPEN DECISION**.
 
+## Prerequisites
+
+- Windows 10/11 (primary workflow; the application remains cross-platform)
+- Node.js 22 or newer
+- Corepack (included with supported Node distributions)
+- Docker Desktop with Docker Compose for local PostgreSQL
+- Git
+
+No WSL installation is required.
+
+## Local setup on Windows
+
+Run these commands from the repository root in PowerShell:
+
+```powershell
+corepack enable
+corepack pnpm install
+Copy-Item .env.example .env
+docker compose up -d postgres
+corepack pnpm db:generate
+corepack pnpm db:migrate
+corepack pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). `GET /api/health` returns a small JSON response when the application is running.
+
+Phase 00B has no domain models or migrations, so `db:migrate` establishes the workflow but does not yet create FLOURISH tables. Phase 01 supplies the domain schema. Docker runs PostgreSQL; Next.js runs directly on the Windows host.
+
+The checked-in `.env.example` uses local-only development defaults. Replace `AUTH_SECRET` with a unique local value before authentication work and never commit `.env` files or real OAuth credentials.
+
+## Verification commands
+
+```powershell
+corepack pnpm lint
+corepack pnpm typecheck
+corepack pnpm test
+corepack pnpm build
+corepack pnpm test:e2e
+```
+
+The Playwright smoke test starts the development server automatically and requires a locally installed Chromium browser. Install it once with `corepack pnpm exec playwright install chromium` if needed. Fast CI runs lint, typecheck, unit/component tests, and the production build; browser tests remain a documented local command during this foundation phase.
+
+## Database and seed commands
+
+- `corepack pnpm db:generate` — generate the Prisma client.
+- `corepack pnpm db:migrate` — create/apply a development migration after Phase 01 adds models.
+- `corepack pnpm db:seed` — run the seed entry point (informational only until Phase 02).
+- `corepack pnpm db:studio` — open Prisma Studio.
+
+Canonical future quest seed files live in [`data/seeds/quests/`](data/seeds/quests/). Repository seeds are authoritative, validated before persistence, and upserted without silently deleting existing QuestDefinitions. Direct admin database edits do not rewrite repository seed files.
