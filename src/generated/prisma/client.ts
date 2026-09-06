@@ -41,4 +41,133 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
-
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model AuthAccount
+ * 
+ */
+export type AuthAccount = Prisma.AuthAccountModel
+/**
+ * Model Player
+ * 
+ */
+export type Player = Prisma.PlayerModel
+/**
+ * Model Skill
+ * 
+ */
+export type Skill = Prisma.SkillModel
+/**
+ * Model PlayerSkillFocus
+ * 
+ */
+export type PlayerSkillFocus = Prisma.PlayerSkillFocusModel
+/**
+ * Model PlayerSkillFocusHistory
+ * 
+ */
+export type PlayerSkillFocusHistory = Prisma.PlayerSkillFocusHistoryModel
+/**
+ * Model PlayerProgress
+ * 
+ */
+export type PlayerProgress = Prisma.PlayerProgressModel
+/**
+ * Model PlayerSkillProgress
+ * 
+ */
+export type PlayerSkillProgress = Prisma.PlayerSkillProgressModel
+/**
+ * Model PlayerSkillStreak
+ * 
+ */
+export type PlayerSkillStreak = Prisma.PlayerSkillStreakModel
+/**
+ * Model QuestFamily
+ * 
+ */
+export type QuestFamily = Prisma.QuestFamilyModel
+/**
+ * Model QuestDefinition
+ * 
+ */
+export type QuestDefinition = Prisma.QuestDefinitionModel
+/**
+ * Model QuestSkill
+ * 
+ */
+export type QuestSkill = Prisma.QuestSkillModel
+/**
+ * Model VarietyTag
+ * 
+ */
+export type VarietyTag = Prisma.VarietyTagModel
+/**
+ * Model QuestVarietyTag
+ * 
+ */
+export type QuestVarietyTag = Prisma.QuestVarietyTagModel
+/**
+ * Model ContextTag
+ * 
+ */
+export type ContextTag = Prisma.ContextTagModel
+/**
+ * Model QuestContextTag
+ * 
+ */
+export type QuestContextTag = Prisma.QuestContextTagModel
+/**
+ * Model ChallengeSet
+ * 
+ */
+export type ChallengeSet = Prisma.ChallengeSetModel
+/**
+ * Model PlayerQuest
+ * 
+ */
+export type PlayerQuest = Prisma.PlayerQuestModel
+/**
+ * Model PlayerQuestSkillSnapshot
+ * 
+ */
+export type PlayerQuestSkillSnapshot = Prisma.PlayerQuestSkillSnapshotModel
+/**
+ * Model PlayerQuestSlot
+ * 
+ */
+export type PlayerQuestSlot = Prisma.PlayerQuestSlotModel
+/**
+ * Model QuestReward
+ * 
+ */
+export type QuestReward = Prisma.QuestRewardModel
+/**
+ * Model QuestSkillReward
+ * 
+ */
+export type QuestSkillReward = Prisma.QuestSkillRewardModel
+/**
+ * Model XpTransaction
+ * 
+ */
+export type XpTransaction = Prisma.XpTransactionModel
+/**
+ * Model QuestInteraction
+ * 
+ */
+export type QuestInteraction = Prisma.QuestInteractionModel
+/**
+ * Model AdminAuditLog
+ * 
+ */
+export type AdminAuditLog = Prisma.AdminAuditLogModel
+/**
+ * Model PlayerRecommendation
+ * 
+ */
+export type PlayerRecommendation = Prisma.PlayerRecommendationModel

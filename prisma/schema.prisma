@@ -7,5 +7,583 @@ datasource db {
   provider = "postgresql"
 }
 
-// Phase 00B intentionally contains no domain models. Phase 01 implements the
-// authoritative model in docs/DATA_MODEL.md.
+enum UserRole {
+  PLAYER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EPIC
+  LEGENDARY
+}
+
+enum CompletionType {
+  SINGLE
+  COUNT
+}
+
+enum QuestPoolType {
+  STANDARD
+  DAILY
+  WEEKLY
+}
+
+enum PlayerQuestStatus {
+  AVAILABLE
+  ACCEPTED
+  COMPLETED
+  ABANDONED
+  EXPIRED
+  REROLLED
+}
+
+enum QuestReviewStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum CostLevel {
+  NONE
+  LOW
+  MODERATE
+  HIGH
+}
+
+enum SocialRequirement {
+  NONE
+  OPTIONAL
+  REQUIRED
+}
+
+enum SafetyCategory {
+  GENERAL
+  FITNESS
+  FINANCIAL
+  SPIRITUAL
+}
+
+enum XpScope {
+  OVERALL
+  SKILL
+  LIFETIME_SKILL
+}
+
+enum XpTransactionType {
+  QUEST_COMPLETION
+  QUEST_FAILURE
+  DAILY_CHALLENGE_BONUS
+  WEEKLY_CHALLENGE_BONUS
+  DAILY_SET_BONUS
+  WEEKLY_SET_BONUS
+  CATCH_UP_BONUS
+  STREAK_BONUS
+  OTHER
+}
+
+enum QuestInteractionType {
+  SHOWN
+  ACCEPTED
+  REROLLED
+  UPGRADED
+  COMPLETED
+  ABANDONED
+  EXPIRED
+  CLEARED
+  PROGRESS_INCREMENTED
+  PROGRESS_DECREMENTED
+  RECOMMENDED
+}
+
+enum QuestFeedbackReason {
+  TOO_HARD
+  NO_TIME
+  NOT_INTERESTED
+  JUST_DIFFERENT
+}
+
+enum AdminAuditAction {
+  CREATE
+  UPDATE
+  SUBMIT_REVIEW
+  APPROVE
+  REJECT
+  ACTIVATE
+  DEACTIVATE
+}
+
+model User {
+  id                       String            @id @default(uuid()) @db.Uuid
+  email                    String            @unique
+  name                     String?
+  imageUrl                 String?           @map("image_url")
+  role                     UserRole          @default(PLAYER)
+  createdAt                DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  authAccounts             AuthAccount[]
+  player                   Player?
+  reviewedQuestDefinitions QuestDefinition[] @relation("QuestReviewer")
+  adminAuditLogs           AdminAuditLog[]
+
+  @@map("users")
+}
+
+model AuthAccount {
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  provider          String
+  providerAccountId String   @map("provider_account_id")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("auth_accounts")
+}
+
+model Player {
+  id                    String                    @id @default(uuid()) @db.Uuid
+  userId                String                    @unique @map("user_id") @db.Uuid
+  timezone              String
+  onboardingCompletedAt DateTime?                 @map("onboarding_completed_at") @db.Timestamptz(3)
+  createdAt             DateTime                  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user                  User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  focus                 PlayerSkillFocus[]
+  focusHistory          PlayerSkillFocusHistory[]
+  progress              PlayerProgress?
+  skillProgress         PlayerSkillProgress[]
+  skillStreaks          PlayerSkillStreak[]
+  quests                PlayerQuest[]
+  questSlots            PlayerQuestSlot[]
+  xpTransactions        XpTransaction[]
+  questInteractions     QuestInteraction[]
+  challengeSets         ChallengeSet[]
+  recommendation        PlayerRecommendation?
+
+  @@map("players")
+}
+
+model Skill {
+  id                  String                     @id @default(uuid()) @db.Uuid
+  code                String                     @unique @db.VarChar(1)
+  name                String                     @unique
+  description         String
+  active              Boolean                    @default(true)
+  createdAt           DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  playerFocus         PlayerSkillFocus[]
+  focusHistory        PlayerSkillFocusHistory[]
+  playerProgress      PlayerSkillProgress[]
+  playerStreaks       PlayerSkillStreak[]
+  questSkills         QuestSkill[]
+  varietyTags         VarietyTag[]
+  questSkillSnapshots PlayerQuestSkillSnapshot[]
+  slots               PlayerQuestSlot[]
+  questSkillRewards   QuestSkillReward[]
+  xpTransactions      XpTransaction[]
+
+  @@map("skills")
+}
+
+model PlayerSkillFocus {
+  playerId    String   @map("player_id") @db.Uuid
+  skillId     String   @map("skill_id") @db.Uuid
+  focusPoints Int      @map("focus_points")
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  skill       Skill    @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([playerId, skillId])
+  @@index([skillId])
+  @@map("player_skill_focus")
+}
+
+model PlayerSkillFocusHistory {
+  id                 String   @id @default(uuid()) @db.Uuid
+  playerId           String   @map("player_id") @db.Uuid
+  skillId            String   @map("skill_id") @db.Uuid
+  oldFocusPoints     Int      @map("old_focus_points")
+  newFocusPoints     Int      @map("new_focus_points")
+  allocationChangeId String?  @map("allocation_change_id") @db.Uuid
+  changedAt          DateTime @default(now()) @map("changed_at") @db.Timestamptz(3)
+  player             Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  skill              Skill    @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@index([playerId, changedAt(sort: Desc)])
+  @@index([allocationChangeId])
+  @@index([skillId])
+  @@map("player_skill_focus_history")
+}
+
+model PlayerProgress {
+  playerId     String   @id @map("player_id") @db.Uuid
+  overallXp    Int      @default(0) @map("overall_xp")
+  overallLevel Int      @default(1) @map("overall_level")
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player       Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@map("player_progress")
+}
+
+model PlayerSkillProgress {
+  playerId     String   @map("player_id") @db.Uuid
+  skillId      String   @map("skill_id") @db.Uuid
+  currentXp    Int      @default(0) @map("current_xp")
+  lifetimeXp   Int      @default(0) @map("lifetime_xp")
+  currentLevel Int      @default(1) @map("current_level")
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player       Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  skill        Skill    @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([playerId, skillId])
+  @@index([playerId])
+  @@index([skillId])
+  @@map("player_skill_progress")
+}
+
+model PlayerSkillStreak {
+  playerId           String    @map("player_id") @db.Uuid
+  skillId            String    @map("skill_id") @db.Uuid
+  currentStreakDays  Int       @default(0) @map("current_streak_days")
+  longestStreakDays  Int       @default(0) @map("longest_streak_days")
+  lastQualifyingDate DateTime? @map("last_qualifying_date") @db.Date
+  updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player             Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  skill              Skill     @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([playerId, skillId])
+  @@index([skillId])
+  @@map("player_skill_streaks")
+}
+
+model QuestFamily {
+  id          String            @id @default(uuid()) @db.Uuid
+  stableKey   String            @unique @map("stable_key")
+  name        String
+  description String?
+  active      Boolean           @default(true)
+  createdAt   DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  quests      QuestDefinition[]
+
+  @@map("quest_families")
+}
+
+model QuestDefinition {
+  id                      String             @id @default(uuid()) @db.Uuid
+  stableKey               String             @unique @map("stable_key")
+  questFamilyId           String?            @map("quest_family_id") @db.Uuid
+  title                   String
+  shortDescription        String             @map("short_description")
+  difficulty              Difficulty
+  baseXp                  Int                @map("base_xp")
+  estimatedMinutes        Int                @map("estimated_minutes")
+  completionWindowHours   Int?               @map("completion_window_hours")
+  completionType          CompletionType     @map("completion_type")
+  completionTarget        Int                @map("completion_target")
+  standardEligible        Boolean            @default(false) @map("standard_eligible")
+  dailyEligible           Boolean            @default(false) @map("daily_eligible")
+  weeklyEligible          Boolean            @default(false) @map("weekly_eligible")
+  costLevel               CostLevel          @default(NONE) @map("cost_level")
+  socialRequirement       SocialRequirement  @default(NONE) @map("social_requirement")
+  safetyCategory          SafetyCategory     @default(GENERAL) @map("safety_category")
+  curatorValueScore       Int?               @map("curator_value_score")
+  curatorDifficultyReason String?            @map("curator_difficulty_reason")
+  reviewStatus            QuestReviewStatus  @default(DRAFT) @map("review_status")
+  reviewedById            String?            @map("reviewed_by") @db.Uuid
+  reviewedAt              DateTime?          @map("reviewed_at") @db.Timestamptz(3)
+  curatorNotes            String?            @map("curator_notes")
+  active                  Boolean            @default(false)
+  createdAt               DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt               DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+  family                  QuestFamily?       @relation(fields: [questFamilyId], references: [id], onDelete: Restrict)
+  reviewedBy              User?              @relation("QuestReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  skills                  QuestSkill[]
+  varietyTags             QuestVarietyTag[]
+  contextTags             QuestContextTag[]
+  playerQuests            PlayerQuest[]
+  interactions            QuestInteraction[]
+
+  @@index([active, reviewStatus])
+  @@index([standardEligible, active, reviewStatus, difficulty])
+  @@index([dailyEligible, active, reviewStatus, difficulty])
+  @@index([weeklyEligible, active, reviewStatus, difficulty])
+  @@index([difficulty])
+  @@index([questFamilyId])
+  @@map("quest_definitions")
+}
+
+model QuestSkill {
+  questDefinitionId String          @map("quest_definition_id") @db.Uuid
+  skillId           String          @map("skill_id") @db.Uuid
+  isPrimary         Boolean         @default(false) @map("is_primary")
+  rewardPercent     Int             @map("reward_percent")
+  questDefinition   QuestDefinition @relation(fields: [questDefinitionId], references: [id], onDelete: Cascade)
+  skill             Skill           @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([questDefinitionId, skillId])
+  @@index([skillId])
+  @@map("quest_skills")
+}
+
+model VarietyTag {
+  id          String            @id @default(uuid()) @db.Uuid
+  skillId     String            @map("skill_id") @db.Uuid
+  code        String
+  displayName String            @map("display_name")
+  description String?
+  active      Boolean           @default(true)
+  createdAt   DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  skill       Skill             @relation(fields: [skillId], references: [id], onDelete: Restrict)
+  quests      QuestVarietyTag[]
+
+  @@unique([skillId, code])
+  @@index([skillId])
+  @@map("variety_tags")
+}
+
+model QuestVarietyTag {
+  questDefinitionId String          @map("quest_definition_id") @db.Uuid
+  varietyTagId      String          @map("variety_tag_id") @db.Uuid
+  isPrimary         Boolean         @default(false) @map("is_primary")
+  questDefinition   QuestDefinition @relation(fields: [questDefinitionId], references: [id], onDelete: Cascade)
+  varietyTag        VarietyTag      @relation(fields: [varietyTagId], references: [id], onDelete: Restrict)
+
+  @@id([questDefinitionId, varietyTagId])
+  @@index([varietyTagId])
+  @@map("quest_variety_tags")
+}
+
+model ContextTag {
+  id          String            @id @default(uuid()) @db.Uuid
+  code        String            @unique
+  displayName String            @map("display_name")
+  active      Boolean           @default(true)
+  createdAt   DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  quests      QuestContextTag[]
+
+  @@map("context_tags")
+}
+
+model QuestContextTag {
+  questDefinitionId String          @map("quest_definition_id") @db.Uuid
+  contextTagId      String          @map("context_tag_id") @db.Uuid
+  questDefinition   QuestDefinition @relation(fields: [questDefinitionId], references: [id], onDelete: Cascade)
+  contextTag        ContextTag      @relation(fields: [contextTagId], references: [id], onDelete: Restrict)
+
+  @@id([questDefinitionId, contextTagId])
+  @@index([contextTagId])
+  @@map("quest_context_tags")
+}
+
+model ChallengeSet {
+  id                  String        @id @default(uuid()) @db.Uuid
+  playerId            String        @map("player_id") @db.Uuid
+  poolType            QuestPoolType @map("pool_type")
+  windowStartAt       DateTime      @map("window_start_at") @db.Timestamptz(3)
+  windowEndAt         DateTime      @map("window_end_at") @db.Timestamptz(3)
+  setBonusAwardedAt   DateTime?     @map("set_bonus_awarded_at") @db.Timestamptz(3)
+  setBonusOperationId String?       @unique @map("set_bonus_operation_id") @db.Uuid
+  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player              Player        @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  quests              PlayerQuest[]
+
+  @@unique([playerId, poolType, windowStartAt])
+  @@index([playerId, poolType, windowStartAt, windowEndAt])
+  @@map("challenge_sets")
+}
+
+model PlayerQuest {
+  id                            String                     @id @default(uuid()) @db.Uuid
+  playerId                      String                     @map("player_id") @db.Uuid
+  questDefinitionId             String                     @map("quest_definition_id") @db.Uuid
+  challengeSetId                String?                    @map("challenge_set_id") @db.Uuid
+  poolType                      QuestPoolType              @map("pool_type")
+  status                        PlayerQuestStatus          @default(AVAILABLE)
+  currentProgress               Int                        @default(0) @map("current_progress")
+  assignedAt                    DateTime                   @default(now()) @map("assigned_at") @db.Timestamptz(3)
+  acceptedAt                    DateTime?                  @map("accepted_at") @db.Timestamptz(3)
+  deadlineAt                    DateTime?                  @map("deadline_at") @db.Timestamptz(3)
+  completedAt                   DateTime?                  @map("completed_at") @db.Timestamptz(3)
+  abandonedAt                   DateTime?                  @map("abandoned_at") @db.Timestamptz(3)
+  expiredAt                     DateTime?                  @map("expired_at") @db.Timestamptz(3)
+  clearedAt                     DateTime?                  @map("cleared_at") @db.Timestamptz(3)
+  windowStartAt                 DateTime?                  @map("window_start_at") @db.Timestamptz(3)
+  windowEndAt                   DateTime?                  @map("window_end_at") @db.Timestamptz(3)
+  difficultySnapshot            Difficulty                 @map("difficulty_snapshot")
+  baseXpSnapshot                Int                        @map("base_xp_snapshot")
+  completionTypeSnapshot        CompletionType             @map("completion_type_snapshot")
+  completionTargetSnapshot      Int                        @map("completion_target_snapshot")
+  completionWindowHoursSnapshot Int?                       @map("completion_window_hours_snapshot")
+  rewardConfigVersionSnapshot   String                     @map("reward_config_version_snapshot")
+  failurePenaltyXp              Int?                       @map("failure_penalty_xp")
+  failurePenaltyAppliedAt       DateTime?                  @map("failure_penalty_applied_at") @db.Timestamptz(3)
+  createdAt                     DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                     DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player                        Player                     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  questDefinition               QuestDefinition            @relation(fields: [questDefinitionId], references: [id], onDelete: Restrict)
+  challengeSet                  ChallengeSet?              @relation(fields: [challengeSetId], references: [id], onDelete: Restrict)
+  skillSnapshots                PlayerQuestSkillSnapshot[]
+  currentSlot                   PlayerQuestSlot?           @relation("CurrentSlotQuest")
+  reward                        QuestReward?
+  xpTransactions                XpTransaction[]
+  interactions                  QuestInteraction[]
+  recommendation                PlayerRecommendation?
+
+  @@index([playerId, status])
+  @@index([playerId, poolType, status])
+  @@index([deadlineAt])
+  @@index([playerId, deadlineAt])
+  @@index([playerId, windowStartAt, windowEndAt])
+  @@index([questDefinitionId])
+  @@index([challengeSetId])
+  @@map("player_quests")
+}
+
+model PlayerQuestSkillSnapshot {
+  playerQuestId String      @map("player_quest_id") @db.Uuid
+  skillId       String      @map("skill_id") @db.Uuid
+  isPrimary     Boolean     @default(false) @map("is_primary")
+  rewardPercent Int         @map("reward_percent")
+  playerQuest   PlayerQuest @relation(fields: [playerQuestId], references: [id], onDelete: Cascade)
+  skill         Skill       @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([playerQuestId, skillId])
+  @@index([skillId])
+  @@map("player_quest_skill_snapshots")
+}
+
+model PlayerQuestSlot {
+  id                   String       @id @default(uuid()) @db.Uuid
+  playerId             String       @map("player_id") @db.Uuid
+  skillId              String       @map("skill_id") @db.Uuid
+  slotNumber           Int          @map("slot_number")
+  currentPlayerQuestId String?      @unique @map("current_player_quest_id") @db.Uuid
+  createdAt            DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player               Player       @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  skill                Skill        @relation(fields: [skillId], references: [id], onDelete: Restrict)
+  currentPlayerQuest   PlayerQuest? @relation("CurrentSlotQuest", fields: [currentPlayerQuestId], references: [id], onDelete: SetNull)
+
+  @@unique([playerId, skillId, slotNumber])
+  @@index([playerId, skillId])
+  @@index([skillId])
+  @@map("player_quest_slots")
+}
+
+model QuestReward {
+  id               String             @id @default(uuid()) @db.Uuid
+  operationId      String             @map("operation_id") @db.Uuid
+  playerQuestId    String             @unique @map("player_quest_id") @db.Uuid
+  baseXp           Int                @map("base_xp")
+  catchUpBonusXp   Int                @default(0) @map("catch_up_bonus_xp")
+  streakBonusXp    Int                @default(0) @map("streak_bonus_xp")
+  challengeBonusXp Int                @default(0) @map("challenge_bonus_xp")
+  otherBonusXp     Int                @default(0) @map("other_bonus_xp")
+  finalOverallXp   Int                @map("final_overall_xp")
+  calculatedAt     DateTime           @default(now()) @map("calculated_at") @db.Timestamptz(3)
+  playerQuest      PlayerQuest        @relation(fields: [playerQuestId], references: [id], onDelete: Restrict)
+  skillRewards     QuestSkillReward[]
+
+  @@index([operationId])
+  @@map("quest_rewards")
+}
+
+model QuestSkillReward {
+  id            String      @id @default(uuid()) @db.Uuid
+  questRewardId String      @map("quest_reward_id") @db.Uuid
+  skillId       String      @map("skill_id") @db.Uuid
+  rewardPercent Int         @map("reward_percent")
+  baseSkillXp   Int         @map("base_skill_xp")
+  bonusSkillXp  Int         @map("bonus_skill_xp")
+  finalSkillXp  Int         @map("final_skill_xp")
+  questReward   QuestReward @relation(fields: [questRewardId], references: [id], onDelete: Restrict)
+  skill         Skill       @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@unique([questRewardId, skillId])
+  @@index([skillId])
+  @@map("quest_skill_rewards")
+}
+
+model XpTransaction {
+  id              String            @id @default(uuid()) @db.Uuid
+  operationId     String            @map("operation_id") @db.Uuid
+  playerId        String            @map("player_id") @db.Uuid
+  playerQuestId   String?           @map("player_quest_id") @db.Uuid
+  skillId         String?           @map("skill_id") @db.Uuid
+  xpScope         XpScope           @map("xp_scope")
+  transactionType XpTransactionType @map("transaction_type")
+  amount          Int
+  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  player          Player            @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerQuest     PlayerQuest?      @relation(fields: [playerQuestId], references: [id], onDelete: Restrict)
+  skill           Skill?            @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@index([playerId, createdAt(sort: Desc)])
+  @@index([playerQuestId])
+  @@index([operationId])
+  @@index([skillId, createdAt(sort: Desc)])
+  @@map("xp_transactions")
+}
+
+model QuestInteraction {
+  id                String               @id @default(uuid()) @db.Uuid
+  operationId       String?              @map("operation_id") @db.Uuid
+  playerId          String               @map("player_id") @db.Uuid
+  questDefinitionId String               @map("quest_definition_id") @db.Uuid
+  playerQuestId     String?              @map("player_quest_id") @db.Uuid
+  interactionType   QuestInteractionType @map("interaction_type")
+  feedbackReason    QuestFeedbackReason? @map("feedback_reason")
+  createdAt         DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+  player            Player               @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  questDefinition   QuestDefinition      @relation(fields: [questDefinitionId], references: [id], onDelete: Restrict)
+  playerQuest       PlayerQuest?         @relation(fields: [playerQuestId], references: [id], onDelete: Restrict)
+
+  @@index([playerId, createdAt(sort: Desc)])
+  @@index([playerId, questDefinitionId, createdAt(sort: Desc)])
+  @@index([playerQuestId])
+  @@index([interactionType])
+  @@index([operationId])
+  @@map("quest_interactions")
+}
+
+model AdminAuditLog {
+  id          String           @id @default(uuid()) @db.Uuid
+  actorUserId String           @map("actor_user_id") @db.Uuid
+  action      AdminAuditAction
+  entityType  String           @map("entity_type")
+  entityId    String           @map("entity_id")
+  beforeData  Json?            @map("before_data")
+  afterData   Json?            @map("after_data")
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  actor       User             @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@index([actorUserId, createdAt(sort: Desc)])
+  @@index([entityType, entityId, createdAt(sort: Desc)])
+  @@map("admin_audit_logs")
+}
+
+model PlayerRecommendation {
+  id            String      @id @default(uuid()) @db.Uuid
+  playerId      String      @unique @map("player_id") @db.Uuid
+  playerQuestId String      @unique @map("player_quest_id") @db.Uuid
+  reasonCodes   String[]    @default([]) @map("reason_codes")
+  configVersion String      @map("config_version")
+  calculatedAt  DateTime    @map("calculated_at") @db.Timestamptz(3)
+  invalidatedAt DateTime?   @map("invalidated_at") @db.Timestamptz(3)
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player        Player      @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerQuest   PlayerQuest @relation(fields: [playerQuestId], references: [id], onDelete: Cascade)
+
+  @@map("player_recommendations")
+}

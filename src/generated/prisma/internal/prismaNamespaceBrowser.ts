@@ -51,7 +51,32 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-
+  User: 'User',
+  AuthAccount: 'AuthAccount',
+  Player: 'Player',
+  Skill: 'Skill',
+  PlayerSkillFocus: 'PlayerSkillFocus',
+  PlayerSkillFocusHistory: 'PlayerSkillFocusHistory',
+  PlayerProgress: 'PlayerProgress',
+  PlayerSkillProgress: 'PlayerSkillProgress',
+  PlayerSkillStreak: 'PlayerSkillStreak',
+  QuestFamily: 'QuestFamily',
+  QuestDefinition: 'QuestDefinition',
+  QuestSkill: 'QuestSkill',
+  VarietyTag: 'VarietyTag',
+  QuestVarietyTag: 'QuestVarietyTag',
+  ContextTag: 'ContextTag',
+  QuestContextTag: 'QuestContextTag',
+  ChallengeSet: 'ChallengeSet',
+  PlayerQuest: 'PlayerQuest',
+  PlayerQuestSkillSnapshot: 'PlayerQuestSkillSnapshot',
+  PlayerQuestSlot: 'PlayerQuestSlot',
+  QuestReward: 'QuestReward',
+  QuestSkillReward: 'QuestSkillReward',
+  XpTransaction: 'XpTransaction',
+  QuestInteraction: 'QuestInteraction',
+  AdminAuditLog: 'AdminAuditLog',
+  PlayerRecommendation: 'PlayerRecommendation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -68,4 +93,407 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AuthAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuthAccountScalarFieldEnum = (typeof AuthAccountScalarFieldEnum)[keyof typeof AuthAccountScalarFieldEnum]
+
+
+export const PlayerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  timezone: 'timezone',
+  onboardingCompletedAt: 'onboardingCompletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerScalarFieldEnum = (typeof PlayerScalarFieldEnum)[keyof typeof PlayerScalarFieldEnum]
+
+
+export const SkillScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SkillScalarFieldEnum = (typeof SkillScalarFieldEnum)[keyof typeof SkillScalarFieldEnum]
+
+
+export const PlayerSkillFocusScalarFieldEnum = {
+  playerId: 'playerId',
+  skillId: 'skillId',
+  focusPoints: 'focusPoints',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerSkillFocusScalarFieldEnum = (typeof PlayerSkillFocusScalarFieldEnum)[keyof typeof PlayerSkillFocusScalarFieldEnum]
+
+
+export const PlayerSkillFocusHistoryScalarFieldEnum = {
+  id: 'id',
+  playerId: 'playerId',
+  skillId: 'skillId',
+  oldFocusPoints: 'oldFocusPoints',
+  newFocusPoints: 'newFocusPoints',
+  allocationChangeId: 'allocationChangeId',
+  changedAt: 'changedAt'
+} as const
+
+export type PlayerSkillFocusHistoryScalarFieldEnum = (typeof PlayerSkillFocusHistoryScalarFieldEnum)[keyof typeof PlayerSkillFocusHistoryScalarFieldEnum]
+
+
+export const PlayerProgressScalarFieldEnum = {
+  playerId: 'playerId',
+  overallXp: 'overallXp',
+  overallLevel: 'overallLevel',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerProgressScalarFieldEnum = (typeof PlayerProgressScalarFieldEnum)[keyof typeof PlayerProgressScalarFieldEnum]
+
+
+export const PlayerSkillProgressScalarFieldEnum = {
+  playerId: 'playerId',
+  skillId: 'skillId',
+  currentXp: 'currentXp',
+  lifetimeXp: 'lifetimeXp',
+  currentLevel: 'currentLevel',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerSkillProgressScalarFieldEnum = (typeof PlayerSkillProgressScalarFieldEnum)[keyof typeof PlayerSkillProgressScalarFieldEnum]
+
+
+export const PlayerSkillStreakScalarFieldEnum = {
+  playerId: 'playerId',
+  skillId: 'skillId',
+  currentStreakDays: 'currentStreakDays',
+  longestStreakDays: 'longestStreakDays',
+  lastQualifyingDate: 'lastQualifyingDate',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerSkillStreakScalarFieldEnum = (typeof PlayerSkillStreakScalarFieldEnum)[keyof typeof PlayerSkillStreakScalarFieldEnum]
+
+
+export const QuestFamilyScalarFieldEnum = {
+  id: 'id',
+  stableKey: 'stableKey',
+  name: 'name',
+  description: 'description',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestFamilyScalarFieldEnum = (typeof QuestFamilyScalarFieldEnum)[keyof typeof QuestFamilyScalarFieldEnum]
+
+
+export const QuestDefinitionScalarFieldEnum = {
+  id: 'id',
+  stableKey: 'stableKey',
+  questFamilyId: 'questFamilyId',
+  title: 'title',
+  shortDescription: 'shortDescription',
+  difficulty: 'difficulty',
+  baseXp: 'baseXp',
+  estimatedMinutes: 'estimatedMinutes',
+  completionWindowHours: 'completionWindowHours',
+  completionType: 'completionType',
+  completionTarget: 'completionTarget',
+  standardEligible: 'standardEligible',
+  dailyEligible: 'dailyEligible',
+  weeklyEligible: 'weeklyEligible',
+  costLevel: 'costLevel',
+  socialRequirement: 'socialRequirement',
+  safetyCategory: 'safetyCategory',
+  curatorValueScore: 'curatorValueScore',
+  curatorDifficultyReason: 'curatorDifficultyReason',
+  reviewStatus: 'reviewStatus',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  curatorNotes: 'curatorNotes',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestDefinitionScalarFieldEnum = (typeof QuestDefinitionScalarFieldEnum)[keyof typeof QuestDefinitionScalarFieldEnum]
+
+
+export const QuestSkillScalarFieldEnum = {
+  questDefinitionId: 'questDefinitionId',
+  skillId: 'skillId',
+  isPrimary: 'isPrimary',
+  rewardPercent: 'rewardPercent'
+} as const
+
+export type QuestSkillScalarFieldEnum = (typeof QuestSkillScalarFieldEnum)[keyof typeof QuestSkillScalarFieldEnum]
+
+
+export const VarietyTagScalarFieldEnum = {
+  id: 'id',
+  skillId: 'skillId',
+  code: 'code',
+  displayName: 'displayName',
+  description: 'description',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VarietyTagScalarFieldEnum = (typeof VarietyTagScalarFieldEnum)[keyof typeof VarietyTagScalarFieldEnum]
+
+
+export const QuestVarietyTagScalarFieldEnum = {
+  questDefinitionId: 'questDefinitionId',
+  varietyTagId: 'varietyTagId',
+  isPrimary: 'isPrimary'
+} as const
+
+export type QuestVarietyTagScalarFieldEnum = (typeof QuestVarietyTagScalarFieldEnum)[keyof typeof QuestVarietyTagScalarFieldEnum]
+
+
+export const ContextTagScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  displayName: 'displayName',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContextTagScalarFieldEnum = (typeof ContextTagScalarFieldEnum)[keyof typeof ContextTagScalarFieldEnum]
+
+
+export const QuestContextTagScalarFieldEnum = {
+  questDefinitionId: 'questDefinitionId',
+  contextTagId: 'contextTagId'
+} as const
+
+export type QuestContextTagScalarFieldEnum = (typeof QuestContextTagScalarFieldEnum)[keyof typeof QuestContextTagScalarFieldEnum]
+
+
+export const ChallengeSetScalarFieldEnum = {
+  id: 'id',
+  playerId: 'playerId',
+  poolType: 'poolType',
+  windowStartAt: 'windowStartAt',
+  windowEndAt: 'windowEndAt',
+  setBonusAwardedAt: 'setBonusAwardedAt',
+  setBonusOperationId: 'setBonusOperationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChallengeSetScalarFieldEnum = (typeof ChallengeSetScalarFieldEnum)[keyof typeof ChallengeSetScalarFieldEnum]
+
+
+export const PlayerQuestScalarFieldEnum = {
+  id: 'id',
+  playerId: 'playerId',
+  questDefinitionId: 'questDefinitionId',
+  challengeSetId: 'challengeSetId',
+  poolType: 'poolType',
+  status: 'status',
+  currentProgress: 'currentProgress',
+  assignedAt: 'assignedAt',
+  acceptedAt: 'acceptedAt',
+  deadlineAt: 'deadlineAt',
+  completedAt: 'completedAt',
+  abandonedAt: 'abandonedAt',
+  expiredAt: 'expiredAt',
+  clearedAt: 'clearedAt',
+  windowStartAt: 'windowStartAt',
+  windowEndAt: 'windowEndAt',
+  difficultySnapshot: 'difficultySnapshot',
+  baseXpSnapshot: 'baseXpSnapshot',
+  completionTypeSnapshot: 'completionTypeSnapshot',
+  completionTargetSnapshot: 'completionTargetSnapshot',
+  completionWindowHoursSnapshot: 'completionWindowHoursSnapshot',
+  rewardConfigVersionSnapshot: 'rewardConfigVersionSnapshot',
+  failurePenaltyXp: 'failurePenaltyXp',
+  failurePenaltyAppliedAt: 'failurePenaltyAppliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerQuestScalarFieldEnum = (typeof PlayerQuestScalarFieldEnum)[keyof typeof PlayerQuestScalarFieldEnum]
+
+
+export const PlayerQuestSkillSnapshotScalarFieldEnum = {
+  playerQuestId: 'playerQuestId',
+  skillId: 'skillId',
+  isPrimary: 'isPrimary',
+  rewardPercent: 'rewardPercent'
+} as const
+
+export type PlayerQuestSkillSnapshotScalarFieldEnum = (typeof PlayerQuestSkillSnapshotScalarFieldEnum)[keyof typeof PlayerQuestSkillSnapshotScalarFieldEnum]
+
+
+export const PlayerQuestSlotScalarFieldEnum = {
+  id: 'id',
+  playerId: 'playerId',
+  skillId: 'skillId',
+  slotNumber: 'slotNumber',
+  currentPlayerQuestId: 'currentPlayerQuestId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerQuestSlotScalarFieldEnum = (typeof PlayerQuestSlotScalarFieldEnum)[keyof typeof PlayerQuestSlotScalarFieldEnum]
+
+
+export const QuestRewardScalarFieldEnum = {
+  id: 'id',
+  operationId: 'operationId',
+  playerQuestId: 'playerQuestId',
+  baseXp: 'baseXp',
+  catchUpBonusXp: 'catchUpBonusXp',
+  streakBonusXp: 'streakBonusXp',
+  challengeBonusXp: 'challengeBonusXp',
+  otherBonusXp: 'otherBonusXp',
+  finalOverallXp: 'finalOverallXp',
+  calculatedAt: 'calculatedAt'
+} as const
+
+export type QuestRewardScalarFieldEnum = (typeof QuestRewardScalarFieldEnum)[keyof typeof QuestRewardScalarFieldEnum]
+
+
+export const QuestSkillRewardScalarFieldEnum = {
+  id: 'id',
+  questRewardId: 'questRewardId',
+  skillId: 'skillId',
+  rewardPercent: 'rewardPercent',
+  baseSkillXp: 'baseSkillXp',
+  bonusSkillXp: 'bonusSkillXp',
+  finalSkillXp: 'finalSkillXp'
+} as const
+
+export type QuestSkillRewardScalarFieldEnum = (typeof QuestSkillRewardScalarFieldEnum)[keyof typeof QuestSkillRewardScalarFieldEnum]
+
+
+export const XpTransactionScalarFieldEnum = {
+  id: 'id',
+  operationId: 'operationId',
+  playerId: 'playerId',
+  playerQuestId: 'playerQuestId',
+  skillId: 'skillId',
+  xpScope: 'xpScope',
+  transactionType: 'transactionType',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type XpTransactionScalarFieldEnum = (typeof XpTransactionScalarFieldEnum)[keyof typeof XpTransactionScalarFieldEnum]
+
+
+export const QuestInteractionScalarFieldEnum = {
+  id: 'id',
+  operationId: 'operationId',
+  playerId: 'playerId',
+  questDefinitionId: 'questDefinitionId',
+  playerQuestId: 'playerQuestId',
+  interactionType: 'interactionType',
+  feedbackReason: 'feedbackReason',
+  createdAt: 'createdAt'
+} as const
+
+export type QuestInteractionScalarFieldEnum = (typeof QuestInteractionScalarFieldEnum)[keyof typeof QuestInteractionScalarFieldEnum]
+
+
+export const AdminAuditLogScalarFieldEnum = {
+  id: 'id',
+  actorUserId: 'actorUserId',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  beforeData: 'beforeData',
+  afterData: 'afterData',
+  createdAt: 'createdAt'
+} as const
+
+export type AdminAuditLogScalarFieldEnum = (typeof AdminAuditLogScalarFieldEnum)[keyof typeof AdminAuditLogScalarFieldEnum]
+
+
+export const PlayerRecommendationScalarFieldEnum = {
+  id: 'id',
+  playerId: 'playerId',
+  playerQuestId: 'playerQuestId',
+  reasonCodes: 'reasonCodes',
+  configVersion: 'configVersion',
+  calculatedAt: 'calculatedAt',
+  invalidatedAt: 'invalidatedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerRecommendationScalarFieldEnum = (typeof PlayerRecommendationScalarFieldEnum)[keyof typeof PlayerRecommendationScalarFieldEnum]
+
+
+export const SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+} as const
+
+export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

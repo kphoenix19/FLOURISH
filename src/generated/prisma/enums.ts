@@ -9,7 +9,152 @@
 * 🟢 You can import this file directly.
 */
 
+export const UserRole = {
+  PLAYER: 'PLAYER',
+  ADMIN: 'ADMIN'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const Difficulty = {
+  EASY: 'EASY',
+  MEDIUM: 'MEDIUM',
+  HARD: 'HARD',
+  EPIC: 'EPIC',
+  LEGENDARY: 'LEGENDARY'
+} as const
+
+export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty]
+
+
+export const CompletionType = {
+  SINGLE: 'SINGLE',
+  COUNT: 'COUNT'
+} as const
+
+export type CompletionType = (typeof CompletionType)[keyof typeof CompletionType]
+
+
+export const QuestPoolType = {
+  STANDARD: 'STANDARD',
+  DAILY: 'DAILY',
+  WEEKLY: 'WEEKLY'
+} as const
+
+export type QuestPoolType = (typeof QuestPoolType)[keyof typeof QuestPoolType]
+
+
+export const PlayerQuestStatus = {
+  AVAILABLE: 'AVAILABLE',
+  ACCEPTED: 'ACCEPTED',
+  COMPLETED: 'COMPLETED',
+  ABANDONED: 'ABANDONED',
+  EXPIRED: 'EXPIRED',
+  REROLLED: 'REROLLED'
+} as const
+
+export type PlayerQuestStatus = (typeof PlayerQuestStatus)[keyof typeof PlayerQuestStatus]
+
+
+export const QuestReviewStatus = {
+  DRAFT: 'DRAFT',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type QuestReviewStatus = (typeof QuestReviewStatus)[keyof typeof QuestReviewStatus]
+
+
+export const CostLevel = {
+  NONE: 'NONE',
+  LOW: 'LOW',
+  MODERATE: 'MODERATE',
+  HIGH: 'HIGH'
+} as const
+
+export type CostLevel = (typeof CostLevel)[keyof typeof CostLevel]
+
+
+export const SocialRequirement = {
+  NONE: 'NONE',
+  OPTIONAL: 'OPTIONAL',
+  REQUIRED: 'REQUIRED'
+} as const
+
+export type SocialRequirement = (typeof SocialRequirement)[keyof typeof SocialRequirement]
+
+
+export const SafetyCategory = {
+  GENERAL: 'GENERAL',
+  FITNESS: 'FITNESS',
+  FINANCIAL: 'FINANCIAL',
+  SPIRITUAL: 'SPIRITUAL'
+} as const
+
+export type SafetyCategory = (typeof SafetyCategory)[keyof typeof SafetyCategory]
+
+
+export const XpScope = {
+  OVERALL: 'OVERALL',
+  SKILL: 'SKILL',
+  LIFETIME_SKILL: 'LIFETIME_SKILL'
+} as const
+
+export type XpScope = (typeof XpScope)[keyof typeof XpScope]
+
+
+export const XpTransactionType = {
+  QUEST_COMPLETION: 'QUEST_COMPLETION',
+  QUEST_FAILURE: 'QUEST_FAILURE',
+  DAILY_CHALLENGE_BONUS: 'DAILY_CHALLENGE_BONUS',
+  WEEKLY_CHALLENGE_BONUS: 'WEEKLY_CHALLENGE_BONUS',
+  DAILY_SET_BONUS: 'DAILY_SET_BONUS',
+  WEEKLY_SET_BONUS: 'WEEKLY_SET_BONUS',
+  CATCH_UP_BONUS: 'CATCH_UP_BONUS',
+  STREAK_BONUS: 'STREAK_BONUS',
+  OTHER: 'OTHER'
+} as const
+
+export type XpTransactionType = (typeof XpTransactionType)[keyof typeof XpTransactionType]
+
+
+export const QuestInteractionType = {
+  SHOWN: 'SHOWN',
+  ACCEPTED: 'ACCEPTED',
+  REROLLED: 'REROLLED',
+  UPGRADED: 'UPGRADED',
+  COMPLETED: 'COMPLETED',
+  ABANDONED: 'ABANDONED',
+  EXPIRED: 'EXPIRED',
+  CLEARED: 'CLEARED',
+  PROGRESS_INCREMENTED: 'PROGRESS_INCREMENTED',
+  PROGRESS_DECREMENTED: 'PROGRESS_DECREMENTED',
+  RECOMMENDED: 'RECOMMENDED'
+} as const
+
+export type QuestInteractionType = (typeof QuestInteractionType)[keyof typeof QuestInteractionType]
+
+
+export const QuestFeedbackReason = {
+  TOO_HARD: 'TOO_HARD',
+  NO_TIME: 'NO_TIME',
+  NOT_INTERESTED: 'NOT_INTERESTED',
+  JUST_DIFFERENT: 'JUST_DIFFERENT'
+} as const
+
+export type QuestFeedbackReason = (typeof QuestFeedbackReason)[keyof typeof QuestFeedbackReason]
+
+
+export const AdminAuditAction = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  SUBMIT_REVIEW: 'SUBMIT_REVIEW',
+  APPROVE: 'APPROVE',
+  REJECT: 'REJECT',
+  ACTIVATE: 'ACTIVATE',
+  DEACTIVATE: 'DEACTIVATE'
+} as const
+
+export type AdminAuditAction = (typeof AdminAuditAction)[keyof typeof AdminAuditAction]

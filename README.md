@@ -47,7 +47,7 @@ corepack pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000). `GET /api/health` returns a small JSON response when the application is running.
 
-Phase 00B has no domain models or migrations, so `db:migrate` establishes the workflow but does not yet create FLOURISH tables. Phase 01 supplies the domain schema. Docker runs PostgreSQL; Next.js runs directly on the Windows host.
+Phase 01 includes the relational domain schema and the `establish_domain_model` migration. Docker runs PostgreSQL; Next.js runs directly on the Windows host.
 
 The checked-in `.env.example` uses local-only development defaults. Replace `AUTH_SECRET` with a unique local value before authentication work and never commit `.env` files or real OAuth credentials.
 
@@ -57,11 +57,12 @@ The checked-in `.env.example` uses local-only development defaults. Replace `AUT
 corepack pnpm lint
 corepack pnpm typecheck
 corepack pnpm test
+corepack pnpm test:integration
 corepack pnpm build
 corepack pnpm test:e2e
 ```
 
-The Playwright smoke test starts the development server automatically and requires a locally installed Chromium browser. Install it once with `corepack pnpm exec playwright install chromium` if needed. Fast CI runs lint, typecheck, unit/component tests, and the production build; browser tests remain a documented local command during this foundation phase.
+The integration suite verifies real PostgreSQL constraints and requires `DATABASE_URL` to target a disposable local development/test database. It truncates only its test fixtures. The Playwright smoke test starts the development server automatically and requires a locally installed Chromium browser. Install it once with `corepack pnpm exec playwright install chromium` if needed.
 
 ## Database and seed commands
 

@@ -348,3 +348,11 @@ The product requires a persisted recommendation and invalidation. Add a `PlayerR
 Database constraints should enforce scalar checks, foreign keys, uniqueness, and “at most one primary.” Transactions/application validation must enforce cross-row totals/counts, exactly one primary, full Focus allocation, state-machine timestamps, configurable bands, accepted snapshots, reward/ledger reconciliation, slot ownership/state, set-bonus once-only semantics, and progression caches matching immutable ledger effects.
 
 All completion, abandonment, expiration clearing, COUNT target completion, slot replacement, and set-award operations lock affected rows and use operation IDs. No operation may expose partial state.
+
+## Phase 01 implementation mapping
+
+The concrete Prisma schema uses singular PascalCase model names mapped to snake_case PostgreSQL tables. The accepted/runtime Skill allocation is `PlayerQuestSkillSnapshot`; Daily/Weekly window identity is `ChallengeSet`; and admin history is `AdminAuditLog`. `PlayerQuestStatus.REROLLED` preserves reroll terminal history.
+
+PostgreSQL CHECK constraints enforce scalar ranges and scope semantics. Partial unique indexes enforce one definition per non-null family/difficulty and at most one primary row for quest Skill, Variety Tag, and runtime Skill allocations. The domain validators enforce the remaining cross-row requirements: exactly one primary, maximum three rows, 100% Skill totals, and the complete configurable 46-point Focus allocation.
+
+Canonical Skill codes are stored as the constrained one-character values `F`, `L`, `O`, `U`, `R`, `I`, `S`, and `H`. Canonical rows are intentionally deferred to Phase 02. Gameplay code should access Prisma through service/repository boundaries; `src/lib/db.ts` owns the hot-reload-safe shared client and transaction-client type.
