@@ -1,0 +1,1412 @@
+[
+  {
+    "stableKey": "H-CRE-01",
+    "title": "Create for 15 Minutes",
+    "shortDescription": "Spend 15 minutes making something creative for your own enjoyment.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "creative",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: create for 15 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-CRE-02",
+    "title": "Work on a Creative Project",
+    "shortDescription": "Spend focused time progressing a creative project you enjoy.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "creative",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: work on a creative project.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-CRE-03",
+    "title": "Finish a Creative Project",
+    "shortDescription": "Bring a creative project to a finish that feels satisfying to you.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "creative",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: finish a creative project.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-CRE-04",
+    "title": "Try a New Creative Activity",
+    "shortDescription": "Try an unfamiliar creative activity using accessible materials.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "creative",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: try a new creative activity.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-GAME-01",
+    "title": "Play a Game You Enjoy",
+    "shortDescription": "Make intentional time to enjoy a game you already like.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "gaming",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: play a game you enjoy.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. XP reflects intentional enjoyment or exploration, not an automatic duration progression.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-GAME-02",
+    "title": "Try a Game You Haven't Played Before",
+    "shortDescription": "Explore an unfamiliar game for fun, using an option accessible to you.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "gaming",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: try a game you haven't played before.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. XP reflects intentional enjoyment or exploration, not an automatic duration progression.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-GAME-03",
+    "title": "Play a Game With Someone",
+    "shortDescription": "Enjoy a mutually agreed game with another person.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "gaming",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: play a game with someone.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. XP reflects intentional enjoyment or exploration, not an automatic duration progression.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-MUS-01",
+    "title": "Practice Music for 15 Minutes",
+    "shortDescription": "Practice singing or an instrument for 15 minutes.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": "MUSIC_PRACTICE",
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "music",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: practice music for 15 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-MUS-02",
+    "title": "Practice Music for 30 Minutes",
+    "shortDescription": "Practice singing or an instrument for 30 focused minutes.",
+    "difficulty": "MEDIUM",
+    "baseXp": 190,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "MUSIC_PRACTICE",
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "music",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: practice music for 30 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-MUS-03",
+    "title": "Complete a Focused 60-Minute Music Session",
+    "shortDescription": "Practice music for an hour with a focus you choose and appropriate breaks.",
+    "difficulty": "HARD",
+    "baseXp": 350,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "MUSIC_PRACTICE",
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "music",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: complete a focused 60-minute music session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-OUT-01",
+    "title": "Enjoy 20 Minutes Outside",
+    "shortDescription": "Spend 20 minutes enjoying a safe outdoor space in a way that suits you.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "outdoors",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: enjoy 20 minutes outside.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-OUT-02",
+    "title": "Visit an Outdoor Place",
+    "shortDescription": "Visit a park, garden, or other outdoor place for enjoyment.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "outdoors",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: visit an outdoor place.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-OUT-03",
+    "title": "Go on an Outdoor Adventure",
+    "shortDescription": "Plan and enjoy a safe outdoor outing suited to your ability and conditions.",
+    "difficulty": "HARD",
+    "baseXp": 300,
+    "estimatedMinutes": 90,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "outdoors",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: go on an outdoor adventure.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-COLL-01",
+    "title": "Enjoy Your Collection",
+    "shortDescription": "Spend time appreciating items in a collection you already have.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "collecting",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: enjoy your collection.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-COLL-02",
+    "title": "Organize or Display Your Collection",
+    "shortDescription": "Arrange or display part of your collection in a way you enjoy.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "collecting",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: organize or display your collection.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-COLL-03",
+    "title": "Research Something Related to Your Collection",
+    "shortDescription": "Learn about an item or theme connected to your collection.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "collecting",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: research something related to your collection.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-BUILD-01",
+    "title": "Build or Make Something for 20 Minutes",
+    "shortDescription": "Spend 20 minutes making something with materials and tools you can use safely.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "building",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: build or make something for 20 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-BUILD-02",
+    "title": "Make Progress on a Build Project",
+    "shortDescription": "Complete a concrete next step on a build project you enjoy.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "building",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: make progress on a build project.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-BUILD-03",
+    "title": "Complete a Build Project",
+    "shortDescription": "Finish a build project and check that it is safe for its intended use.",
+    "difficulty": "HARD",
+    "baseXp": 375,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "building",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: complete a build project.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-ENT-01",
+    "title": "Watch a Movie You've Wanted to See",
+    "shortDescription": "Set aside intentional leisure time to enjoy a movie you have wanted to see.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 120,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "entertainment",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: watch a movie you've wanted to see.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. XP reflects intentional enjoyment or exploration, not an automatic duration progression.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-ENT-02",
+    "title": "Enjoy a Story for 30 Minutes",
+    "shortDescription": "Spend 30 minutes enjoying a story in a format you choose.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "entertainment",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: enjoy a story for 30 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. XP reflects intentional enjoyment or exploration, not an automatic duration progression.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-ENT-03",
+    "title": "Revisit a Favorite",
+    "shortDescription": "Return to a favorite book, show, recording, or other entertainment for enjoyment.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "entertainment",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: revisit a favorite.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. XP reflects intentional enjoyment or exploration, not an automatic duration progression.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-EXP-01",
+    "title": "Try Something New for Fun",
+    "shortDescription": "Try an unfamiliar recreational activity that interests you.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "exploration",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: try something new for fun.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-EXP-02",
+    "title": "Visit Somewhere New",
+    "shortDescription": "Explore a safe place you have not visited before for enjoyment.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "exploration",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: visit somewhere new.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-EXP-03",
+    "title": "Explore a New Hobby",
+    "shortDescription": "Try a beginner activity in a hobby you are curious about, without requiring a purchase.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "exploration",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: explore a new hobby.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-SOC-01",
+    "title": "Enjoy a Hobby With Someone",
+    "shortDescription": "Share a hobby session with someone who wants to participate.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "social_hobby",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: enjoy a hobby with someone.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-SOC-02",
+    "title": "Invite Someone Into a Hobby",
+    "shortDescription": "Offer someone a welcoming introduction to a hobby, without pressure to join.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "social_hobby",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: invite someone into a hobby.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-SOC-03",
+    "title": "Attend a Hobby Group or Event",
+    "shortDescription": "Attend an accessible hobby gathering and participate in a way you enjoy.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 60
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 40
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "social_hobby",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: attend a hobby group or event.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-LEARN-01",
+    "title": "Learn Something About a Hobby",
+    "shortDescription": "Learn about a subject connected to a hobby you enjoy.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 60
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 40
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "hobby_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: learn something about a hobby.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-LEARN-02",
+    "title": "Learn a Hobby Technique",
+    "shortDescription": "Study a new technique you could use in a hobby you enjoy.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 60
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 40
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "hobby_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: learn a hobby technique.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-LEARN-03",
+    "title": "Practice a Hobby Technique",
+    "shortDescription": "Practice a specific hobby technique with the intention of improving it.",
+    "difficulty": "MEDIUM",
+    "baseXp": 190,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "hobby_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: practice a hobby technique.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-WEEK-01",
+    "title": "Create 3 Times",
+    "shortDescription": "Complete three separate creative sessions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 45,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "creative",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-WEEK-02",
+    "title": "Practice Music 3 Times",
+    "shortDescription": "Practice music on three separate occasions during the weekly window.",
+    "difficulty": "HARD",
+    "baseXp": 275,
+    "estimatedMinutes": 45,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "music",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-WEEK-03",
+    "title": "Make Build-Project Progress 3 Times",
+    "shortDescription": "Complete concrete build-project steps on three occasions during the weekly window.",
+    "difficulty": "HARD",
+    "baseXp": 300,
+    "estimatedMinutes": 60,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "building",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "H-WEEK-04",
+    "title": "Enjoy a Hobby With Someone 2 Times",
+    "shortDescription": "Share a hobby with a willing participant on two separate occasions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 60,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 2,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "H",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "H",
+        "code": "social_hobby",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 2 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  }
+]

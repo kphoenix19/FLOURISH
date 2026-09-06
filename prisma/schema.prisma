@@ -264,6 +264,7 @@ model PlayerSkillStreak {
 
 model QuestFamily {
   id          String            @id @default(uuid()) @db.Uuid
+  seedManaged Boolean           @default(false) @map("seed_managed")
   stableKey   String            @unique @map("stable_key")
   name        String
   description String?
@@ -277,6 +278,7 @@ model QuestFamily {
 
 model QuestDefinition {
   id                      String             @id @default(uuid()) @db.Uuid
+  seedManaged             Boolean            @default(false) @map("seed_managed")
   stableKey               String             @unique @map("stable_key")
   questFamilyId           String?            @map("quest_family_id") @db.Uuid
   title                   String
@@ -334,6 +336,7 @@ model QuestSkill {
 
 model VarietyTag {
   id          String            @id @default(uuid()) @db.Uuid
+  seedManaged Boolean           @default(false) @map("seed_managed")
   skillId     String            @map("skill_id") @db.Uuid
   code        String
   displayName String            @map("display_name")

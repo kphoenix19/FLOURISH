@@ -1,0 +1,1431 @@
+[
+  {
+    "stableKey": "O-PROD-01",
+    "title": "Finish an Avoided Task",
+    "shortDescription": "Complete one work task you have been putting off.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "productivity",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: finish an avoided task.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-PROD-02",
+    "title": "Focused Work Session",
+    "shortDescription": "Spend 30 minutes on one meaningful work priority with distractions reduced.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "FOCUSED_WORK",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "productivity",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: focused work session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-PROD-03",
+    "title": "Deep Work",
+    "shortDescription": "Spend an hour on demanding work that needs sustained concentration.",
+    "difficulty": "HARD",
+    "baseXp": 375,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "FOCUSED_WORK",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "productivity",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: deep work.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-PROD-04",
+    "title": "Complete an Important Deliverable",
+    "shortDescription": "Finish and check a substantial work deliverable you have committed to.",
+    "difficulty": "HARD",
+    "baseXp": 425,
+    "estimatedMinutes": 90,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "productivity",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: complete an important deliverable.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-PLAN-01",
+    "title": "Identify Your Top Work Priority",
+    "shortDescription": "Choose the most useful work outcome to focus on next.",
+    "difficulty": "EASY",
+    "baseXp": 65,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: identify your top work priority.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-PLAN-02",
+    "title": "Plan Tomorrow's Work",
+    "shortDescription": "Choose a realistic sequence of priorities for tomorrow.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: plan tomorrow's work.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-PLAN-03",
+    "title": "Plan Your Work Week",
+    "shortDescription": "Map your important work tasks and commitments for the coming week.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: plan your work week.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-GROW-01",
+    "title": "Improve a Professional Skill",
+    "shortDescription": "Practice a professional skill that would help you do your work better.",
+    "difficulty": "MEDIUM",
+    "baseXp": 190,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 60
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 40
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "career_growth",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: improve a professional skill.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-GROW-02",
+    "title": "Ask for Feedback",
+    "shortDescription": "Ask a suitable colleague for specific feedback on your work.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "career_growth",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: ask for feedback.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-GROW-03",
+    "title": "Act on Feedback",
+    "shortDescription": "Use useful feedback to make a concrete improvement in your work.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "career_growth",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: act on feedback.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-GROW-04",
+    "title": "Document an Accomplishment",
+    "shortDescription": "Record a recent work accomplishment and your contribution to it.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "career_growth",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: document an accomplishment.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-JOB-01",
+    "title": "Find a Role Worth Considering",
+    "shortDescription": "Find a role that fits your interests and review its requirements.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "job_search",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: find a role worth considering.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-JOB-02",
+    "title": "Improve a Resume Section",
+    "shortDescription": "Revise one resume section to describe your experience clearly and accurately.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "RESUME_PROGRESSION",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "job_search",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: improve a resume section.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-JOB-03",
+    "title": "Tailor Your Resume",
+    "shortDescription": "Adapt your resume to a specific role using accurate, relevant examples.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "RESUME_PROGRESSION",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "job_search",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: tailor your resume.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-JOB-04",
+    "title": "Submit a Quality Application",
+    "shortDescription": "Prepare, check, and submit an application for a role you want to pursue.",
+    "difficulty": "HARD",
+    "baseXp": 350,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "job_search",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: submit a quality application.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-INT-01",
+    "title": "Practice an Interview Question",
+    "shortDescription": "Practice answering one interview question with a concrete example.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": "INTERVIEW_PRACTICE",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "interviewing",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: practice an interview question.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-INT-02",
+    "title": "Complete Interview Practice",
+    "shortDescription": "Practice several interview answers and review how to improve them.",
+    "difficulty": "MEDIUM",
+    "baseXp": 210,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "INTERVIEW_PRACTICE",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "interviewing",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: complete interview practice.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-INT-03",
+    "title": "Complete a Mock Interview",
+    "shortDescription": "Complete a practice interview with a willing partner and review feedback.",
+    "difficulty": "HARD",
+    "baseXp": 375,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "INTERVIEW_PRACTICE",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "interviewing",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: complete a mock interview.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-NET-01",
+    "title": "Reach Out to a Professional Contact",
+    "shortDescription": "Send a thoughtful message to a professional contact to reconnect.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "networking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: reach out to a professional contact.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-NET-02",
+    "title": "Have a Career Conversation",
+    "shortDescription": "Have a mutually agreed conversation about career experience or goals.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "networking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: have a career conversation.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-NET-03",
+    "title": "Make a New Professional Connection",
+    "shortDescription": "Introduce yourself to someone in a professional setting and exchange interests.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "networking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: make a new professional connection.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-LEAD-01",
+    "title": "Recognize Good Work",
+    "shortDescription": "Give a colleague specific, sincere recognition for useful work.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "leadership",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: recognize good work.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-LEAD-02",
+    "title": "Help Solve a Work Problem",
+    "shortDescription": "Work with a colleague to make concrete progress on a work problem.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "leadership",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: help solve a work problem.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-LEAD-03",
+    "title": "Give Useful Feedback",
+    "shortDescription": "Offer specific, respectful feedback when it is welcome and appropriate.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "leadership",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: give useful feedback.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-LEAD-04",
+    "title": "Take Ownership of a Problem",
+    "shortDescription": "Define a work problem you can own and complete a substantial first step.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "leadership",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: take ownership of a problem.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-CP-01",
+    "title": "Set a Career Goal",
+    "shortDescription": "Write a career goal and one practical next action.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": "CAREER_PLANNING",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "career_planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: set a career goal.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-CP-02",
+    "title": "Review Your Career Direction",
+    "shortDescription": "Compare your current direction with your interests and identify adjustments.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "CAREER_PLANNING",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "career_planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: review your career direction.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-CP-03",
+    "title": "Make a Career Development Plan",
+    "shortDescription": "Turn your career goals into a plan with concrete milestones and actions.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "CAREER_PLANNING",
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "career_planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: make a career development plan.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-ORG-01",
+    "title": "Organize Your Task List",
+    "shortDescription": "Clarify, prioritize, and remove obsolete items from your work task list.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "work_organization",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: organize your task list.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-ORG-02",
+    "title": "Clean Up Your Digital Workspace",
+    "shortDescription": "Reduce clutter in your work desktop, tabs, or tools so they are easier to use.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "work_organization",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: clean up your digital workspace.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-ORG-03",
+    "title": "Organize Work Files",
+    "shortDescription": "Organize a set of work files so you can reliably find what you need.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "work_organization",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: organize work files.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-ENT-01",
+    "title": "Make Progress on a Business Idea",
+    "shortDescription": "Complete one concrete step toward exploring or developing a business idea.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "entrepreneurship",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: make progress on a business idea.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-ENT-02",
+    "title": "Validate a Business Idea",
+    "shortDescription": "Test a key assumption about a business idea using research or willing participants.",
+    "difficulty": "HARD",
+    "baseXp": 350,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "entrepreneurship",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: validate a business idea.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-WEEK-01",
+    "title": "Complete 3 Focused Work Sessions",
+    "shortDescription": "Complete three separate focused work sessions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 240,
+    "estimatedMinutes": 90,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "productivity",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-WEEK-02",
+    "title": "Reach Out to 3 Professional Contacts",
+    "shortDescription": "Make three thoughtful professional outreach attempts during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 30,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "networking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "O-WEEK-03",
+    "title": "Complete 3 Interview Practice Sessions",
+    "shortDescription": "Complete three separate interview practice sessions during the weekly window.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 45,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "O",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "O",
+        "code": "interviewing",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  }
+]

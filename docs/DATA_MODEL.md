@@ -355,4 +355,10 @@ The concrete Prisma schema uses singular PascalCase model names mapped to snake_
 
 PostgreSQL CHECK constraints enforce scalar ranges and scope semantics. Partial unique indexes enforce one definition per non-null family/difficulty and at most one primary row for quest Skill, Variety Tag, and runtime Skill allocations. The domain validators enforce the remaining cross-row requirements: exactly one primary, maximum three rows, 100% Skill totals, and the complete configurable 46-point Focus allocation.
 
-Canonical Skill codes are stored as the constrained one-character values `F`, `L`, `O`, `U`, `R`, `I`, `S`, and `H`. Canonical rows are intentionally deferred to Phase 02. Gameplay code should access Prisma through service/repository boundaries; `src/lib/db.ts` owns the hot-reload-safe shared client and transaction-client type.
+Canonical Skill codes are stored as the constrained one-character values `F`, `L`, `O`, `U`, `R`, `I`, `S`, and `H`. Phase 02 supplies the canonical rows. Gameplay code should access Prisma through service/repository boundaries; `src/lib/db.ts` owns the hot-reload-safe shared client and transaction-client type.
+
+## Phase 02 seed ownership refinement
+
+Migration `20260906200000_canonical_seed_ownership` adds non-null `seed_managed` booleans, default false, to QuestDefinition, QuestFamily, and VarietyTag. Existing rows remain non-owned. The importer sets true only for rows it creates or already owns; non-owned key collisions fail instead of inferring ownership from names. Missing owned rows become inactive and retain IDs and historical relations. The eight fixed Skill rows are always canonical and need no ownership flag.
+
+Repository import requires an integer `curator_value_score` from 1–5 and a nonempty difficulty rationale, without weakening or changing the nullable draft fields from Phase 01. Approved repository rows have a file-specified `reviewed_at` and may have null `reviewed_by`. Runtime and historical records are not rewritten. See the [seed workflow](QUEST_CONTENT_GUIDE.md#canonical-phase-02-library).

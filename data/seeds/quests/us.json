@@ -1,0 +1,1353 @@
+[
+  {
+    "stableKey": "U-FR-01",
+    "title": "Check In With a Friend",
+    "shortDescription": "Send a thoughtful check-in to a friend, giving them room to respond.",
+    "difficulty": "EASY",
+    "baseXp": 70,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "friends",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: check in with a friend.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-FR-02",
+    "title": "Have a Real Conversation With a Friend",
+    "shortDescription": "Make time for a mutually welcome conversation about how you are both doing.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "R",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "friends",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: have a real conversation with a friend.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-FR-03",
+    "title": "Make Plans With a Friend",
+    "shortDescription": "Suggest a specific time or activity to enjoy with a friend.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "friends",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: make plans with a friend.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-FR-04",
+    "title": "Spend Quality Time With a Friend",
+    "shortDescription": "Spend focused, mutually enjoyable time with a friend.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "friends",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: spend quality time with a friend.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-FAM-01",
+    "title": "Check In With Family",
+    "shortDescription": "Send a caring check-in to a family member you want to connect with.",
+    "difficulty": "EASY",
+    "baseXp": 70,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "family",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: check in with family.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-FAM-02",
+    "title": "Call a Family Member",
+    "shortDescription": "Arrange a welcome call with a family member and give them your attention.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "family",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: call a family member.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-FAM-03",
+    "title": "Spend Quality Time With Family",
+    "shortDescription": "Spend intentional time with family in a way everyone is comfortable with.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "family",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: spend quality time with family.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-FAM-04",
+    "title": "Do Something Thoughtful for Family",
+    "shortDescription": "Do a considerate action that a family member would appreciate.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "family",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: do something thoughtful for family.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-DATE-01",
+    "title": "Start a Conversation With Someone New",
+    "shortDescription": "Start a respectful conversation in a setting where social interest is welcome; accept disinterest.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "dating",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: start a conversation with someone new.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-DATE-02",
+    "title": "Ask Someone on a Date",
+    "shortDescription": "Offer a clear, respectful date invitation where interest is welcome; accept their answer.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "dating",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: ask someone on a date.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-DATE-03",
+    "title": "Plan a Thoughtful Date",
+    "shortDescription": "Plan a date around shared interests, comfort, and an affordable option.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "dating",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: plan a thoughtful date.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-DATE-04",
+    "title": "Go on a Date",
+    "shortDescription": "Share a mutually agreed date that respects both people's boundaries.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "dating",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: go on a date.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-PART-01",
+    "title": "Give Your Partner Your Full Attention",
+    "shortDescription": "Set distractions aside for a welcome moment of connection with your partner.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "partner",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: give your partner your full attention.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-PART-02",
+    "title": "Do Something Thoughtful for Your Partner",
+    "shortDescription": "Do a considerate action your partner would welcome.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "partner",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: do something thoughtful for your partner.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-PART-03",
+    "title": "Plan Quality Time Together",
+    "shortDescription": "Agree with your partner on a time and activity you both want to share.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "partner",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: plan quality time together.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-PART-04",
+    "title": "Have a Relationship Check-In",
+    "shortDescription": "Have a mutually agreed check-in about your relationship and listen respectfully.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "R",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "partner",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: have a relationship check-in.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-COM-01",
+    "title": "Express Genuine Appreciation",
+    "shortDescription": "Tell someone specifically what you appreciate about them.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "communication",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: express genuine appreciation.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-COM-02",
+    "title": "Listen Without Distractions",
+    "shortDescription": "Listen attentively to someone who wants to share, without multitasking.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "communication",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: listen without distractions.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-COM-03",
+    "title": "Have an Avoided Conversation",
+    "shortDescription": "Choose a safe, appropriate time for a needed conversation and speak respectfully.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "communication",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: have an avoided conversation.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-COM-04",
+    "title": "Make a Sincere Apology",
+    "shortDescription": "Acknowledge a specific mistake and offer a practical repair without demanding forgiveness.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "R",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "communication",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: make a sincere apology.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-COM-05",
+    "title": "Set a Respectful Boundary",
+    "shortDescription": "Communicate a needed boundary clearly and respectfully in a safe situation.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "R",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "communication",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: set a respectful boundary.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-COMM-01",
+    "title": "Contribute to a Community",
+    "shortDescription": "Offer useful help to a community effort in a way organizers welcome.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "community",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: contribute to a community.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-COMM-02",
+    "title": "Attend a Community Event",
+    "shortDescription": "Attend an accessible community event and participate in a way that suits you.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "community",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: attend a community event.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-GROUP-01",
+    "title": "Join a Group Activity",
+    "shortDescription": "Take part in a welcoming group activity with other people.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "H",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "group_activity",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: join a group activity.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-GROUP-02",
+    "title": "Invite People to Do Something Together",
+    "shortDescription": "Invite a group to a specific shared activity, without pressuring anyone to join.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "group_activity",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: invite people to do something together.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-SOC-01",
+    "title": "Introduce Yourself to Someone New",
+    "shortDescription": "Introduce yourself respectfully in a setting where meeting people is welcome.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "social_growth",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: introduce yourself to someone new.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-SOC-02",
+    "title": "Attend Something Where You Can Meet People",
+    "shortDescription": "Attend an accessible social gathering with the intention of meeting people.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "social_growth",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: attend something where you can meet people.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-REL-01",
+    "title": "Reconnect With Someone",
+    "shortDescription": "Send a thoughtful message to someone you have lost touch with, respecting their response.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "relationship_maintenance",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: reconnect with someone.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-REL-02",
+    "title": "Follow Up on a Previous Conversation",
+    "shortDescription": "Follow up on something important someone previously shared with you.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "relationship_maintenance",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: follow up on a previous conversation.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-REL-03",
+    "title": "Acknowledge Something Important to Someone",
+    "shortDescription": "Recognize an occasion or achievement that matters to someone you know.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "relationship_maintenance",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: acknowledge something important to someone.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-WEEK-01",
+    "title": "Check In With 3 People",
+    "shortDescription": "Make thoughtful check-ins with three people during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "relationship_maintenance",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-WEEK-02",
+    "title": "Make Plans With 2 People",
+    "shortDescription": "Offer specific plans to two friends during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 20,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 2,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "friends",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 2 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-WEEK-03",
+    "title": "Express Appreciation 3 Times",
+    "shortDescription": "Express specific, sincere appreciation on three occasions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "communication",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "U-WEEK-04",
+    "title": "Reconnect With 2 People",
+    "shortDescription": "Reach out respectfully to two people you have lost touch with during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 2,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "U",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "U",
+        "code": "relationship_maintenance",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 2 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Respect consent, privacy, and boundaries; choose safe and welcome interactions.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  }
+]

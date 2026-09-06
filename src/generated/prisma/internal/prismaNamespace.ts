@@ -2514,6 +2514,7 @@ export type PlayerSkillStreakScalarFieldEnum = (typeof PlayerSkillStreakScalarFi
 
 export const QuestFamilyScalarFieldEnum = {
   id: 'id',
+  seedManaged: 'seedManaged',
   stableKey: 'stableKey',
   name: 'name',
   description: 'description',
@@ -2527,6 +2528,7 @@ export type QuestFamilyScalarFieldEnum = (typeof QuestFamilyScalarFieldEnum)[key
 
 export const QuestDefinitionScalarFieldEnum = {
   id: 'id',
+  seedManaged: 'seedManaged',
   stableKey: 'stableKey',
   questFamilyId: 'questFamilyId',
   title: 'title',
@@ -2569,6 +2571,7 @@ export type QuestSkillScalarFieldEnum = (typeof QuestSkillScalarFieldEnum)[keyof
 
 export const VarietyTagScalarFieldEnum = {
   id: 'id',
+  seedManaged: 'seedManaged',
   skillId: 'skillId',
   code: 'code',
   displayName: 'displayName',

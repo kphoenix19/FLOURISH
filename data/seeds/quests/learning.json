@@ -1,0 +1,1289 @@
+[
+  {
+    "stableKey": "L-READ-01",
+    "title": "Read for 10 Minutes",
+    "shortDescription": "Read material you choose for 10 focused minutes.",
+    "difficulty": "EASY",
+    "baseXp": 70,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "READING_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "reading",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: read for 10 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-READ-02",
+    "title": "Read for 30 Minutes",
+    "shortDescription": "Read material you choose for 30 focused minutes.",
+    "difficulty": "MEDIUM",
+    "baseXp": 160,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "READING_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "reading",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: read for 30 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-READ-03",
+    "title": "Complete a Focused Reading Session",
+    "shortDescription": "Spend an hour on focused reading, taking brief breaks as needed.",
+    "difficulty": "HARD",
+    "baseXp": 300,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "READING_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "reading",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: complete a focused reading session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-READ-04",
+    "title": "Read About Something New",
+    "shortDescription": "Read for 15 minutes about a subject that is new to you.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "reading",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: read about something new.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-COURSE-01",
+    "title": "Work on Coursework for 15 Minutes",
+    "shortDescription": "Spend 15 focused minutes on your course material or assignments.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "COURSEWORK_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "coursework",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: work on coursework for 15 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-COURSE-02",
+    "title": "Work on Coursework for 30 Minutes",
+    "shortDescription": "Spend 30 focused minutes on coursework.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "COURSEWORK_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "coursework",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: work on coursework for 30 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-COURSE-03",
+    "title": "Complete a Focused Hour of Coursework",
+    "shortDescription": "Spend an hour progressing through coursework with brief breaks as needed.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "COURSEWORK_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "coursework",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: complete a focused hour of coursework.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-COURSE-04",
+    "title": "Finish a Lesson or Module",
+    "shortDescription": "Finish one lesson or module in a course you are taking.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "coursework",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: finish a lesson or module.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PRAC-01",
+    "title": "Practice a Skill for 15 Minutes",
+    "shortDescription": "Spend 15 focused minutes practicing a skill you want to improve.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "SKILL_PRACTICE_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "practice",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: practice a skill for 15 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PRAC-02",
+    "title": "Practice a Skill for 30 Minutes",
+    "shortDescription": "Spend 30 focused minutes practicing a skill you want to improve.",
+    "difficulty": "MEDIUM",
+    "baseXp": 190,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "SKILL_PRACTICE_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "practice",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: practice a skill for 30 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PRAC-03",
+    "title": "Practice a Skill for an Hour",
+    "shortDescription": "Practice a skill for an hour, using breaks as needed.",
+    "difficulty": "HARD",
+    "baseXp": 350,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "SKILL_PRACTICE_TIME",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "practice",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: practice a skill for an hour.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PRAC-04",
+    "title": "Practice a Weak Area",
+    "shortDescription": "Spend 30 minutes deliberately practicing one area you find difficult.",
+    "difficulty": "MEDIUM",
+    "baseXp": 210,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "practice",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: practice a weak area.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-RES-01",
+    "title": "Research a Question You're Curious About",
+    "shortDescription": "Spend 20 minutes researching a question you want to understand.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "research",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: research a question you're curious about.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-RES-02",
+    "title": "Complete a Focused Research Session",
+    "shortDescription": "Spend 30 focused minutes investigating a topic and recording useful findings.",
+    "difficulty": "MEDIUM",
+    "baseXp": 190,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "research",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: complete a focused research session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-RES-03",
+    "title": "Compare Multiple Sources on a Topic",
+    "shortDescription": "Compare several credible sources on a topic and note agreements or differences.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "research",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: compare multiple sources on a topic.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PROJ-01",
+    "title": "Work on a Learning Project for 20 Minutes",
+    "shortDescription": "Spend 20 minutes working on a project intended to develop your knowledge.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "LEARNING_PROJECT",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "project",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: work on a learning project for 20 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PROJ-02",
+    "title": "Make Progress on a Learning Project",
+    "shortDescription": "Complete a concrete next step on a learning project in about 30 minutes.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "LEARNING_PROJECT",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "project",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: make progress on a learning project.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PROJ-03",
+    "title": "Reach a Major Learning Project Milestone",
+    "shortDescription": "Complete a substantial milestone in a learning project and check what you learned.",
+    "difficulty": "HARD",
+    "baseXp": 425,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "LEARNING_PROJECT",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "project",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: reach a major learning project milestone.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PROJ-04",
+    "title": "Build Something Using What You Learned",
+    "shortDescription": "Build a working example or artifact that applies what you have learned.",
+    "difficulty": "EPIC",
+    "baseXp": 650,
+    "estimatedMinutes": 90,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "LEARNING_PROJECT",
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "project",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 4,
+    "curatorDifficultyReason": "An extended, demanding session or substantial applied milestone: build something using what you learned.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-REV-01",
+    "title": "Review Something You Learned Recently",
+    "shortDescription": "Spend 15 minutes recalling and reviewing something you learned recently.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "review",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: review something you learned recently.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-REV-02",
+    "title": "Review Notes or Study Material",
+    "shortDescription": "Review notes or study material for 25 minutes and identify gaps.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "review",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: review notes or study material.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-REV-03",
+    "title": "Revisit a Topic You Haven't Practiced Recently",
+    "shortDescription": "Spend 30 minutes revisiting material you have not practiced recently.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "review",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: revisit a topic you haven't practiced recently.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PROB-01",
+    "title": "Solve a Challenging Problem",
+    "shortDescription": "Work through one challenging practice problem for about 20 minutes.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "problem_solving",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: solve a challenging problem.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PROB-02",
+    "title": "Complete a Focused Problem-Solving Session",
+    "shortDescription": "Spend 30 focused minutes working through problems and checking your reasoning.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "problem_solving",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: complete a focused problem-solving session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PROB-03",
+    "title": "Complete a Difficult Problem Set",
+    "shortDescription": "Complete a difficult set of related problems and review your solutions.",
+    "difficulty": "HARD",
+    "baseXp": 375,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "problem_solving",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: complete a difficult problem set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PLAN-01",
+    "title": "Decide What You Want to Learn Next",
+    "shortDescription": "Choose a subject or skill you want to learn next.",
+    "difficulty": "EASY",
+    "baseXp": 65,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "learning_planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: decide what you want to learn next.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PLAN-02",
+    "title": "Plan Your Next Learning Session",
+    "shortDescription": "Choose a task and prepare materials for your next learning session.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "learning_planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: plan your next learning session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PLAN-03",
+    "title": "Make a Weekly Learning Plan",
+    "shortDescription": "Plan realistic learning sessions and topics for the coming week.",
+    "difficulty": "MEDIUM",
+    "baseXp": 160,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "learning_planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: make a weekly learning plan.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-PLAN-04",
+    "title": "Break a Learning Goal Into Milestones",
+    "shortDescription": "Break a learning goal into concrete milestones you can work toward.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "learning_planning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: break a learning goal into milestones.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-WEEK-02",
+    "title": "Read on 4 Occasions",
+    "shortDescription": "Read on four separate occasions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 40,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 4,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "reading",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 4 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-WEEK-03",
+    "title": "Practice a Skill 3 Times",
+    "shortDescription": "Practice a skill on three separate occasions during the weekly window.",
+    "difficulty": "HARD",
+    "baseXp": 275,
+    "estimatedMinutes": 45,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "practice",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Owner correction: HARD at 275 XP (original MEDIUM label conflicted with XP bands).",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-WEEK-04",
+    "title": "Complete 3 Review Sessions",
+    "shortDescription": "Complete three separate reviews of learned material during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 45,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "review",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "L-WEEK-05",
+    "title": "Make Learning Project Progress 3 Times",
+    "shortDescription": "Make concrete progress on a learning project on three separate occasions during the weekly window.",
+    "difficulty": "HARD",
+    "baseXp": 400,
+    "estimatedMinutes": 60,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "L",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "L",
+        "code": "project",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  }
+]

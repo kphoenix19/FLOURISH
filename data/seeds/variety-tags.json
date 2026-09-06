@@ -1,0 +1,458 @@
+[
+  {
+    "skillCode": "F",
+    "code": "strength",
+    "displayName": "Strength",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "cardio",
+    "displayName": "Cardio",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "walking",
+    "displayName": "Walking",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "mobility",
+    "displayName": "Mobility",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "recovery",
+    "displayName": "Recovery",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "nutrition",
+    "displayName": "Nutrition",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "sports",
+    "displayName": "Sports",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "health_maintenance",
+    "displayName": "Health Maintenance",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "fitness_learning",
+    "displayName": "Fitness Learning",
+    "active": true
+  },
+  {
+    "skillCode": "F",
+    "code": "general_fitness",
+    "displayName": "General Fitness",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "reading",
+    "displayName": "Reading",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "coursework",
+    "displayName": "Coursework",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "practice",
+    "displayName": "Practice",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "research",
+    "displayName": "Research",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "project",
+    "displayName": "Project",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "review",
+    "displayName": "Review",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "problem_solving",
+    "displayName": "Problem Solving",
+    "active": true
+  },
+  {
+    "skillCode": "L",
+    "code": "learning_planning",
+    "displayName": "Learning Planning",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "productivity",
+    "displayName": "Productivity",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "planning",
+    "displayName": "Planning",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "career_growth",
+    "displayName": "Career Growth",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "job_search",
+    "displayName": "Job Search",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "interviewing",
+    "displayName": "Interviewing",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "networking",
+    "displayName": "Networking",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "leadership",
+    "displayName": "Leadership",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "career_planning",
+    "displayName": "Career Planning",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "work_organization",
+    "displayName": "Work Organization",
+    "active": true
+  },
+  {
+    "skillCode": "O",
+    "code": "entrepreneurship",
+    "displayName": "Entrepreneurship",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "friends",
+    "displayName": "Friends",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "family",
+    "displayName": "Family",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "dating",
+    "displayName": "Dating",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "partner",
+    "displayName": "Partner",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "communication",
+    "displayName": "Communication",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "community",
+    "displayName": "Community",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "group_activity",
+    "displayName": "Group Activity",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "social_growth",
+    "displayName": "Social Growth",
+    "active": true
+  },
+  {
+    "skillCode": "U",
+    "code": "relationship_maintenance",
+    "displayName": "Relationship Maintenance",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "meditation",
+    "displayName": "Meditation",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "mindfulness",
+    "displayName": "Mindfulness",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "journaling",
+    "displayName": "Journaling",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "gratitude",
+    "displayName": "Gratitude",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "self_reflection",
+    "displayName": "Self Reflection",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "prayer",
+    "displayName": "Prayer",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "spiritual_practice",
+    "displayName": "Spiritual Practice",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "spiritual_learning",
+    "displayName": "Spiritual Learning",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "spiritual_community",
+    "displayName": "Spiritual Community",
+    "active": true
+  },
+  {
+    "skillCode": "R",
+    "code": "rest",
+    "displayName": "Rest",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "budgeting",
+    "displayName": "Budgeting",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "saving",
+    "displayName": "Saving",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "investing",
+    "displayName": "Investing",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "spending",
+    "displayName": "Spending",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "debt",
+    "displayName": "Debt",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "income",
+    "displayName": "Income",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "financial_planning",
+    "displayName": "Financial Planning",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "financial_organization",
+    "displayName": "Financial Organization",
+    "active": true
+  },
+  {
+    "skillCode": "I",
+    "code": "financial_learning",
+    "displayName": "Financial Learning",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "cooking",
+    "displayName": "Cooking",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "meal_prep",
+    "displayName": "Meal Prep",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "dishes",
+    "displayName": "Dishes",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "cleaning",
+    "displayName": "Cleaning",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "decluttering",
+    "displayName": "Decluttering",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "organization",
+    "displayName": "Organization",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "laundry",
+    "displayName": "Laundry",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "home_maintenance",
+    "displayName": "Home Maintenance",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "home_improvement",
+    "displayName": "Home Improvement",
+    "active": true
+  },
+  {
+    "skillCode": "S",
+    "code": "cooking_learning",
+    "displayName": "Cooking Learning",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "creative",
+    "displayName": "Creative",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "gaming",
+    "displayName": "Gaming",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "music",
+    "displayName": "Music",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "outdoors",
+    "displayName": "Outdoors",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "collecting",
+    "displayName": "Collecting",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "building",
+    "displayName": "Building",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "entertainment",
+    "displayName": "Entertainment",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "exploration",
+    "displayName": "Exploration",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "social_hobby",
+    "displayName": "Social Hobby",
+    "active": true
+  },
+  {
+    "skillCode": "H",
+    "code": "hobby_learning",
+    "displayName": "Hobby Learning",
+    "active": true
+  }
+]

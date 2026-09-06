@@ -1,0 +1,92 @@
+[
+  {
+    "stableKey": "WALK_TIME",
+    "name": "Walk Time",
+    "description": "Natural progression through Take a 10-Minute Walk → Take a 30-Minute Walk → Take a 60-Minute Walk.",
+    "active": true
+  },
+  {
+    "stableKey": "STRENGTH_WORKOUT",
+    "name": "Strength Workout",
+    "description": "Natural progression through 15-Minute Strength Workout → 30-Minute Strength Workout → 60-Minute Strength Workout → Complete a Challenging Strength Session.",
+    "active": true
+  },
+  {
+    "stableKey": "CARDIO_TIME",
+    "name": "Cardio Time",
+    "description": "Natural progression through 15 Minutes of Cardio → 30 Minutes of Cardio → 60 Minutes of Cardio → Complete a Challenging Cardio Session.",
+    "active": true
+  },
+  {
+    "stableKey": "MOBILITY_SESSION",
+    "name": "Mobility Session",
+    "description": "Natural progression through 10 Minutes of Mobility → 20-Minute Mobility Session → Full-Body Mobility Session.",
+    "active": true
+  },
+  {
+    "stableKey": "READING_TIME",
+    "name": "Reading Time",
+    "description": "Natural progression through Read for 10 Minutes → Read for 30 Minutes → Complete a Focused Reading Session.",
+    "active": true
+  },
+  {
+    "stableKey": "COURSEWORK_TIME",
+    "name": "Coursework Time",
+    "description": "Natural progression through Work on Coursework for 15 Minutes → Work on Coursework for 30 Minutes → Complete a Focused Hour of Coursework.",
+    "active": true
+  },
+  {
+    "stableKey": "SKILL_PRACTICE_TIME",
+    "name": "Skill Practice Time",
+    "description": "Natural progression through Practice a Skill for 15 Minutes → Practice a Skill for 30 Minutes → Practice a Skill for an Hour.",
+    "active": true
+  },
+  {
+    "stableKey": "LEARNING_PROJECT",
+    "name": "Learning Project",
+    "description": "Natural progression through Work on a Learning Project for 20 Minutes → Make Progress on a Learning Project → Reach a Major Learning Project Milestone → Build Something Using What You Learned.",
+    "active": true
+  },
+  {
+    "stableKey": "FOCUSED_WORK",
+    "name": "Focused Work",
+    "description": "Natural progression through Focused Work Session → Deep Work.",
+    "active": true
+  },
+  {
+    "stableKey": "RESUME_PROGRESSION",
+    "name": "Resume Progression",
+    "description": "Natural progression through Improve a Resume Section → Tailor Your Resume.",
+    "active": true
+  },
+  {
+    "stableKey": "INTERVIEW_PRACTICE",
+    "name": "Interview Practice",
+    "description": "Natural progression through Practice an Interview Question → Complete Interview Practice → Complete a Mock Interview.",
+    "active": true
+  },
+  {
+    "stableKey": "CAREER_PLANNING",
+    "name": "Career Planning",
+    "description": "Natural progression through Set a Career Goal → Review Your Career Direction → Make a Career Development Plan.",
+    "active": true
+  },
+  {
+    "stableKey": "MEDITATION_TIME",
+    "name": "Meditation Time",
+    "description": "Natural progression through Meditate for 5 Minutes → Meditate for 15 Minutes → Meditate for 30 Minutes.",
+    "active": true
+  },
+  {
+    "stableKey": "PRAYER_TIME",
+    "name": "Prayer Time",
+    "description": "Natural progression through Pray for 5 Minutes → Pray for 15 Minutes.",
+    "active": true
+  },
+  {
+    "stableKey": "MUSIC_PRACTICE",
+    "name": "Music Practice",
+    "description": "Natural progression through Practice Music for 15 Minutes → Practice Music for 30 Minutes → Complete a Focused 60-Minute Music Session.",
+    "active": true
+  }
+]

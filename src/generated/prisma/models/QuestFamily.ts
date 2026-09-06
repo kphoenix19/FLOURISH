@@ -26,6 +26,7 @@ export type AggregateQuestFamily = {
 
 export type QuestFamilyMinAggregateOutputType = {
   id: string | null
+  seedManaged: boolean | null
   stableKey: string | null
   name: string | null
   description: string | null
@@ -36,6 +37,7 @@ export type QuestFamilyMinAggregateOutputType = {
 
 export type QuestFamilyMaxAggregateOutputType = {
   id: string | null
+  seedManaged: boolean | null
   stableKey: string | null
   name: string | null
   description: string | null
@@ -46,6 +48,7 @@ export type QuestFamilyMaxAggregateOutputType = {
 
 export type QuestFamilyCountAggregateOutputType = {
   id: number
+  seedManaged: number
   stableKey: number
   name: number
   description: number
@@ -58,6 +61,7 @@ export type QuestFamilyCountAggregateOutputType = {
 
 export type QuestFamilyMinAggregateInputType = {
   id?: true
+  seedManaged?: true
   stableKey?: true
   name?: true
   description?: true
@@ -68,6 +72,7 @@ export type QuestFamilyMinAggregateInputType = {
 
 export type QuestFamilyMaxAggregateInputType = {
   id?: true
+  seedManaged?: true
   stableKey?: true
   name?: true
   description?: true
@@ -78,6 +83,7 @@ export type QuestFamilyMaxAggregateInputType = {
 
 export type QuestFamilyCountAggregateInputType = {
   id?: true
+  seedManaged?: true
   stableKey?: true
   name?: true
   description?: true
@@ -161,6 +167,7 @@ export type QuestFamilyGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type QuestFamilyGroupByOutputType = {
   id: string
+  seedManaged: boolean
   stableKey: string
   name: string
   description: string | null
@@ -192,6 +199,7 @@ export type QuestFamilyWhereInput = {
   OR?: Prisma.QuestFamilyWhereInput[]
   NOT?: Prisma.QuestFamilyWhereInput | Prisma.QuestFamilyWhereInput[]
   id?: Prisma.UuidFilter<"QuestFamily"> | string
+  seedManaged?: Prisma.BoolFilter<"QuestFamily"> | boolean
   stableKey?: Prisma.StringFilter<"QuestFamily"> | string
   name?: Prisma.StringFilter<"QuestFamily"> | string
   description?: Prisma.StringNullableFilter<"QuestFamily"> | string | null
@@ -203,6 +211,7 @@ export type QuestFamilyWhereInput = {
 
 export type QuestFamilyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   stableKey?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -218,6 +227,7 @@ export type QuestFamilyWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.QuestFamilyWhereInput | Prisma.QuestFamilyWhereInput[]
   OR?: Prisma.QuestFamilyWhereInput[]
   NOT?: Prisma.QuestFamilyWhereInput | Prisma.QuestFamilyWhereInput[]
+  seedManaged?: Prisma.BoolFilter<"QuestFamily"> | boolean
   name?: Prisma.StringFilter<"QuestFamily"> | string
   description?: Prisma.StringNullableFilter<"QuestFamily"> | string | null
   active?: Prisma.BoolFilter<"QuestFamily"> | boolean
@@ -228,6 +238,7 @@ export type QuestFamilyWhereUniqueInput = Prisma.AtLeast<{
 
 export type QuestFamilyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   stableKey?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -244,6 +255,7 @@ export type QuestFamilyScalarWhereWithAggregatesInput = {
   OR?: Prisma.QuestFamilyScalarWhereWithAggregatesInput[]
   NOT?: Prisma.QuestFamilyScalarWhereWithAggregatesInput | Prisma.QuestFamilyScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"QuestFamily"> | string
+  seedManaged?: Prisma.BoolWithAggregatesFilter<"QuestFamily"> | boolean
   stableKey?: Prisma.StringWithAggregatesFilter<"QuestFamily"> | string
   name?: Prisma.StringWithAggregatesFilter<"QuestFamily"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"QuestFamily"> | string | null
@@ -254,6 +266,7 @@ export type QuestFamilyScalarWhereWithAggregatesInput = {
 
 export type QuestFamilyCreateInput = {
   id?: string
+  seedManaged?: boolean
   stableKey: string
   name: string
   description?: string | null
@@ -265,6 +278,7 @@ export type QuestFamilyCreateInput = {
 
 export type QuestFamilyUncheckedCreateInput = {
   id?: string
+  seedManaged?: boolean
   stableKey: string
   name: string
   description?: string | null
@@ -276,6 +290,7 @@ export type QuestFamilyUncheckedCreateInput = {
 
 export type QuestFamilyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stableKey?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -287,6 +302,7 @@ export type QuestFamilyUpdateInput = {
 
 export type QuestFamilyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stableKey?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -298,6 +314,7 @@ export type QuestFamilyUncheckedUpdateInput = {
 
 export type QuestFamilyCreateManyInput = {
   id?: string
+  seedManaged?: boolean
   stableKey: string
   name: string
   description?: string | null
@@ -308,6 +325,7 @@ export type QuestFamilyCreateManyInput = {
 
 export type QuestFamilyUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stableKey?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -318,6 +336,7 @@ export type QuestFamilyUpdateManyMutationInput = {
 
 export type QuestFamilyUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stableKey?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -328,6 +347,7 @@ export type QuestFamilyUncheckedUpdateManyInput = {
 
 export type QuestFamilyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   stableKey?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -338,6 +358,7 @@ export type QuestFamilyCountOrderByAggregateInput = {
 
 export type QuestFamilyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   stableKey?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -348,6 +369,7 @@ export type QuestFamilyMaxOrderByAggregateInput = {
 
 export type QuestFamilyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   stableKey?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -379,6 +401,7 @@ export type QuestFamilyUpdateOneWithoutQuestsNestedInput = {
 
 export type QuestFamilyCreateWithoutQuestsInput = {
   id?: string
+  seedManaged?: boolean
   stableKey: string
   name: string
   description?: string | null
@@ -389,6 +412,7 @@ export type QuestFamilyCreateWithoutQuestsInput = {
 
 export type QuestFamilyUncheckedCreateWithoutQuestsInput = {
   id?: string
+  seedManaged?: boolean
   stableKey: string
   name: string
   description?: string | null
@@ -415,6 +439,7 @@ export type QuestFamilyUpdateToOneWithWhereWithoutQuestsInput = {
 
 export type QuestFamilyUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stableKey?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -425,6 +450,7 @@ export type QuestFamilyUpdateWithoutQuestsInput = {
 
 export type QuestFamilyUncheckedUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stableKey?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -466,6 +492,7 @@ export type QuestFamilyCountOutputTypeCountQuestsArgs<ExtArgs extends runtime.Ty
 
 export type QuestFamilySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  seedManaged?: boolean
   stableKey?: boolean
   name?: boolean
   description?: boolean
@@ -478,6 +505,7 @@ export type QuestFamilySelect<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type QuestFamilySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  seedManaged?: boolean
   stableKey?: boolean
   name?: boolean
   description?: boolean
@@ -488,6 +516,7 @@ export type QuestFamilySelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type QuestFamilySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  seedManaged?: boolean
   stableKey?: boolean
   name?: boolean
   description?: boolean
@@ -498,6 +527,7 @@ export type QuestFamilySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type QuestFamilySelectScalar = {
   id?: boolean
+  seedManaged?: boolean
   stableKey?: boolean
   name?: boolean
   description?: boolean
@@ -506,7 +536,7 @@ export type QuestFamilySelectScalar = {
   updatedAt?: boolean
 }
 
-export type QuestFamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stableKey" | "name" | "description" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["questFamily"]>
+export type QuestFamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "seedManaged" | "stableKey" | "name" | "description" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["questFamily"]>
 export type QuestFamilyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   quests?: boolean | Prisma.QuestFamily$questsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestFamilyCountOutputTypeDefaultArgs<ExtArgs>
@@ -521,6 +551,7 @@ export type $QuestFamilyPayload<ExtArgs extends runtime.Types.Extensions.Interna
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    seedManaged: boolean
     stableKey: string
     name: string
     description: string | null
@@ -952,6 +983,7 @@ export interface Prisma__QuestFamilyClient<T, Null = never, ExtArgs extends runt
  */
 export interface QuestFamilyFieldRefs {
   readonly id: Prisma.FieldRef<"QuestFamily", 'String'>
+  readonly seedManaged: Prisma.FieldRef<"QuestFamily", 'Boolean'>
   readonly stableKey: Prisma.FieldRef<"QuestFamily", 'String'>
   readonly name: Prisma.FieldRef<"QuestFamily", 'String'>
   readonly description: Prisma.FieldRef<"QuestFamily", 'String'>

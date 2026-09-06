@@ -68,7 +68,9 @@ The integration suite verifies real PostgreSQL constraints and requires `DATABAS
 
 - `corepack pnpm db:generate` — generate the Prisma client.
 - `corepack pnpm db:migrate` — create/apply a development migration after Phase 01 adds models.
-- `corepack pnpm db:seed` — run the seed entry point (informational only until Phase 02).
+- `corepack pnpm db:seed` — validate and transactionally import the canonical Phase 02 library.
+- `corepack pnpm seed:validate` — validate canonical files without a database.
+- `corepack pnpm seed:review` — show titles grouped by tag and possible duplicate-content candidates.
 - `corepack pnpm db:studio` — open Prisma Studio.
 
-Canonical future quest seed files live in [`data/seeds/quests/`](data/seeds/quests/). Repository seeds are authoritative, validated before persistence, and upserted without silently deleting existing QuestDefinitions. Direct admin database edits do not rewrite repository seed files.
+Canonical Skills, tags, families, and 275 quests live in [`data/seeds/`](data/seeds/). Apply migrations with `corepack pnpm exec prisma migrate deploy` before `corepack pnpm db:seed`. Repeated imports preserve IDs and row counts, restore canonical values, and deactivate removed seed-managed content without deleting definitions or player history. Non-seed-managed key collisions fail for explicit operator resolution. Admin database edits do not rewrite files. See the [curator workflow](docs/QUEST_CONTENT_GUIDE.md#canonical-phase-02-library).

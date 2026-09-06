@@ -1,0 +1,1353 @@
+[
+  {
+    "stableKey": "F-WALK-01",
+    "title": "Take a 10-Minute Walk",
+    "shortDescription": "Walk at a comfortable pace for 10 minutes.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "WALK_TIME",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "walking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: take a 10-minute walk.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-WALK-02",
+    "title": "Take a 30-Minute Walk",
+    "shortDescription": "Walk for 30 minutes at a pace that suits you.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "WALK_TIME",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "walking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: take a 30-minute walk.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-WALK-03",
+    "title": "Take a 60-Minute Walk",
+    "shortDescription": "Set aside an hour for a walk suited to your ability.",
+    "difficulty": "HARD",
+    "baseXp": 325,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "WALK_TIME",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "walking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: take a 60-minute walk.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-WALK-04",
+    "title": "Explore Somewhere on Foot",
+    "shortDescription": "Explore a safe, unfamiliar route or place on foot for about 45 minutes.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "H",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "walking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: explore somewhere on foot.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-STR-01",
+    "title": "15-Minute Strength Workout",
+    "shortDescription": "Do 15 minutes of strength exercises suited to your ability.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "STRENGTH_WORKOUT",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "strength",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: 15-minute strength workout.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-STR-02",
+    "title": "30-Minute Strength Workout",
+    "shortDescription": "Complete a 30-minute strength workout suited to your ability.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "STRENGTH_WORKOUT",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "strength",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: 30-minute strength workout.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-STR-03",
+    "title": "60-Minute Strength Workout",
+    "shortDescription": "Complete an hour of strength training with appropriate rests.",
+    "difficulty": "HARD",
+    "baseXp": 400,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "STRENGTH_WORKOUT",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "strength",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: 60-minute strength workout.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-STR-04",
+    "title": "Practice Your Exercise Form",
+    "shortDescription": "Spend 15 minutes practicing controlled form with familiar exercises.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "strength",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: practice your exercise form.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-STR-05",
+    "title": "Complete a Challenging Strength Session",
+    "shortDescription": "Complete a planned 90-minute strength session, including rests, within your current ability.",
+    "difficulty": "EPIC",
+    "baseXp": 600,
+    "estimatedMinutes": 90,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "STRENGTH_WORKOUT",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "strength",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 4,
+    "curatorDifficultyReason": "An extended, demanding session or substantial applied milestone: complete a challenging strength session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-CARD-01",
+    "title": "15 Minutes of Cardio",
+    "shortDescription": "Do 15 minutes of cardio at an intensity that suits you.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "CARDIO_TIME",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "cardio",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: 15 minutes of cardio.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-CARD-02",
+    "title": "30 Minutes of Cardio",
+    "shortDescription": "Complete 30 minutes of cardio at a suitable intensity.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "CARDIO_TIME",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "cardio",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: 30 minutes of cardio.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-CARD-03",
+    "title": "60 Minutes of Cardio",
+    "shortDescription": "Complete an hour of cardio, adjusting pace and taking breaks as needed.",
+    "difficulty": "HARD",
+    "baseXp": 400,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "CARDIO_TIME",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "cardio",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: 60 minutes of cardio.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-CARD-04",
+    "title": "Try a Different Cardio Activity",
+    "shortDescription": "Spend 30 minutes trying a safe cardio activity different from your usual choice.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "cardio",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: try a different cardio activity.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-CARD-05",
+    "title": "Complete a Challenging Cardio Session",
+    "shortDescription": "Complete a planned 90-minute cardio session within your current ability, including breaks.",
+    "difficulty": "EPIC",
+    "baseXp": 600,
+    "estimatedMinutes": 90,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "CARDIO_TIME",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "cardio",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 4,
+    "curatorDifficultyReason": "An extended, demanding session or substantial applied milestone: complete a challenging cardio session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-MOB-01",
+    "title": "10 Minutes of Mobility",
+    "shortDescription": "Spend 10 minutes moving your joints through comfortable ranges.",
+    "difficulty": "EASY",
+    "baseXp": 70,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "MOBILITY_SESSION",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "mobility",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: 10 minutes of mobility.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-MOB-02",
+    "title": "20-Minute Mobility Session",
+    "shortDescription": "Complete 20 minutes of gentle mobility exercises.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "MOBILITY_SESSION",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "mobility",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: 20-minute mobility session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-MOB-03",
+    "title": "Full-Body Mobility Session",
+    "shortDescription": "Spend 45 minutes on a full-body mobility routine without forcing painful movements.",
+    "difficulty": "HARD",
+    "baseXp": 275,
+    "estimatedMinutes": 45,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "MOBILITY_SESSION",
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "mobility",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: full-body mobility session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-REC-01",
+    "title": "Take 15 Minutes for Active Recovery",
+    "shortDescription": "Spend 15 minutes on gentle movement that supports recovery.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "recovery",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: take 15 minutes for active recovery.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-REC-02",
+    "title": "Take an Easy Recovery Walk",
+    "shortDescription": "Take a relaxed 20-minute walk with recovery as your intention.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "recovery",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: take an easy recovery walk.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-REC-03",
+    "title": "Give Your Body a Recovery Session",
+    "shortDescription": "Set aside 30 minutes for gentle movement and rest that suits your recovery needs.",
+    "difficulty": "MEDIUM",
+    "baseXp": 160,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "recovery",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: give your body a recovery session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-NUT-01",
+    "title": "Prepare a Balanced Meal",
+    "shortDescription": "Prepare a balanced meal suited to your needs and available ingredients.",
+    "difficulty": "EASY",
+    "baseXp": 95,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "nutrition",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "LOW",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: prepare a balanced meal.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-NUT-02",
+    "title": "Add Produce to Two Meals",
+    "shortDescription": "Include fruit or vegetables in two meals today.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "nutrition",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "LOW",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: add produce to two meals.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-NUT-03",
+    "title": "Plan Tomorrow's Balanced Meals",
+    "shortDescription": "Plan balanced meals for tomorrow using food that fits your needs and budget.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "S",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "nutrition",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "LOW",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: plan tomorrow's balanced meals.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-SPORT-01",
+    "title": "Play a Sport or Active Game",
+    "shortDescription": "Play a sport or active game for about 30 minutes at a suitable intensity.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 80
+      },
+      {
+        "skillCode": "H",
+        "isPrimary": false,
+        "rewardPercent": 20
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "sports",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "OPTIONAL",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: play a sport or active game.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-SPORT-02",
+    "title": "Have an Extended Active Recreation Session",
+    "shortDescription": "Spend about an hour on active recreation with appropriate breaks.",
+    "difficulty": "HARD",
+    "baseXp": 375,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "sports",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "OPTIONAL",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: have an extended active recreation session.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-HM-01",
+    "title": "Handle a Routine Health-Maintenance Task",
+    "shortDescription": "Handle a routine health task, such as arranging a checkup or updating your health records.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "health_maintenance",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: handle a routine health-maintenance task.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-HM-02",
+    "title": "Schedule an Overdue Routine Health Appointment",
+    "shortDescription": "Contact a provider to schedule a routine health appointment you have been putting off.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 72,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "health_maintenance",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: schedule an overdue routine health appointment.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-LEARN-01",
+    "title": "Learn Proper Exercise Form",
+    "shortDescription": "Use a reputable instructional resource to learn safe form for an exercise.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "fitness_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: learn proper exercise form.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-LEARN-02",
+    "title": "Learn About a Fitness Topic",
+    "shortDescription": "Spend 20 minutes learning about a fitness topic from a reputable source.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 60
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 40
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "fitness_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: learn about a fitness topic.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-LEARN-03",
+    "title": "Plan Your Workouts for the Week",
+    "shortDescription": "Plan a week of workouts with realistic sessions and recovery time.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "fitness_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: plan your workouts for the week.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-WEEK-01",
+    "title": "Complete 3 Workouts",
+    "shortDescription": "Complete three separate workouts suited to your ability during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 240,
+    "estimatedMinutes": 90,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "general_fitness",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-WEEK-02",
+    "title": "Take 4 Intentional Walks",
+    "shortDescription": "Take four separate intentional walks during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 220,
+    "estimatedMinutes": 40,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 4,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "walking",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 4 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-WEEK-03",
+    "title": "Complete 3 Mobility Sessions",
+    "shortDescription": "Complete three separate mobility sessions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "mobility",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Choose intensity suited to current ability; do not push through pain.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "F-WEEK-04",
+    "title": "Be Active on 5 Occasions",
+    "shortDescription": "Choose suitable physical activities and be active on five separate occasions during the weekly window.",
+    "difficulty": "HARD",
+    "baseXp": 400,
+    "estimatedMinutes": 100,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 5,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "F",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "F",
+        "code": "general_fitness",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "FITNESS",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Repeated follow-through across 5 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  }
+]

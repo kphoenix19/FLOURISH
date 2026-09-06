@@ -1,0 +1,1363 @@
+[
+  {
+    "stableKey": "R-MED-01",
+    "title": "Meditate for 5 Minutes",
+    "shortDescription": "Spend five minutes in a meditation practice that suits you.",
+    "difficulty": "EASY",
+    "baseXp": 65,
+    "estimatedMinutes": 5,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": "MEDITATION_TIME",
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "meditation",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: meditate for 5 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-MED-02",
+    "title": "Meditate for 15 Minutes",
+    "shortDescription": "Spend 15 minutes in a meditation practice that suits you.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "MEDITATION_TIME",
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "meditation",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: meditate for 15 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-MED-03",
+    "title": "Meditate for 30 Minutes",
+    "shortDescription": "Spend 30 minutes in a meditation practice that suits you, taking breaks if needed.",
+    "difficulty": "HARD",
+    "baseXp": 275,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": "MEDITATION_TIME",
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "meditation",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 3,
+    "curatorDifficultyReason": "Sustained effort or a substantial milestone: meditate for 30 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-MIND-01",
+    "title": "Take a Brief Mindfulness Break",
+    "shortDescription": "Pause for five minutes to notice your surroundings and present experience.",
+    "difficulty": "EASY",
+    "baseXp": 60,
+    "estimatedMinutes": 5,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "mindfulness",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: take a brief mindfulness break.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-MIND-02",
+    "title": "Eat Without Distractions",
+    "shortDescription": "Eat one meal with distractions set aside and notice the experience.",
+    "difficulty": "EASY",
+    "baseXp": 80,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "mindfulness",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: eat without distractions.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-MIND-03",
+    "title": "Take a Mindful Walk",
+    "shortDescription": "Walk gently for 15 minutes while noticing your surroundings and sensations.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "F",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "mindfulness",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: take a mindful walk.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-MIND-04",
+    "title": "Take a 15-Minute Digital-Free Break",
+    "shortDescription": "Set digital devices aside for 15 minutes and notice what is around you.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "mindfulness",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: take a 15-minute digital-free break.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-JOUR-01",
+    "title": "Journal for 10 Minutes",
+    "shortDescription": "Spend 10 minutes writing privately about your experiences or thoughts.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "journaling",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: journal for 10 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-JOUR-02",
+    "title": "Write What's on Your Mind",
+    "shortDescription": "Put a current concern or idea into words to make space to consider it.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "journaling",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: write what's on your mind.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-JOUR-03",
+    "title": "Write a Weekly Reflection",
+    "shortDescription": "Write about the past week and identify what you want to carry forward.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "journaling",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: write a weekly reflection.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-GRAT-01",
+    "title": "Write Three Things You're Grateful For",
+    "shortDescription": "Write three specific things you appreciate and why they matter to you.",
+    "difficulty": "EASY",
+    "baseXp": 65,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "gratitude",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: write three things you're grateful for.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-GRAT-02",
+    "title": "Tell Someone You Appreciate Them",
+    "shortDescription": "Reflect on someone's positive effect on you and share specific appreciation.",
+    "difficulty": "EASY",
+    "baseXp": 85,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 60
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 40
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "gratitude",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: tell someone you appreciate them.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-GRAT-03",
+    "title": "Reflect on Something Taken for Granted",
+    "shortDescription": "Consider one everyday support or opportunity and why you value it.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "gratitude",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: reflect on something taken for granted.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SELF-01",
+    "title": "Do a Personal Check-In",
+    "shortDescription": "Notice how you are doing and identify one current need.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "self_reflection",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: do a personal check-in.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SELF-02",
+    "title": "Reflect on a Recent Decision",
+    "shortDescription": "Review a recent decision, your reasons, and what you learned from making it.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "self_reflection",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: reflect on a recent decision.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SELF-03",
+    "title": "Identify Something to Improve",
+    "shortDescription": "Choose one habit or response to improve and name a practical next step.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "self_reflection",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: identify something to improve.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SELF-04",
+    "title": "Reflect on a Mistake",
+    "shortDescription": "Consider a mistake with self-compassion and identify a lesson or repair.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "self_reflection",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: reflect on a mistake.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SELF-05",
+    "title": "Reflect on Your Values",
+    "shortDescription": "Identify values that matter to you and consider how they show up in your actions.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "self_reflection",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: reflect on your values.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-PRAY-01",
+    "title": "Pray for 5 Minutes",
+    "shortDescription": "If prayer fits your beliefs, spend five minutes in personal prayer.",
+    "difficulty": "EASY",
+    "baseXp": 65,
+    "estimatedMinutes": 5,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": "PRAYER_TIME",
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "prayer",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: pray for 5 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-PRAY-02",
+    "title": "Pray for 15 Minutes",
+    "shortDescription": "If prayer fits your beliefs, spend 15 minutes in personal prayer.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": "PRAYER_TIME",
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "prayer",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: pray for 15 minutes.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-PRAY-03",
+    "title": "Pray for Someone",
+    "shortDescription": "If prayer fits your beliefs, take time to pray for someone you choose.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 10,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "prayer",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: pray for someone.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SP-01",
+    "title": "Spend Time in Personal Spiritual Practice",
+    "shortDescription": "Choose a spiritual practice meaningful to you and spend intentional time with it.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "spiritual_practice",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: spend time in personal spiritual practice.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SP-02",
+    "title": "Participate in a Meaningful Tradition",
+    "shortDescription": "Choose a tradition that fits your beliefs and participate voluntarily.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "spiritual_practice",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: participate in a meaningful tradition.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SL-01",
+    "title": "Read a Spiritual or Religious Text",
+    "shortDescription": "Read a text you choose and consider what it means to you.",
+    "difficulty": "EASY",
+    "baseXp": 90,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "spiritual_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: read a spiritual or religious text.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SL-02",
+    "title": "Study a Spiritual or Religious Topic",
+    "shortDescription": "Study a spiritual or religious topic that interests you using sources you choose.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 60
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 40
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "spiritual_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: study a spiritual or religious topic.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SL-03",
+    "title": "Reflect on a Teaching",
+    "shortDescription": "Consider a spiritual or religious teaching and its relevance to your own life.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 20,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "L",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "spiritual_learning",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: reflect on a teaching.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SC-01",
+    "title": "Attend a Spiritual or Religious Gathering",
+    "shortDescription": "Voluntarily attend a gathering that fits your interests or beliefs.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "spiritual_community",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: attend a spiritual or religious gathering.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-SC-02",
+    "title": "Connect With a Spiritual Community",
+    "shortDescription": "Make a voluntary, respectful connection with a spiritual community you choose.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 25,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 70
+      },
+      {
+        "skillCode": "U",
+        "isPrimary": false,
+        "rewardPercent": 30
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "spiritual_community",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "REQUIRED",
+    "safetyCategory": "SPIRITUAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: connect with a spiritual community.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines. Voluntary and denomination-neutral; choose content consistent with personal beliefs.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-REST-01",
+    "title": "Take 15 Minutes of Intentional Rest",
+    "shortDescription": "Set aside 15 minutes to rest without requiring yourself to be productive.",
+    "difficulty": "EASY",
+    "baseXp": 75,
+    "estimatedMinutes": 15,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": false,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "rest",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 1,
+    "curatorDifficultyReason": "A discrete, approachable action: take 15 minutes of intentional rest.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-REST-02",
+    "title": "Spend 30 Minutes Unplugged",
+    "shortDescription": "Choose a restful way to spend 30 minutes away from digital devices.",
+    "difficulty": "MEDIUM",
+    "baseXp": 150,
+    "estimatedMinutes": 30,
+    "completionWindowHours": 24,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": true,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "rest",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: spend 30 minutes unplugged.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-REST-03",
+    "title": "Take an Hour of Intentional Downtime",
+    "shortDescription": "Make room for an hour of restorative downtime that suits you.",
+    "difficulty": "MEDIUM",
+    "baseXp": 175,
+    "estimatedMinutes": 60,
+    "completionWindowHours": 48,
+    "completionType": "SINGLE",
+    "completionTarget": 1,
+    "standardEligible": true,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "rest",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "A focused action with moderate effort: take an hour of intentional downtime.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-WEEK-01",
+    "title": "Meditate 3 Times",
+    "shortDescription": "Complete three separate meditation sessions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "meditation",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-WEEK-02",
+    "title": "Journal 3 Times",
+    "shortDescription": "Complete three separate journaling sessions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 200,
+    "estimatedMinutes": 30,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 3,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "journaling",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 3 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  },
+  {
+    "stableKey": "R-WEEK-03",
+    "title": "Practice Gratitude 4 Times",
+    "shortDescription": "Reflect on specific things you appreciate on four occasions during the weekly window.",
+    "difficulty": "MEDIUM",
+    "baseXp": 225,
+    "estimatedMinutes": 40,
+    "completionWindowHours": null,
+    "completionType": "COUNT",
+    "completionTarget": 4,
+    "standardEligible": false,
+    "dailyEligible": false,
+    "weeklyEligible": true,
+    "familyKey": null,
+    "skills": [
+      {
+        "skillCode": "R",
+        "isPrimary": true,
+        "rewardPercent": 100
+      }
+    ],
+    "varietyTags": [
+      {
+        "skillCode": "R",
+        "code": "gratitude",
+        "isPrimary": true
+      }
+    ],
+    "costLevel": "NONE",
+    "socialRequirement": "NONE",
+    "safetyCategory": "GENERAL",
+    "curatorValueScore": 2,
+    "curatorDifficultyReason": "Repeated follow-through across 4 distinct occasions; XP rewards the completed set.",
+    "curatorNotes": "Canonical Build 1 repository content; active minutes are estimates, not runtime deadlines.",
+    "reviewStatus": "APPROVED",
+    "reviewedAt": "2026-09-06T00:00:00.000Z",
+    "active": true,
+    "deprecationReason": null
+  }
+]

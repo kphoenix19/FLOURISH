@@ -26,6 +26,7 @@ export type AggregateVarietyTag = {
 
 export type VarietyTagMinAggregateOutputType = {
   id: string | null
+  seedManaged: boolean | null
   skillId: string | null
   code: string | null
   displayName: string | null
@@ -37,6 +38,7 @@ export type VarietyTagMinAggregateOutputType = {
 
 export type VarietyTagMaxAggregateOutputType = {
   id: string | null
+  seedManaged: boolean | null
   skillId: string | null
   code: string | null
   displayName: string | null
@@ -48,6 +50,7 @@ export type VarietyTagMaxAggregateOutputType = {
 
 export type VarietyTagCountAggregateOutputType = {
   id: number
+  seedManaged: number
   skillId: number
   code: number
   displayName: number
@@ -61,6 +64,7 @@ export type VarietyTagCountAggregateOutputType = {
 
 export type VarietyTagMinAggregateInputType = {
   id?: true
+  seedManaged?: true
   skillId?: true
   code?: true
   displayName?: true
@@ -72,6 +76,7 @@ export type VarietyTagMinAggregateInputType = {
 
 export type VarietyTagMaxAggregateInputType = {
   id?: true
+  seedManaged?: true
   skillId?: true
   code?: true
   displayName?: true
@@ -83,6 +88,7 @@ export type VarietyTagMaxAggregateInputType = {
 
 export type VarietyTagCountAggregateInputType = {
   id?: true
+  seedManaged?: true
   skillId?: true
   code?: true
   displayName?: true
@@ -167,6 +173,7 @@ export type VarietyTagGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type VarietyTagGroupByOutputType = {
   id: string
+  seedManaged: boolean
   skillId: string
   code: string
   displayName: string
@@ -199,6 +206,7 @@ export type VarietyTagWhereInput = {
   OR?: Prisma.VarietyTagWhereInput[]
   NOT?: Prisma.VarietyTagWhereInput | Prisma.VarietyTagWhereInput[]
   id?: Prisma.UuidFilter<"VarietyTag"> | string
+  seedManaged?: Prisma.BoolFilter<"VarietyTag"> | boolean
   skillId?: Prisma.UuidFilter<"VarietyTag"> | string
   code?: Prisma.StringFilter<"VarietyTag"> | string
   displayName?: Prisma.StringFilter<"VarietyTag"> | string
@@ -212,6 +220,7 @@ export type VarietyTagWhereInput = {
 
 export type VarietyTagOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
@@ -229,6 +238,7 @@ export type VarietyTagWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.VarietyTagWhereInput | Prisma.VarietyTagWhereInput[]
   OR?: Prisma.VarietyTagWhereInput[]
   NOT?: Prisma.VarietyTagWhereInput | Prisma.VarietyTagWhereInput[]
+  seedManaged?: Prisma.BoolFilter<"VarietyTag"> | boolean
   skillId?: Prisma.UuidFilter<"VarietyTag"> | string
   code?: Prisma.StringFilter<"VarietyTag"> | string
   displayName?: Prisma.StringFilter<"VarietyTag"> | string
@@ -242,6 +252,7 @@ export type VarietyTagWhereUniqueInput = Prisma.AtLeast<{
 
 export type VarietyTagOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
@@ -259,6 +270,7 @@ export type VarietyTagScalarWhereWithAggregatesInput = {
   OR?: Prisma.VarietyTagScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VarietyTagScalarWhereWithAggregatesInput | Prisma.VarietyTagScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"VarietyTag"> | string
+  seedManaged?: Prisma.BoolWithAggregatesFilter<"VarietyTag"> | boolean
   skillId?: Prisma.UuidWithAggregatesFilter<"VarietyTag"> | string
   code?: Prisma.StringWithAggregatesFilter<"VarietyTag"> | string
   displayName?: Prisma.StringWithAggregatesFilter<"VarietyTag"> | string
@@ -270,6 +282,7 @@ export type VarietyTagScalarWhereWithAggregatesInput = {
 
 export type VarietyTagCreateInput = {
   id?: string
+  seedManaged?: boolean
   code: string
   displayName: string
   description?: string | null
@@ -282,6 +295,7 @@ export type VarietyTagCreateInput = {
 
 export type VarietyTagUncheckedCreateInput = {
   id?: string
+  seedManaged?: boolean
   skillId: string
   code: string
   displayName: string
@@ -294,6 +308,7 @@ export type VarietyTagUncheckedCreateInput = {
 
 export type VarietyTagUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -306,6 +321,7 @@ export type VarietyTagUpdateInput = {
 
 export type VarietyTagUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   skillId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -318,6 +334,7 @@ export type VarietyTagUncheckedUpdateInput = {
 
 export type VarietyTagCreateManyInput = {
   id?: string
+  seedManaged?: boolean
   skillId: string
   code: string
   displayName: string
@@ -329,6 +346,7 @@ export type VarietyTagCreateManyInput = {
 
 export type VarietyTagUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -339,6 +357,7 @@ export type VarietyTagUpdateManyMutationInput = {
 
 export type VarietyTagUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   skillId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -365,6 +384,7 @@ export type VarietyTagSkillIdCodeCompoundUniqueInput = {
 
 export type VarietyTagCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
@@ -376,6 +396,7 @@ export type VarietyTagCountOrderByAggregateInput = {
 
 export type VarietyTagMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
@@ -387,6 +408,7 @@ export type VarietyTagMaxOrderByAggregateInput = {
 
 export type VarietyTagMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  seedManaged?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
@@ -459,6 +481,7 @@ export type VarietyTagUpdateOneRequiredWithoutQuestsNestedInput = {
 
 export type VarietyTagCreateWithoutSkillInput = {
   id?: string
+  seedManaged?: boolean
   code: string
   displayName: string
   description?: string | null
@@ -470,6 +493,7 @@ export type VarietyTagCreateWithoutSkillInput = {
 
 export type VarietyTagUncheckedCreateWithoutSkillInput = {
   id?: string
+  seedManaged?: boolean
   code: string
   displayName: string
   description?: string | null
@@ -510,6 +534,7 @@ export type VarietyTagScalarWhereInput = {
   OR?: Prisma.VarietyTagScalarWhereInput[]
   NOT?: Prisma.VarietyTagScalarWhereInput | Prisma.VarietyTagScalarWhereInput[]
   id?: Prisma.UuidFilter<"VarietyTag"> | string
+  seedManaged?: Prisma.BoolFilter<"VarietyTag"> | boolean
   skillId?: Prisma.UuidFilter<"VarietyTag"> | string
   code?: Prisma.StringFilter<"VarietyTag"> | string
   displayName?: Prisma.StringFilter<"VarietyTag"> | string
@@ -521,6 +546,7 @@ export type VarietyTagScalarWhereInput = {
 
 export type VarietyTagCreateWithoutQuestsInput = {
   id?: string
+  seedManaged?: boolean
   code: string
   displayName: string
   description?: string | null
@@ -532,6 +558,7 @@ export type VarietyTagCreateWithoutQuestsInput = {
 
 export type VarietyTagUncheckedCreateWithoutQuestsInput = {
   id?: string
+  seedManaged?: boolean
   skillId: string
   code: string
   displayName: string
@@ -559,6 +586,7 @@ export type VarietyTagUpdateToOneWithWhereWithoutQuestsInput = {
 
 export type VarietyTagUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -570,6 +598,7 @@ export type VarietyTagUpdateWithoutQuestsInput = {
 
 export type VarietyTagUncheckedUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   skillId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -581,6 +610,7 @@ export type VarietyTagUncheckedUpdateWithoutQuestsInput = {
 
 export type VarietyTagCreateManySkillInput = {
   id?: string
+  seedManaged?: boolean
   code: string
   displayName: string
   description?: string | null
@@ -591,6 +621,7 @@ export type VarietyTagCreateManySkillInput = {
 
 export type VarietyTagUpdateWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -602,6 +633,7 @@ export type VarietyTagUpdateWithoutSkillInput = {
 
 export type VarietyTagUncheckedUpdateWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -613,6 +645,7 @@ export type VarietyTagUncheckedUpdateWithoutSkillInput = {
 
 export type VarietyTagUncheckedUpdateManyWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  seedManaged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   code?: Prisma.StringFieldUpdateOperationsInput | string
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -654,6 +687,7 @@ export type VarietyTagCountOutputTypeCountQuestsArgs<ExtArgs extends runtime.Typ
 
 export type VarietyTagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  seedManaged?: boolean
   skillId?: boolean
   code?: boolean
   displayName?: boolean
@@ -668,6 +702,7 @@ export type VarietyTagSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type VarietyTagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  seedManaged?: boolean
   skillId?: boolean
   code?: boolean
   displayName?: boolean
@@ -680,6 +715,7 @@ export type VarietyTagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type VarietyTagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  seedManaged?: boolean
   skillId?: boolean
   code?: boolean
   displayName?: boolean
@@ -692,6 +728,7 @@ export type VarietyTagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type VarietyTagSelectScalar = {
   id?: boolean
+  seedManaged?: boolean
   skillId?: boolean
   code?: boolean
   displayName?: boolean
@@ -701,7 +738,7 @@ export type VarietyTagSelectScalar = {
   updatedAt?: boolean
 }
 
-export type VarietyTagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "skillId" | "code" | "displayName" | "description" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["varietyTag"]>
+export type VarietyTagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "seedManaged" | "skillId" | "code" | "displayName" | "description" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["varietyTag"]>
 export type VarietyTagInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   skill?: boolean | Prisma.SkillDefaultArgs<ExtArgs>
   quests?: boolean | Prisma.VarietyTag$questsArgs<ExtArgs>
@@ -722,6 +759,7 @@ export type $VarietyTagPayload<ExtArgs extends runtime.Types.Extensions.Internal
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    seedManaged: boolean
     skillId: string
     code: string
     displayName: string
@@ -1155,6 +1193,7 @@ export interface Prisma__VarietyTagClient<T, Null = never, ExtArgs extends runti
  */
 export interface VarietyTagFieldRefs {
   readonly id: Prisma.FieldRef<"VarietyTag", 'String'>
+  readonly seedManaged: Prisma.FieldRef<"VarietyTag", 'Boolean'>
   readonly skillId: Prisma.FieldRef<"VarietyTag", 'String'>
   readonly code: Prisma.FieldRef<"VarietyTag", 'String'>
   readonly displayName: Prisma.FieldRef<"VarietyTag", 'String'>

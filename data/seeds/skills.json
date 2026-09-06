@@ -1,0 +1,50 @@
+[
+  {
+    "code": "F",
+    "name": "Fitness",
+    "description": "Fitness and physical health.",
+    "active": true
+  },
+  {
+    "code": "L",
+    "name": "Learning",
+    "description": "Learning and upskilling.",
+    "active": true
+  },
+  {
+    "code": "O",
+    "name": "Occupation",
+    "description": "Career and work.",
+    "active": true
+  },
+  {
+    "code": "U",
+    "name": "Us",
+    "description": "Relationships and social connections.",
+    "active": true
+  },
+  {
+    "code": "R",
+    "name": "Reflection",
+    "description": "Mindfulness, spirituality, religion, contemplation, and intentional rest.",
+    "active": true
+  },
+  {
+    "code": "I",
+    "name": "Investing",
+    "description": "Finances and investing.",
+    "active": true
+  },
+  {
+    "code": "S",
+    "name": "Stewardship",
+    "description": "Cooking, cleaning, organization, and caring for the home.",
+    "active": true
+  },
+  {
+    "code": "H",
+    "name": "Hobbies",
+    "description": "Fun, recreation, creativity, and personal interests.",
+    "active": true
+  }
+]
