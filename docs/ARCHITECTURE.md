@@ -30,6 +30,18 @@ Keep `User` and provider `AuthAccount` identity separate from `Player` game stat
 
 Build 1 User roles are `PLAYER` and `ADMIN`. Both `/admin` and admin mutation endpoints enforce `ADMIN` authorization on the server.
 
+### Phase 03 implementation
+
+Auth.js uses stable `next-auth` 4.24.15 (whose peer range includes Next.js 16), the App Router auth handler, and `getServerSession`. The installed handler awaits Next.js request headers, cookies, and route params. Google is the only provider, and sign-in requires a verified Google email. A custom adapter maps the existing User/AuthAccount models, creates the User and initial Player together, and does not retain Google tokens. Email is trimmed/lowercased without Gmail dot/plus rewriting. Auth.js safe account-linking behavior remains enabled: matching email alone does not merge identities; account-owner collisions fail. Concurrent initial creation can safely fail one competing OAuth attempt rather than claim an existing identity.
+
+Encrypted, HTTP-only JWT sessions contain persisted User identity, not gameplay state or provider credentials. Server session resolution reads current email, role, Player ID, and onboarding timestamp from PostgreSQL; role changes take effect on the next protected request. Sign-out clears the browser session; this phase has no server-side JWT revocation list. `AUTH_SECRET` rotation invalidates existing tokens. Session lifetime is seven days; no production test-auth bypass exists.
+
+`src/modules/auth/` owns configuration, adapter mapping, session resolution, and reusable User/Player/completed-onboarding/admin guards. `src/modules/player/services.ts` owns bootstrap, onboarding, respec, timezone, and integrity services. `src/modules/player/api.ts` supplies thin, dependency-injected REST handlers; the production composition obtains identity only from the verified session. `/api/me`, `/api/onboarding/complete`, `/api/me/focus`, `/api/me/timezone`, and the read-only `/api/admin` guard probe return JSON and `Cache-Control: no-store`. Future admin mutations must call the same server-side guard; no curation mutations exist in this phase.
+
+Cookie-authenticated application mutations require matching Origin, JSON content type, and server-side strict schemas that reject client User/Player/role fields. Auth.js manages OAuth state/PKCE and its own CSRF-protected sign-in/sign-out flow. Public landing/login remain accessible; incomplete players are directed to onboarding, completed players to the minimal Home/Settings pages, and non-admins get a safe not-authorized redirect (API: 403). Secrets remain in server-only configuration. Missing local OAuth configuration disables sign-in with setup guidance; builds need no OAuth secrets or live database.
+
+Unit tests use pure guards/domain validation; PostgreSQL tests inject a fixture-backed session resolver into the exact REST handler factory. Playwright creates isolated User/Player fixtures and normal Auth.js encrypted session cookies using a temporary test-process secret. No test route, production flag, or client-supplied identity bypass is added. Browser tests require a migrated, seeded disposable `E2E_DATABASE_URL`; they delete only their own User fixtures. The older constraint integration suite still requires a disposable database because it truncates public fixtures.
+
 ## Atomic gameplay operations
 
 Use database transactions and row locking where appropriate for completion, abandonment, expired clearing, COUNT progress, slot replacement, and Daily/Weekly set bonuses. Use UUID `operation_id` values for action grouping/idempotency.

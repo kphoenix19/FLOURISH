@@ -42,6 +42,7 @@ The curation metadata enums are descriptive and are not player eligibility gates
 | `id` | PK |
 | `email` | normalized; unique when non-null |
 | `name`, `image_url` | nullable provider-facing profile values |
+| `email_verified` | nullable provider verification timestamp used by the Auth.js adapter |
 | `role` | UserRole, default `PLAYER` |
 | `created_at`, `updated_at` | timestamps |
 
@@ -55,10 +56,12 @@ Relationships: has many AuthAccounts; has one Player in MVP. Constraint: unique 
 | `user_id` | FK User, cascade/restrict according to account deletion policy |
 | `provider` | Build 1 runtime value `google` |
 | `provider_account_id` | provider identity |
-| `type`, token/provider fields | Auth.js-compatible; sensitive values protected |
+| `type` | Auth.js account type; Build 1 uses `oauth` |
 | `created_at`, `updated_at` | timestamps |
 
 Unique `(provider, provider_account_id)`; index `user_id`.
+
+The custom Build 1 adapter stores Google account identity only. Access, refresh, and ID tokens are not persisted because no Google API integration is needed. JWT sessions do not require a parallel database Session model.
 
 ### Player
 
@@ -66,7 +69,7 @@ Unique `(provider, provider_account_id)`; index `user_id`.
 |---|---|
 | `id` | PK |
 | `user_id` | FK User, unique for MVP |
-| `timezone` | valid IANA identifier |
+| `timezone` | nullable before onboarding; explicit valid IANA identifier on completion |
 | `onboarding_completed_at` | nullable |
 | `created_at`, `updated_at` | timestamps |
 
@@ -98,12 +101,13 @@ Cross-row invariant: exactly one row per skill and sum equals configured total (
 | Field | Notes |
 |---|---|
 | `id` | PK |
-| `operation_id` | groups all eight rows in one allocation; indexed |
 | `player_id`, `skill_id` | FKs |
-| `points` | allocation snapshot, check 1–10 |
-| `effective_at` | timestamp |
+| `old_focus_points` | null for initialization; otherwise previous value, check 1–10 |
+| `new_focus_points` | chosen value, check 1–10 |
+| `allocation_change_id` | shared UUID for one initialization/respec; indexed |
+| `changed_at` | timestamp |
 
-Unique `(operation_id, skill_id)`; index `(player_id, effective_at desc)`. One operation must contain all eight skills totaling the configured amount; transactional validation.
+Owner-approved Phase 03 clarification: initialization records all eight Skills with `old_focus_points = null`. Later respecs record changed Skills only, grouped by one `allocation_change_id`. A no-op respec records no history. Current Focus always contains all eight Skills totaling the configured amount; individual respec history groups need not total 46. Index `(player_id, changed_at desc)` and `allocation_change_id`; Player-row locking serializes complete allocation validation and writes.
 
 ## Progress and streaks
 
@@ -355,10 +359,18 @@ The concrete Prisma schema uses singular PascalCase model names mapped to snake_
 
 PostgreSQL CHECK constraints enforce scalar ranges and scope semantics. Partial unique indexes enforce one definition per non-null family/difficulty and at most one primary row for quest Skill, Variety Tag, and runtime Skill allocations. The domain validators enforce the remaining cross-row requirements: exactly one primary, maximum three rows, 100% Skill totals, and the complete configurable 46-point Focus allocation.
 
-Canonical Skill codes are stored as the constrained one-character values `F`, `L`, `O`, `U`, `R`, `I`, `S`, and `H`. Phase 02 supplies the canonical rows. Gameplay code should access Prisma through service/repository boundaries; `src/lib/db.ts` owns the hot-reload-safe shared client and transaction-client type.
+Canonical Skill codes are stored as the constrained one-character values `F`, `L`, `O`, `U`, `R`, `I`, `S`, and `H`. Phase 02 supplies the canonical rows. Gameplay code should access Prisma through service/repository boundaries; `src/lib/db.ts` owns the lazy, hot-reload-safe `getDb()` client and transaction-client type.
 
 ## Phase 02 seed ownership refinement
 
 Migration `20260906200000_canonical_seed_ownership` adds non-null `seed_managed` booleans, default false, to QuestDefinition, QuestFamily, and VarietyTag. Existing rows remain non-owned. The importer sets true only for rows it creates or already owns; non-owned key collisions fail instead of inferring ownership from names. Missing owned rows become inactive and retain IDs and historical relations. The eight fixed Skill rows are always canonical and need no ownership flag.
 
 Repository import requires an integer `curator_value_score` from 1–5 and a nonempty difficulty rationale, without weakening or changing the nullable draft fields from Phase 01. Approved repository rows have a file-specified `reviewed_at` and may have null `reviewed_by`. Runtime and historical records are not rewritten. See the [seed workflow](QUEST_CONTENT_GUIDE.md#canonical-phase-02-library).
+
+## Phase 03 authentication and onboarding refinement
+
+Migration `20260906210000_auth_onboarding` adds nullable `User.email_verified`, `AuthAccount.type` default `oauth`, nullable pre-onboarding `Player.timezone`, and nullable initial `PlayerSkillFocusHistory.old_focus_points`. Existing values are preserved. The old/new Focus range CHECK still rejects invalid non-null values; a new CHECK requires a timezone whenever `onboarding_completed_at` is set.
+
+Completion locks the Player row and atomically validates timezone and all eight active canonical Skills, creates eight current Focus rows and eight initial history rows, initializes missing Overall/Skill progression and Skill streak rows, then sets the completion timestamp. Existing progression/streak values are preserved. Integrity validation checks the full state rather than only the timestamp. Partial pre-onboarding Focus/history state is rejected for explicit repair rather than fabricated initialization history. No Standard slots or PlayerQuests are created.
+
+Matching completed-state retries return idempotent success. Different Focus/timezone values return 409 and direct the player to Settings. Respecs and timezone updates use the same Player lock and do not mutate XP, levels, accepted quests, or challenge windows. Later Phase 08/11 work must continue preserving previously created challenge windows when timezone changes.

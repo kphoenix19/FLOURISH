@@ -1,5 +1,5 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient, type Prisma } from "@/generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
@@ -9,7 +9,8 @@ function createPrismaClient() {
   return new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 }
 
-export const db = globalForPrisma.prisma ?? createPrismaClient();
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
-
-export type TransactionClient = Parameters<Parameters<typeof db.$transaction>[0]>[0];
+// Lazy construction keeps builds and public pages independent of database credentials.
+export function getDb() {
+  return globalForPrisma.prisma ??= createPrismaClient();
+}
+export type TransactionClient = Prisma.TransactionClient;

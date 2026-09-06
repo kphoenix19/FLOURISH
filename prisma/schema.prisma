@@ -119,6 +119,7 @@ enum AdminAuditAction {
 model User {
   id                       String            @id @default(uuid()) @db.Uuid
   email                    String            @unique
+  emailVerified            DateTime?         @map("email_verified") @db.Timestamptz(3)
   name                     String?
   imageUrl                 String?           @map("image_url")
   role                     UserRole          @default(PLAYER)
@@ -137,6 +138,7 @@ model AuthAccount {
   userId            String   @map("user_id") @db.Uuid
   provider          String
   providerAccountId String   @map("provider_account_id")
+  type              String   @default("oauth")
   createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -149,7 +151,7 @@ model AuthAccount {
 model Player {
   id                    String                    @id @default(uuid()) @db.Uuid
   userId                String                    @unique @map("user_id") @db.Uuid
-  timezone              String
+  timezone              String?
   onboardingCompletedAt DateTime?                 @map("onboarding_completed_at") @db.Timestamptz(3)
   createdAt             DateTime                  @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt             DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
@@ -208,7 +210,7 @@ model PlayerSkillFocusHistory {
   id                 String   @id @default(uuid()) @db.Uuid
   playerId           String   @map("player_id") @db.Uuid
   skillId            String   @map("skill_id") @db.Uuid
-  oldFocusPoints     Int      @map("old_focus_points")
+  oldFocusPoints     Int?     @map("old_focus_points")
   newFocusPoints     Int      @map("new_focus_points")
   allocationChangeId String?  @map("allocation_change_id") @db.Uuid
   changedAt          DateTime @default(now()) @map("changed_at") @db.Timestamptz(3)

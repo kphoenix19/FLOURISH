@@ -199,7 +199,7 @@ export type PlayerSkillFocusHistoryGroupByOutputType = {
   id: string
   playerId: string
   skillId: string
-  oldFocusPoints: number
+  oldFocusPoints: number | null
   newFocusPoints: number
   allocationChangeId: string | null
   changedAt: Date
@@ -232,7 +232,7 @@ export type PlayerSkillFocusHistoryWhereInput = {
   id?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
   playerId?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
   skillId?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
-  oldFocusPoints?: Prisma.IntFilter<"PlayerSkillFocusHistory"> | number
+  oldFocusPoints?: Prisma.IntNullableFilter<"PlayerSkillFocusHistory"> | number | null
   newFocusPoints?: Prisma.IntFilter<"PlayerSkillFocusHistory"> | number
   allocationChangeId?: Prisma.UuidNullableFilter<"PlayerSkillFocusHistory"> | string | null
   changedAt?: Prisma.DateTimeFilter<"PlayerSkillFocusHistory"> | Date | string
@@ -244,7 +244,7 @@ export type PlayerSkillFocusHistoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   playerId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
-  oldFocusPoints?: Prisma.SortOrder
+  oldFocusPoints?: Prisma.SortOrderInput | Prisma.SortOrder
   newFocusPoints?: Prisma.SortOrder
   allocationChangeId?: Prisma.SortOrderInput | Prisma.SortOrder
   changedAt?: Prisma.SortOrder
@@ -259,7 +259,7 @@ export type PlayerSkillFocusHistoryWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PlayerSkillFocusHistoryWhereInput | Prisma.PlayerSkillFocusHistoryWhereInput[]
   playerId?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
   skillId?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
-  oldFocusPoints?: Prisma.IntFilter<"PlayerSkillFocusHistory"> | number
+  oldFocusPoints?: Prisma.IntNullableFilter<"PlayerSkillFocusHistory"> | number | null
   newFocusPoints?: Prisma.IntFilter<"PlayerSkillFocusHistory"> | number
   allocationChangeId?: Prisma.UuidNullableFilter<"PlayerSkillFocusHistory"> | string | null
   changedAt?: Prisma.DateTimeFilter<"PlayerSkillFocusHistory"> | Date | string
@@ -271,7 +271,7 @@ export type PlayerSkillFocusHistoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   playerId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
-  oldFocusPoints?: Prisma.SortOrder
+  oldFocusPoints?: Prisma.SortOrderInput | Prisma.SortOrder
   newFocusPoints?: Prisma.SortOrder
   allocationChangeId?: Prisma.SortOrderInput | Prisma.SortOrder
   changedAt?: Prisma.SortOrder
@@ -289,7 +289,7 @@ export type PlayerSkillFocusHistoryScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"PlayerSkillFocusHistory"> | string
   playerId?: Prisma.UuidWithAggregatesFilter<"PlayerSkillFocusHistory"> | string
   skillId?: Prisma.UuidWithAggregatesFilter<"PlayerSkillFocusHistory"> | string
-  oldFocusPoints?: Prisma.IntWithAggregatesFilter<"PlayerSkillFocusHistory"> | number
+  oldFocusPoints?: Prisma.IntNullableWithAggregatesFilter<"PlayerSkillFocusHistory"> | number | null
   newFocusPoints?: Prisma.IntWithAggregatesFilter<"PlayerSkillFocusHistory"> | number
   allocationChangeId?: Prisma.UuidNullableWithAggregatesFilter<"PlayerSkillFocusHistory"> | string | null
   changedAt?: Prisma.DateTimeWithAggregatesFilter<"PlayerSkillFocusHistory"> | Date | string
@@ -297,7 +297,7 @@ export type PlayerSkillFocusHistoryScalarWhereWithAggregatesInput = {
 
 export type PlayerSkillFocusHistoryCreateInput = {
   id?: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -309,7 +309,7 @@ export type PlayerSkillFocusHistoryUncheckedCreateInput = {
   id?: string
   playerId: string
   skillId: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -317,7 +317,7 @@ export type PlayerSkillFocusHistoryUncheckedCreateInput = {
 
 export type PlayerSkillFocusHistoryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -329,7 +329,7 @@ export type PlayerSkillFocusHistoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   playerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -339,7 +339,7 @@ export type PlayerSkillFocusHistoryCreateManyInput = {
   id?: string
   playerId: string
   skillId: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -347,7 +347,7 @@ export type PlayerSkillFocusHistoryCreateManyInput = {
 
 export type PlayerSkillFocusHistoryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -357,7 +357,7 @@ export type PlayerSkillFocusHistoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   playerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -497,9 +497,17 @@ export type PlayerSkillFocusHistoryUncheckedUpdateManyWithoutSkillNestedInput = 
   deleteMany?: Prisma.PlayerSkillFocusHistoryScalarWhereInput | Prisma.PlayerSkillFocusHistoryScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type PlayerSkillFocusHistoryCreateWithoutPlayerInput = {
   id?: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -509,7 +517,7 @@ export type PlayerSkillFocusHistoryCreateWithoutPlayerInput = {
 export type PlayerSkillFocusHistoryUncheckedCreateWithoutPlayerInput = {
   id?: string
   skillId: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -548,7 +556,7 @@ export type PlayerSkillFocusHistoryScalarWhereInput = {
   id?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
   playerId?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
   skillId?: Prisma.UuidFilter<"PlayerSkillFocusHistory"> | string
-  oldFocusPoints?: Prisma.IntFilter<"PlayerSkillFocusHistory"> | number
+  oldFocusPoints?: Prisma.IntNullableFilter<"PlayerSkillFocusHistory"> | number | null
   newFocusPoints?: Prisma.IntFilter<"PlayerSkillFocusHistory"> | number
   allocationChangeId?: Prisma.UuidNullableFilter<"PlayerSkillFocusHistory"> | string | null
   changedAt?: Prisma.DateTimeFilter<"PlayerSkillFocusHistory"> | Date | string
@@ -556,7 +564,7 @@ export type PlayerSkillFocusHistoryScalarWhereInput = {
 
 export type PlayerSkillFocusHistoryCreateWithoutSkillInput = {
   id?: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -566,7 +574,7 @@ export type PlayerSkillFocusHistoryCreateWithoutSkillInput = {
 export type PlayerSkillFocusHistoryUncheckedCreateWithoutSkillInput = {
   id?: string
   playerId: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -601,7 +609,7 @@ export type PlayerSkillFocusHistoryUpdateManyWithWhereWithoutSkillInput = {
 export type PlayerSkillFocusHistoryCreateManyPlayerInput = {
   id?: string
   skillId: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -609,7 +617,7 @@ export type PlayerSkillFocusHistoryCreateManyPlayerInput = {
 
 export type PlayerSkillFocusHistoryUpdateWithoutPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -619,7 +627,7 @@ export type PlayerSkillFocusHistoryUpdateWithoutPlayerInput = {
 export type PlayerSkillFocusHistoryUncheckedUpdateWithoutPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -628,7 +636,7 @@ export type PlayerSkillFocusHistoryUncheckedUpdateWithoutPlayerInput = {
 export type PlayerSkillFocusHistoryUncheckedUpdateManyWithoutPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -637,7 +645,7 @@ export type PlayerSkillFocusHistoryUncheckedUpdateManyWithoutPlayerInput = {
 export type PlayerSkillFocusHistoryCreateManySkillInput = {
   id?: string
   playerId: string
-  oldFocusPoints: number
+  oldFocusPoints?: number | null
   newFocusPoints: number
   allocationChangeId?: string | null
   changedAt?: Date | string
@@ -645,7 +653,7 @@ export type PlayerSkillFocusHistoryCreateManySkillInput = {
 
 export type PlayerSkillFocusHistoryUpdateWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -655,7 +663,7 @@ export type PlayerSkillFocusHistoryUpdateWithoutSkillInput = {
 export type PlayerSkillFocusHistoryUncheckedUpdateWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   playerId?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -664,7 +672,7 @@ export type PlayerSkillFocusHistoryUncheckedUpdateWithoutSkillInput = {
 export type PlayerSkillFocusHistoryUncheckedUpdateManyWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   playerId?: Prisma.StringFieldUpdateOperationsInput | string
-  oldFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  oldFocusPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   newFocusPoints?: Prisma.IntFieldUpdateOperationsInput | number
   allocationChangeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   changedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -742,7 +750,7 @@ export type $PlayerSkillFocusHistoryPayload<ExtArgs extends runtime.Types.Extens
     id: string
     playerId: string
     skillId: string
-    oldFocusPoints: number
+    oldFocusPoints: number | null
     newFocusPoints: number
     allocationChangeId: string | null
     changedAt: Date

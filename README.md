@@ -4,7 +4,7 @@
 
 FLOURISH is a browser-based, gamified real-life progression system that rewards constructive actions with overall and life-skill progression. It is not a conventional to-do list. The MVP uses honor-system completion, a curated quest library, and server-authoritative gameplay.
 
-The repository contains the authoritative specifications and the minimal Build 1 project foundation. Gameplay systems are intentionally deferred to later phases.
+The repository includes the canonical seed library and Phase 03 authentication, onboarding, and Focus Settings. Quest gameplay is deferred to later phases.
 
 ## Authoritative specifications
 
@@ -74,3 +74,31 @@ The integration suite verifies real PostgreSQL constraints and requires `DATABAS
 - `corepack pnpm db:studio` — open Prisma Studio.
 
 Canonical Skills, tags, families, and 275 quests live in [`data/seeds/`](data/seeds/). Apply migrations with `corepack pnpm exec prisma migrate deploy` before `corepack pnpm db:seed`. Repeated imports preserve IDs and row counts, restore canonical values, and deactivate removed seed-managed content without deleting definitions or player history. Non-seed-managed key collisions fail for explicit operator resolution. Admin database edits do not rewrite files. See the [curator workflow](docs/QUEST_CONTENT_GUIDE.md#canonical-phase-02-library).
+
+## Google sign-in and onboarding
+
+Phase 03 uses stable Auth.js/NextAuth.js 4.24.15 with Google only. The implementation follows the [v4 server-session interface](https://next-auth.js.org/configuration/nextjs) and [Google provider setup](https://next-auth.js.org/providers/google). Supply these values in an ignored local `.env` file:
+
+```dotenv
+DATABASE_URL=REPLACE_WITH_POSTGRESQL_CONNECTION_URL
+AUTH_SECRET=REPLACE_WITH_RANDOM_AUTH_SECRET
+AUTH_GOOGLE_ID=REPLACE_WITH_GOOGLE_CLIENT_ID
+AUTH_GOOGLE_SECRET=REPLACE_WITH_GOOGLE_CLIENT_SECRET
+NEXTAUTH_URL=http://localhost:3000
+```
+
+Generate a unique secret with `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` and put it only in the ignored environment file. Do not use the example placeholder as a real secret. Missing/placeholder OAuth configuration shows setup guidance at `/login`; a build does not require credentials.
+
+Create a Google Cloud OAuth client of type Web application, configure its consent screen/test users as needed, set the authorized JavaScript origin to `http://localhost:3000`, and register the exact redirect URI **`http://localhost:3000/api/auth/callback/google`**. Use the same hostname in the browser and `NEXTAUTH_URL`; for another host/port, update both Google registrations and `NEXTAUTH_URL`. Production must use the deployed HTTPS origin and its corresponding callback. No Google credentials are entered in the app UI.
+
+Apply migrations, run `db:seed`, start the app, then open `/login` and choose **Continue with Google**. First sign-in creates/reuses a User, links its Google account, and ensures one Player. The Player starts with an unset timezone and incomplete onboarding. `/onboarding` introduces the database-loaded Skills, asks for an IANA timezone (with an explicit device-timezone shortcut), offers the balanced 6/6/6/6/6/6/5/5 Focus default, and confirms the choices. Completion atomically persists all eight Focus rows/history, initializes missing progression and streak state, and opens `/home`.
+
+Initial history records `old_focus_points = null`. Settings respecs are free/unlimited and record only changed Skills under one change ID; saving the same allocation adds no history. Matching onboarding retries succeed without resets; differing completed-state retries return 409 and direct the player to Settings. `/settings` also changes timezone without rewriting existing quest/challenge history. Quest slots are not generated yet. `/admin` is a guarded placeholder, with no role-editing or curation UI. Matching emails are not automatically merged across identities; an `OAuthAccountNotLinked` error needs explicit administrator investigation.
+
+REST endpoints are `GET /api/me`, `POST /api/onboarding/complete`, `PUT /api/me/focus`, `PUT /api/me/timezone`, and the read-only `GET /api/admin` authorization probe. Onboarding accepts `{ "timezone": "America/Denver", "focus": [{ "skillCode": "F", "points": 6 }, ...] }` with exactly eight unique Skills. Focus updates accept the complete `focus` array; timezone updates accept `timezone`. Identity is always derived from the session. Browser mutations use same-origin JSON; do not send User/Player IDs or roles. Responses use 400 for invalid input, 401 for missing session, 403 for forbidden access/origin, 409 for conflicting or incomplete player state, and 503 for missing canonical Skills.
+
+## Authentication tests without Google
+
+`corepack pnpm test` runs domain/component tests. Set `DATABASE_URL` to a disposable migrated database for `corepack pnpm test:integration`. Phase 03 tests migrate an isolated random schema and cover real transactions, rollback, history, adapter collisions, authorization, and REST handlers. Never run the full integration suite against a valuable database: the existing Phase 01 constraint tests truncate public fixture tables.
+
+For browser coverage, set `E2E_DATABASE_URL` to a disposable migrated and seeded database, then run `corepack pnpm test:e2e`. The harness starts a dedicated server at `http://127.0.0.1:3103`, generates a temporary auth secret, and mints normal Auth.js encrypted session cookies for test-owned User fixtures. There is no application login bypass or test endpoint. Desktop Chromium and a phone-sized Chromium viewport cover onboarding through Settings and sign-out. Screenshots/traces are saved in ignored `test-results/`. Without `E2E_DATABASE_URL`, authenticated tests are skipped explicitly and the public smoke tests still run. Live Google consent and callback verification remain a manual configuration check.

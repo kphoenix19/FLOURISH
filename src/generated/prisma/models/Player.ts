@@ -156,7 +156,7 @@ export type PlayerGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type PlayerGroupByOutputType = {
   id: string
   userId: string
-  timezone: string
+  timezone: string | null
   onboardingCompletedAt: Date | null
   createdAt: Date
   updatedAt: Date
@@ -186,7 +186,7 @@ export type PlayerWhereInput = {
   NOT?: Prisma.PlayerWhereInput | Prisma.PlayerWhereInput[]
   id?: Prisma.UuidFilter<"Player"> | string
   userId?: Prisma.UuidFilter<"Player"> | string
-  timezone?: Prisma.StringFilter<"Player"> | string
+  timezone?: Prisma.StringNullableFilter<"Player"> | string | null
   onboardingCompletedAt?: Prisma.DateTimeNullableFilter<"Player"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Player"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Player"> | Date | string
@@ -207,7 +207,7 @@ export type PlayerWhereInput = {
 export type PlayerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
+  timezone?: Prisma.SortOrderInput | Prisma.SortOrder
   onboardingCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -231,7 +231,7 @@ export type PlayerWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PlayerWhereInput | Prisma.PlayerWhereInput[]
   OR?: Prisma.PlayerWhereInput[]
   NOT?: Prisma.PlayerWhereInput | Prisma.PlayerWhereInput[]
-  timezone?: Prisma.StringFilter<"Player"> | string
+  timezone?: Prisma.StringNullableFilter<"Player"> | string | null
   onboardingCompletedAt?: Prisma.DateTimeNullableFilter<"Player"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Player"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Player"> | Date | string
@@ -252,7 +252,7 @@ export type PlayerWhereUniqueInput = Prisma.AtLeast<{
 export type PlayerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
+  timezone?: Prisma.SortOrderInput | Prisma.SortOrder
   onboardingCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -267,7 +267,7 @@ export type PlayerScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PlayerScalarWhereWithAggregatesInput | Prisma.PlayerScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Player"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"Player"> | string
-  timezone?: Prisma.StringWithAggregatesFilter<"Player"> | string
+  timezone?: Prisma.StringNullableWithAggregatesFilter<"Player"> | string | null
   onboardingCompletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Player"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Player"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Player"> | Date | string
@@ -275,7 +275,7 @@ export type PlayerScalarWhereWithAggregatesInput = {
 
 export type PlayerCreateInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -296,7 +296,7 @@ export type PlayerCreateInput = {
 export type PlayerUncheckedCreateInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -315,7 +315,7 @@ export type PlayerUncheckedCreateInput = {
 
 export type PlayerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -336,7 +336,7 @@ export type PlayerUpdateInput = {
 export type PlayerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -356,7 +356,7 @@ export type PlayerUncheckedUpdateInput = {
 export type PlayerCreateManyInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -364,7 +364,7 @@ export type PlayerCreateManyInput = {
 
 export type PlayerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -373,7 +373,7 @@ export type PlayerUpdateManyMutationInput = {
 export type PlayerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -446,10 +446,6 @@ export type PlayerUncheckedUpdateOneWithoutUserNestedInput = {
   delete?: Prisma.PlayerWhereInput | boolean
   connect?: Prisma.PlayerWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.PlayerUpdateToOneWithWhereWithoutUserInput, Prisma.PlayerUpdateWithoutUserInput>, Prisma.PlayerUncheckedUpdateWithoutUserInput>
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
 }
 
 export type PlayerCreateNestedOneWithoutFocusInput = {
@@ -608,7 +604,7 @@ export type PlayerUpdateOneRequiredWithoutRecommendationNestedInput = {
 
 export type PlayerCreateWithoutUserInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -627,7 +623,7 @@ export type PlayerCreateWithoutUserInput = {
 
 export type PlayerUncheckedCreateWithoutUserInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -662,7 +658,7 @@ export type PlayerUpdateToOneWithWhereWithoutUserInput = {
 
 export type PlayerUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -681,7 +677,7 @@ export type PlayerUpdateWithoutUserInput = {
 
 export type PlayerUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -700,7 +696,7 @@ export type PlayerUncheckedUpdateWithoutUserInput = {
 
 export type PlayerCreateWithoutFocusInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -720,7 +716,7 @@ export type PlayerCreateWithoutFocusInput = {
 export type PlayerUncheckedCreateWithoutFocusInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -754,7 +750,7 @@ export type PlayerUpdateToOneWithWhereWithoutFocusInput = {
 
 export type PlayerUpdateWithoutFocusInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -774,7 +770,7 @@ export type PlayerUpdateWithoutFocusInput = {
 export type PlayerUncheckedUpdateWithoutFocusInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -792,7 +788,7 @@ export type PlayerUncheckedUpdateWithoutFocusInput = {
 
 export type PlayerCreateWithoutFocusHistoryInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -812,7 +808,7 @@ export type PlayerCreateWithoutFocusHistoryInput = {
 export type PlayerUncheckedCreateWithoutFocusHistoryInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -846,7 +842,7 @@ export type PlayerUpdateToOneWithWhereWithoutFocusHistoryInput = {
 
 export type PlayerUpdateWithoutFocusHistoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -866,7 +862,7 @@ export type PlayerUpdateWithoutFocusHistoryInput = {
 export type PlayerUncheckedUpdateWithoutFocusHistoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -884,7 +880,7 @@ export type PlayerUncheckedUpdateWithoutFocusHistoryInput = {
 
 export type PlayerCreateWithoutProgressInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -904,7 +900,7 @@ export type PlayerCreateWithoutProgressInput = {
 export type PlayerUncheckedCreateWithoutProgressInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -938,7 +934,7 @@ export type PlayerUpdateToOneWithWhereWithoutProgressInput = {
 
 export type PlayerUpdateWithoutProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -958,7 +954,7 @@ export type PlayerUpdateWithoutProgressInput = {
 export type PlayerUncheckedUpdateWithoutProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -976,7 +972,7 @@ export type PlayerUncheckedUpdateWithoutProgressInput = {
 
 export type PlayerCreateWithoutSkillProgressInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -996,7 +992,7 @@ export type PlayerCreateWithoutSkillProgressInput = {
 export type PlayerUncheckedCreateWithoutSkillProgressInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1030,7 +1026,7 @@ export type PlayerUpdateToOneWithWhereWithoutSkillProgressInput = {
 
 export type PlayerUpdateWithoutSkillProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1050,7 +1046,7 @@ export type PlayerUpdateWithoutSkillProgressInput = {
 export type PlayerUncheckedUpdateWithoutSkillProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1068,7 +1064,7 @@ export type PlayerUncheckedUpdateWithoutSkillProgressInput = {
 
 export type PlayerCreateWithoutSkillStreaksInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1088,7 +1084,7 @@ export type PlayerCreateWithoutSkillStreaksInput = {
 export type PlayerUncheckedCreateWithoutSkillStreaksInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1122,7 +1118,7 @@ export type PlayerUpdateToOneWithWhereWithoutSkillStreaksInput = {
 
 export type PlayerUpdateWithoutSkillStreaksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1142,7 +1138,7 @@ export type PlayerUpdateWithoutSkillStreaksInput = {
 export type PlayerUncheckedUpdateWithoutSkillStreaksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1160,7 +1156,7 @@ export type PlayerUncheckedUpdateWithoutSkillStreaksInput = {
 
 export type PlayerCreateWithoutChallengeSetsInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1180,7 +1176,7 @@ export type PlayerCreateWithoutChallengeSetsInput = {
 export type PlayerUncheckedCreateWithoutChallengeSetsInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1214,7 +1210,7 @@ export type PlayerUpdateToOneWithWhereWithoutChallengeSetsInput = {
 
 export type PlayerUpdateWithoutChallengeSetsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1234,7 +1230,7 @@ export type PlayerUpdateWithoutChallengeSetsInput = {
 export type PlayerUncheckedUpdateWithoutChallengeSetsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1252,7 +1248,7 @@ export type PlayerUncheckedUpdateWithoutChallengeSetsInput = {
 
 export type PlayerCreateWithoutQuestsInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1272,7 +1268,7 @@ export type PlayerCreateWithoutQuestsInput = {
 export type PlayerUncheckedCreateWithoutQuestsInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1306,7 +1302,7 @@ export type PlayerUpdateToOneWithWhereWithoutQuestsInput = {
 
 export type PlayerUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1326,7 +1322,7 @@ export type PlayerUpdateWithoutQuestsInput = {
 export type PlayerUncheckedUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1344,7 +1340,7 @@ export type PlayerUncheckedUpdateWithoutQuestsInput = {
 
 export type PlayerCreateWithoutQuestSlotsInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1364,7 +1360,7 @@ export type PlayerCreateWithoutQuestSlotsInput = {
 export type PlayerUncheckedCreateWithoutQuestSlotsInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1398,7 +1394,7 @@ export type PlayerUpdateToOneWithWhereWithoutQuestSlotsInput = {
 
 export type PlayerUpdateWithoutQuestSlotsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1418,7 +1414,7 @@ export type PlayerUpdateWithoutQuestSlotsInput = {
 export type PlayerUncheckedUpdateWithoutQuestSlotsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1436,7 +1432,7 @@ export type PlayerUncheckedUpdateWithoutQuestSlotsInput = {
 
 export type PlayerCreateWithoutXpTransactionsInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1456,7 +1452,7 @@ export type PlayerCreateWithoutXpTransactionsInput = {
 export type PlayerUncheckedCreateWithoutXpTransactionsInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1490,7 +1486,7 @@ export type PlayerUpdateToOneWithWhereWithoutXpTransactionsInput = {
 
 export type PlayerUpdateWithoutXpTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1510,7 +1506,7 @@ export type PlayerUpdateWithoutXpTransactionsInput = {
 export type PlayerUncheckedUpdateWithoutXpTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1528,7 +1524,7 @@ export type PlayerUncheckedUpdateWithoutXpTransactionsInput = {
 
 export type PlayerCreateWithoutQuestInteractionsInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1548,7 +1544,7 @@ export type PlayerCreateWithoutQuestInteractionsInput = {
 export type PlayerUncheckedCreateWithoutQuestInteractionsInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1582,7 +1578,7 @@ export type PlayerUpdateToOneWithWhereWithoutQuestInteractionsInput = {
 
 export type PlayerUpdateWithoutQuestInteractionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1602,7 +1598,7 @@ export type PlayerUpdateWithoutQuestInteractionsInput = {
 export type PlayerUncheckedUpdateWithoutQuestInteractionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1620,7 +1616,7 @@ export type PlayerUncheckedUpdateWithoutQuestInteractionsInput = {
 
 export type PlayerCreateWithoutRecommendationInput = {
   id?: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1640,7 +1636,7 @@ export type PlayerCreateWithoutRecommendationInput = {
 export type PlayerUncheckedCreateWithoutRecommendationInput = {
   id?: string
   userId: string
-  timezone: string
+  timezone?: string | null
   onboardingCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1674,7 +1670,7 @@ export type PlayerUpdateToOneWithWhereWithoutRecommendationInput = {
 
 export type PlayerUpdateWithoutRecommendationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1694,7 +1690,7 @@ export type PlayerUpdateWithoutRecommendationInput = {
 export type PlayerUncheckedUpdateWithoutRecommendationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1906,7 +1902,7 @@ export type $PlayerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    timezone: string
+    timezone: string | null
     onboardingCompletedAt: Date | null
     createdAt: Date
     updatedAt: Date
