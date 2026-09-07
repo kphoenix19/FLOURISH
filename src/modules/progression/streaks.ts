@@ -14,7 +14,16 @@ export function advanceStreak(current: number, longest: number, lastDate: string
 export function streakBonusPercent(days: number) {
   return gameConfig.streaks.tiers.find((tier) => days >= tier.minDays && (tier.maxDays === null || days <= tier.maxDays))!.bonusPercent;
 }
+export function nextStreakTier(days: number) {
+  const tier = gameConfig.streaks.tiers.find((candidate) => candidate.minDays > days);
+  return tier ? { days: tier.minDays, bonusPercent: tier.bonusPercent, daysRemaining: tier.minDays - days } : null;
+}
 export function effectiveStreakDays(current: number, lastDate: Date | null, now: Date, timezone: string) {
   if (!lastDate) return 0;
   return dayNumber(localDate(now, timezone)) - dayNumber(lastDate.toISOString().slice(0, 10)) <= 1 ? current : 0;
 }
+export function mondayWeekStart(date: string) {
+  const at = new Date(`${date}T00:00:00Z`); const offset = (at.getUTCDay() + 6) % 7;
+  at.setUTCDate(at.getUTCDate() - offset); return at.toISOString().slice(0, 10);
+}
+export function localMondayWeekStart(at: Date, timezone: string) { return mondayWeekStart(localDate(at, timezone)); }

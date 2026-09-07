@@ -1,7 +1,7 @@
 import { currentSlots, occupiedDefinitions, type StandardContext } from "./context";
 import { nextFamilyTier } from "./selection";
 import { overallProgressWithinLevel, skillProgressWithinLevel } from "../../progression/levels";
-import { effectiveStreakDays } from "../../progression/streaks";
+import { effectiveStreakDays, nextStreakTier, streakBonusPercent } from "../../progression/streaks";
 import type { ResolutionFeedback } from "./resolution";
 
 export async function standardState(context: StandardContext, now = new Date(), resolution: ResolutionFeedback | null = null) {
@@ -10,7 +10,7 @@ export async function standardState(context: StandardContext, now = new Date(), 
   const progress = await context.tx.playerProgress.findUniqueOrThrow({ where: { playerId: context.playerId } });
   const streaks = await context.tx.playerSkillStreak.findMany({ where: { playerId: context.playerId } });
   return { overallLevel: progress.overallLevel, overallXp: progress.overallXp, overallProgress: overallProgressWithinLevel(progress.overallXp), resolution, timezone: context.state.player.timezone!,
-    skills: context.state.skills.map((skill) => { const skillProgress = context.progress.find((p) => p.skillId === skill.id)!; const streak = streaks.find((s) => s.skillId === skill.id)!; return ({ ...skill, currentXp: skillProgress.currentXp, lifetimeXp: skillProgress.lifetimeXp, currentLevel: skillProgress.currentLevel, levelProgress: skillProgressWithinLevel(skillProgress.currentXp), currentStreakDays: effectiveStreakDays(streak.currentStreakDays, streak.lastQualifyingDate, now, context.state.player.timezone!), longestStreakDays: streak.longestStreakDays, slots: slots.filter((s) => s.skillId === skill.id).map((slot) => {
+    skills: context.state.skills.map((skill) => { const skillProgress = context.progress.find((p) => p.skillId === skill.id)!; const streak = streaks.find((s) => s.skillId === skill.id)!; const currentStreakDays = effectiveStreakDays(streak.currentStreakDays, streak.lastQualifyingDate, now, context.state.player.timezone!); return ({ ...skill, currentXp: skillProgress.currentXp, lifetimeXp: skillProgress.lifetimeXp, currentLevel: skillProgress.currentLevel, levelProgress: skillProgressWithinLevel(skillProgress.currentXp), currentStreakDays, longestStreakDays: streak.longestStreakDays, streakActive: currentStreakDays > 0, streakBonusPercent: streakBonusPercent(currentStreakDays), nextStreakTier: nextStreakTier(currentStreakDays), slots: slots.filter((s) => s.skillId === skill.id).map((slot) => {
       const q = slot.currentPlayerQuest!;
       const d = q.questDefinition;
       const available = q.status === "AVAILABLE";

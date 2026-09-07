@@ -7,7 +7,7 @@ import { PrismaClient } from "../../src/generated/prisma/client";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { loadCanonicalSeed } from "../../src/modules/quests/seed/load";
 import { persistCanonicalSeed } from "../../src/modules/quests/seed/persist";
-import { completeOnboarding, ensurePlayerForUser, respecFocus } from "../../src/modules/player/services";
+import { completeOnboarding, ensurePlayerForUser, respecFocus, updateTimezone } from "../../src/modules/player/services";
 import { initialFocusAllocation } from "../../src/modules/player/domain/focus";
 import { ensureStandardQuestSlots, reconcileStandardQuestSlots } from "../../src/modules/quests/standard/slots";
 import { mutateStandardQuest } from "../../src/modules/quests/standard/actions";
@@ -16,6 +16,7 @@ import { createStandardApi } from "../../src/modules/quests/standard/api";
 import { resolveStandardQuest } from "../../src/modules/quests/standard/resolution";
 import type { StandardState } from "../../src/modules/quests/standard/view";
 import { getHomeRecommendation } from "../../src/modules/recommendations/service";
+import { percentRoundHalfUp } from "../../src/modules/progression/math";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL must point to a disposable test database.");
@@ -301,6 +302,41 @@ describe("Standard Phase 05 resolution", () => {
   });
 });
 
+describe("Phase 07 Skill streak integration", () => {
+  const at = (value: string) => () => new Date(value);
+  it.each([[3, 5], [7, 10], [14, 15], [30, 20]])("awards the exact bonus immediately on entering day %i", async (target, percent) => {
+    const { q, d } = await fixtureOffer("F-WALK-01"); const skillId = d.skills.find((s) => s.isPrimary)!.skillId;
+    await db.playerSkillStreak.update({ where: { playerId_skillId: { playerId, skillId } }, data: { currentStreakDays: target - 1, longestStreakDays: target - 1, lastQualifyingDate: new Date("2026-09-06T00:00:00Z") } });
+    await mutateStandardQuest(db, playerId, q.id, "accept", {}, { now: at("2026-09-07T06:00:00Z") });
+    await resolveStandardQuest(db, playerId, q.id, "complete", { now: at("2026-09-07T12:00:00Z"), random: () => 0.5 });
+    const reward = await db.questSkillReward.findFirstOrThrow({ where: { questReward: { playerQuestId: q.id }, skillId } });
+    expect(reward.streakBonusXp).toBe(percentRoundHalfUp(reward.baseSkillXp, percent));
+    expect(await db.playerSkillStreak.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } })).toMatchObject({ currentStreakDays: target, longestStreakDays: target });
+  });
+  it("evaluates multi-Skill streaks independently and keeps Catch-Up additive", async () => {
+    const { q, d } = await fixtureOffer("F-WALK-04"); const ordered = [...d.skills].sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary));
+    await db.playerSkillStreak.update({ where: { playerId_skillId: { playerId, skillId: ordered[0].skillId } }, data: { currentStreakDays: 2, longestStreakDays: 2, lastQualifyingDate: new Date("2026-09-06T00:00:00Z") } });
+    await db.playerSkillStreak.update({ where: { playerId_skillId: { playerId, skillId: ordered[1].skillId } }, data: { currentStreakDays: 6, longestStreakDays: 6, lastQualifyingDate: new Date("2026-09-06T00:00:00Z") } });
+    await mutateStandardQuest(db, playerId, q.id, "accept", {}, { now: at("2026-09-07T06:00:00Z") });
+    await resolveStandardQuest(db, playerId, q.id, "complete", { now: at("2026-09-07T12:00:00Z"), random: () => 0.5 });
+    const rewards = await db.questSkillReward.findMany({ where: { questReward: { playerQuestId: q.id } } });
+    expect(rewards.find((r) => r.skillId === ordered[0].skillId)!.streakBonusXp).toBe(percentRoundHalfUp(rewards.find((r) => r.skillId === ordered[0].skillId)!.baseSkillXp, 5));
+    expect(rewards.find((r) => r.skillId === ordered[1].skillId)!.streakBonusXp).toBe(percentRoundHalfUp(rewards.find((r) => r.skillId === ordered[1].skillId)!.baseSkillXp, 10));
+    expect(rewards.every((r) => r.finalSkillXp === r.baseSkillXp + r.catchUpBonusXp + r.streakBonusXp)).toBe(true);
+    expect(await db.playerSkillStreak.count({ where: { playerId, currentStreakDays: { gt: 0 } } })).toBe(2);
+  });
+  it("returns effective stale state without write-on-read and applies timezone changes only prospectively", async () => {
+    await read(); const skill = await db.skill.findUniqueOrThrow({ where: { code: "F" } }); const storedDate = new Date("2026-09-05T00:00:00Z");
+    await db.playerSkillStreak.update({ where: { playerId_skillId: { playerId, skillId: skill.id } }, data: { currentStreakDays: 8, longestStreakDays: 8, lastQualifyingDate: storedDate } });
+    const stale = await reconcileStandardQuestSlots(db, playerId, () => 0.5, at("2026-09-07T12:00:00Z")); const fitness = stale.skills.find((s) => s.code === "F")!;
+    expect(fitness).toMatchObject({ currentStreakDays: 0, streakActive: false, streakBonusPercent: 0 });
+    expect(await db.playerSkillStreak.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId: skill.id } } })).toMatchObject({ currentStreakDays: 8, lastQualifyingDate: storedDate });
+    await updateTimezone(db, userId, { timezone: "Pacific/Honolulu" });
+    const shifted = await reconcileStandardQuestSlots(db, playerId, () => 0.5, at("2026-09-07T05:00:00Z"));
+    expect(shifted.skills.find((s) => s.code === "F")!.currentStreakDays).toBe(8);
+  });
+});
+
 describe("Standard Phase 05 concurrency", () => {
   const acceptedAt = new Date("2026-09-06T12:00:00Z");
   const onTime = new Date("2026-09-06T13:00:00Z");
@@ -353,6 +389,8 @@ describe("Standard Phase 05 concurrency", () => {
     const skillId = first.d.skills.find((s) => s.isPrimary)!.skillId; const progress = await db.playerSkillProgress.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } });
     expect(await db.questReward.count({ where: { playerQuestId: { in: [first.q.id, second.q.id] } } })).toBe(2);
     expect(progress.currentXp).toBe(await ledgerCurrent(skillId));
+    expect(await db.playerSkillStreak.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } })).toMatchObject({ currentStreakDays: 1, longestStreakDays: 1 });
+    expect(await db.questSkillReward.count({ where: { questReward: { playerQuestId: { in: [first.q.id, second.q.id] } }, streakBonusXp: { gt: 0 } } })).toBe(0);
   });
   it("preserves overlapping multi-Skill completion totals", async () => {
     const first = await fixtureOfferInSlot("F-WALK-04", 1); const second = await fixtureOfferInSlot("F-NUT-03", 2); await accept(first.q.id); await accept(second.q.id);
@@ -361,6 +399,7 @@ describe("Standard Phase 05 concurrency", () => {
       const progress = await db.playerSkillProgress.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } });
       expect(progress.currentXp).toBe(await ledgerCurrent(skillId));
       expect(progress.lifetimeXp).toBe((await db.xpTransaction.findMany({ where: { playerId, skillId, xpScope: "LIFETIME_SKILL" } })).reduce((sum, row) => sum + row.amount, 0));
+      expect((await db.playerSkillStreak.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } })).currentStreakDays).toBe(1);
     }
   });
   it("serializes expired clear against positive completion with no lost Skill XP", async () => {

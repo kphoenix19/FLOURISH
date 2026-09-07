@@ -25,9 +25,10 @@ test.describe("Standard quest experience", () => {
     const token = await encode({ secret: process.env.AUTH_SECRET!, token: { sub: userId }, maxAge: 3600 });
     await context.addCookies([{ name: "next-auth.session-token", value: token, domain: "127.0.0.1", path: "/", httpOnly: true, secure: false, sameSite: "Lax" }]);
     const complete = await context.request.post("/api/onboarding/complete", { headers: { Origin: "http://127.0.0.1:3103" }, data: { timezone: "America/Denver", focus: ["F", "L", "O", "U", "R", "I", "S", "H"].map((skillCode, i) => ({ skillCode, points: i < 6 ? 6 : 5 })) } });
-    expect(complete.ok()).toBe(true);
+    expect(complete.ok(), await complete.text()).toBe(true);
     await page.goto("/home");
     await expect(page.locator("[data-slot-id]")).toHaveCount(24);
+    await expect(page.getByText("0-day streak (inactive)").first()).toBeVisible();
     const recommendation = page.locator("[data-recommended-quest-id]");
     await expect(recommendation.getByText("What should I do next?")).toBeVisible();
     await expect(recommendation.getByRole("link", { name: "View this Standard quest" })).toBeVisible();
@@ -74,6 +75,7 @@ test.describe("Standard quest experience", () => {
     await walk.getByRole("button", { name: "Complete", exact: true }).click();
     await expect(page.getByRole("status")).toContainText("Quest complete", { timeout: 30_000 });
     await expect(page.getByRole("complementary", { name: "Quest result" })).toContainText("Overall XP");
+    await expect(page.getByText(/1-day streak \(active\)/).first()).toBeVisible();
     expect(Number((await page.getByText(/Overall XP/).first().textContent())!.match(/\d+/)![0])).toBeGreaterThan(beforeOverall);
     const completedReplacement = await walk.getAttribute("data-quest-id"); expect(completedReplacement).not.toBe(acceptedId);
 

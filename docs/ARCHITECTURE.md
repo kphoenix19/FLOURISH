@@ -56,6 +56,10 @@ Accept, reroll, and harder-family actions enter through authenticated REST servi
 
 Authenticated Standard reads and resolution mutations lazily reconcile overdue accepted quests. A Player row lock serializes all progression, streak, lifecycle, and slot changes for one Player, which covers same-Skill and overlapping multi-Skill requests without lost updates. Completion locks through this context, uses immutable acceptance snapshots and one operation timestamp, writes the reward and ledger, updates progression/levels and streaks, marks the quest complete, then selects its replacement using updated progression. Abandon applies its calculated penalty before refill. Expiration stores penalty facts but leaves the slot blocked and XP untouched; explicit clear applies the stored per-Skill penalty before refill. Database uniqueness plus the status/slot boundary prevents duplicate rewards and penalties.
 
+### Phase 07 streak completion
+
+Phase 07 reuses the Phase 05 completion transaction as the sole authoritative Skill-streak write path. Player-facing reads derive an effective streak from the stored local qualifying date without writing merely because time passed, and expose active state plus progress toward the next configured bonus tier. Calendar helpers use the Player's IANA timezone; a Monday-based local-week helper establishes the boundary needed by Phase 08, while weekly Challenge-driven streak advancement remains deferred until that engine exists.
+
 Use database transactions and row locking where appropriate for completion, abandonment, expired clearing, COUNT progress, slot replacement, and Daily/Weekly set bonuses. Use UUID `operation_id` values for action grouping/idempotency.
 
 Completion transaction:

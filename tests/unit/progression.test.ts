@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { overallLevelForXp, overallProgressWithinLevel, overallXpRequiredForLevel, skillLevelForXp, skillProgressWithinLevel, skillXpRequiredForLevel } from "../../src/modules/progression/levels";
 import { allocateLargestRemainder, percentRoundHalfUp } from "../../src/modules/progression/math";
-import { advanceStreak, streakBonusPercent } from "../../src/modules/progression/streaks";
+import { advanceStreak, effectiveStreakDays, localDate, localMondayWeekStart, mondayWeekStart, nextStreakTier, streakBonusPercent } from "../../src/modules/progression/streaks";
 
 describe("level curves", () => {
   const milestones = [2, 5, 10, 25, 50, 75, 100];
@@ -36,4 +36,27 @@ describe("streak rules", () => {
     expect(advanceStreak(9, 9, "2026-09-03", "2026-09-06").currentStreakDays).toBe(1);
   });
   it.each([[1,0],[3,5],[7,10],[14,15],[30,20]])("uses the post-completion day %i tier", (days, bonus) => expect(streakBonusPercent(days)).toBe(bonus));
+  it("starts at one and preserves the longest streak after a reset", () => {
+    expect(advanceStreak(0, 0, null, "2026-09-07")).toEqual({ currentStreakDays: 1, longestStreakDays: 1, lastQualifyingDate: "2026-09-07" });
+    expect(advanceStreak(12, 20, "2026-09-05", "2026-09-07")).toEqual({ currentStreakDays: 1, longestStreakDays: 20, lastQualifyingDate: "2026-09-07" });
+  });
+  it("exposes effective stale state without mutating persisted state", () => {
+    const last = new Date("2026-09-05T00:00:00Z");
+    expect(effectiveStreakDays(8, last, new Date("2026-09-06T18:00:00Z"), "UTC")).toBe(8);
+    expect(effectiveStreakDays(8, last, new Date("2026-09-07T00:00:00Z"), "UTC")).toBe(0);
+  });
+  it("uses local calendar dates across UTC midnight and DST", () => {
+    expect(localDate(new Date("2026-03-09T05:30:00Z"), "America/Denver")).toBe("2026-03-08");
+    expect(localDate(new Date("2026-03-09T06:30:00Z"), "America/New_York")).toBe("2026-03-09");
+    expect(advanceStreak(1, 1, "2026-03-07", localDate(new Date("2026-03-09T05:30:00Z"), "America/Denver")).currentStreakDays).toBe(2);
+  });
+  it("reports progress to the next meaningful tier", () => {
+    expect(nextStreakTier(0)).toEqual({ days: 3, bonusPercent: 5, daysRemaining: 3 });
+    expect(nextStreakTier(7)).toEqual({ days: 14, bonusPercent: 15, daysRemaining: 7 }); expect(nextStreakTier(30)).toBeNull();
+  });
+  it("provides Monday-based local week boundaries without advancing weekly streaks", () => {
+    expect(mondayWeekStart("2026-09-13")).toBe("2026-09-07");
+    expect(localMondayWeekStart(new Date("2026-09-14T05:30:00Z"), "America/Denver")).toBe("2026-09-07");
+    expect(localMondayWeekStart(new Date("2026-09-14T06:30:00Z"), "America/Denver")).toBe("2026-09-14");
+  });
 });
