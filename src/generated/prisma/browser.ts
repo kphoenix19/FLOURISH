@@ -113,6 +113,11 @@ export type PlayerQuest = Prisma.PlayerQuestModel
  */
 export type PlayerQuestSkillSnapshot = Prisma.PlayerQuestSkillSnapshotModel
 /**
+ * Model PlayerQuestFailurePenaltySkill
+ *
+ */
+export type PlayerQuestFailurePenaltySkill = Prisma.PlayerQuestFailurePenaltySkillModel
+/**
  * Model PlayerQuestSlot
  * 
  */

@@ -11,8 +11,8 @@ export const gameConfigSchema = z.object({
   progression: z.object({
     skillLevelCap: z.number().int().positive(),
     levelCurves: z.object({
-      status: z.literal("OPEN_DECISION"),
-      resolutionPhase: z.literal("XP_PROGRESSION_IMPLEMENTATION"),
+      skill: z.object({ base: z.number().int().positive(), linear: z.number().int().min(0), quadratic: z.number().int().min(0) }),
+      overall: z.object({ base: z.number().int().positive(), linear: z.number().int().min(0), quadratic: z.number().int().min(0) }),
     }),
   }),
   quests: z.object({
@@ -76,8 +76,11 @@ export const gameConfigSchema = z.object({
 export type GameConfig = z.infer<typeof gameConfigSchema>;
 
 const rawGameConfig = {
-  version: "build1-00b-v1",
-  progression: { skillLevelCap: 100, levelCurves: { status: "OPEN_DECISION", resolutionPhase: "XP_PROGRESSION_IMPLEMENTATION" } },
+  version: "build1-05-v1",
+  progression: { skillLevelCap: 100, levelCurves: {
+    skill: { base: 100, linear: 20, quadratic: 2 },
+    overall: { base: 200, linear: 35, quadratic: 3 },
+  } },
   quests: {
     baseXpRange: { min: 50, max: 1000 },
     difficultyXpBands: {

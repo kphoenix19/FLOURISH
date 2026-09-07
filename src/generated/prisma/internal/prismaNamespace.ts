@@ -416,6 +416,7 @@ export const ModelName = {
   ChallengeSet: 'ChallengeSet',
   PlayerQuest: 'PlayerQuest',
   PlayerQuestSkillSnapshot: 'PlayerQuestSkillSnapshot',
+  PlayerQuestFailurePenaltySkill: 'PlayerQuestFailurePenaltySkill',
   PlayerQuestSlot: 'PlayerQuestSlot',
   QuestReward: 'QuestReward',
   QuestSkillReward: 'QuestSkillReward',
@@ -438,7 +439,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "authAccount" | "player" | "skill" | "playerSkillFocus" | "playerSkillFocusHistory" | "playerProgress" | "playerSkillProgress" | "playerSkillStreak" | "questFamily" | "questDefinition" | "questSkill" | "varietyTag" | "questVarietyTag" | "contextTag" | "questContextTag" | "challengeSet" | "playerQuest" | "playerQuestSkillSnapshot" | "playerQuestSlot" | "questReward" | "questSkillReward" | "xpTransaction" | "questInteraction" | "adminAuditLog" | "playerRecommendation"
+    modelProps: "user" | "authAccount" | "player" | "skill" | "playerSkillFocus" | "playerSkillFocusHistory" | "playerProgress" | "playerSkillProgress" | "playerSkillStreak" | "questFamily" | "questDefinition" | "questSkill" | "varietyTag" | "questVarietyTag" | "contextTag" | "questContextTag" | "challengeSet" | "playerQuest" | "playerQuestSkillSnapshot" | "playerQuestFailurePenaltySkill" | "playerQuestSlot" | "questReward" | "questSkillReward" | "xpTransaction" | "questInteraction" | "adminAuditLog" | "playerRecommendation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1848,6 +1849,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PlayerQuestFailurePenaltySkill: {
+      payload: Prisma.$PlayerQuestFailurePenaltySkillPayload<ExtArgs>
+      fields: Prisma.PlayerQuestFailurePenaltySkillFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlayerQuestFailurePenaltySkillFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlayerQuestFailurePenaltySkillFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>
+        }
+        findFirst: {
+          args: Prisma.PlayerQuestFailurePenaltySkillFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlayerQuestFailurePenaltySkillFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>
+        }
+        findMany: {
+          args: Prisma.PlayerQuestFailurePenaltySkillFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>[]
+        }
+        create: {
+          args: Prisma.PlayerQuestFailurePenaltySkillCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>
+        }
+        createMany: {
+          args: Prisma.PlayerQuestFailurePenaltySkillCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlayerQuestFailurePenaltySkillCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>[]
+        }
+        delete: {
+          args: Prisma.PlayerQuestFailurePenaltySkillDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>
+        }
+        update: {
+          args: Prisma.PlayerQuestFailurePenaltySkillUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>
+        }
+        deleteMany: {
+          args: Prisma.PlayerQuestFailurePenaltySkillDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlayerQuestFailurePenaltySkillUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlayerQuestFailurePenaltySkillUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>[]
+        }
+        upsert: {
+          args: Prisma.PlayerQuestFailurePenaltySkillUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerQuestFailurePenaltySkillPayload>
+        }
+        aggregate: {
+          args: Prisma.PlayerQuestFailurePenaltySkillAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlayerQuestFailurePenaltySkill>
+        }
+        groupBy: {
+          args: Prisma.PlayerQuestFailurePenaltySkillGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlayerQuestFailurePenaltySkillGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlayerQuestFailurePenaltySkillCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlayerQuestFailurePenaltySkillCountAggregateOutputType> | number
+        }
+      }
+    }
     PlayerQuestSlot: {
       payload: Prisma.$PlayerQuestSlotPayload<ExtArgs>
       fields: Prisma.PlayerQuestSlotFieldRefs
@@ -2675,6 +2750,16 @@ export const PlayerQuestSkillSnapshotScalarFieldEnum = {
 export type PlayerQuestSkillSnapshotScalarFieldEnum = (typeof PlayerQuestSkillSnapshotScalarFieldEnum)[keyof typeof PlayerQuestSkillSnapshotScalarFieldEnum]
 
 
+export const PlayerQuestFailurePenaltySkillScalarFieldEnum = {
+  playerQuestId: 'playerQuestId',
+  skillId: 'skillId',
+  intendedPenaltyXp: 'intendedPenaltyXp',
+  actualAppliedPenaltyXp: 'actualAppliedPenaltyXp'
+} as const
+
+export type PlayerQuestFailurePenaltySkillScalarFieldEnum = (typeof PlayerQuestFailurePenaltySkillScalarFieldEnum)[keyof typeof PlayerQuestFailurePenaltySkillScalarFieldEnum]
+
+
 export const PlayerQuestSlotScalarFieldEnum = {
   id: 'id',
   playerId: 'playerId',
@@ -2711,6 +2796,8 @@ export const QuestSkillRewardScalarFieldEnum = {
   rewardPercent: 'rewardPercent',
   baseSkillXp: 'baseSkillXp',
   bonusSkillXp: 'bonusSkillXp',
+  catchUpBonusXp: 'catchUpBonusXp',
+  streakBonusXp: 'streakBonusXp',
   finalSkillXp: 'finalSkillXp'
 } as const
 
@@ -3264,6 +3351,7 @@ export type GlobalOmitConfig = {
   challengeSet?: Prisma.ChallengeSetOmit
   playerQuest?: Prisma.PlayerQuestOmit
   playerQuestSkillSnapshot?: Prisma.PlayerQuestSkillSnapshotOmit
+  playerQuestFailurePenaltySkill?: Prisma.PlayerQuestFailurePenaltySkillOmit
   playerQuestSlot?: Prisma.PlayerQuestSlotOmit
   questReward?: Prisma.QuestRewardOmit
   questSkillReward?: Prisma.QuestSkillRewardOmit

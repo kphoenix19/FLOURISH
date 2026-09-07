@@ -172,23 +172,24 @@ model Player {
 }
 
 model Skill {
-  id                  String                     @id @default(uuid()) @db.Uuid
-  code                String                     @unique @db.VarChar(1)
-  name                String                     @unique
-  description         String
-  active              Boolean                    @default(true)
-  createdAt           DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt           DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(3)
-  playerFocus         PlayerSkillFocus[]
-  focusHistory        PlayerSkillFocusHistory[]
-  playerProgress      PlayerSkillProgress[]
-  playerStreaks       PlayerSkillStreak[]
-  questSkills         QuestSkill[]
-  varietyTags         VarietyTag[]
-  questSkillSnapshots PlayerQuestSkillSnapshot[]
-  slots               PlayerQuestSlot[]
-  questSkillRewards   QuestSkillReward[]
-  xpTransactions      XpTransaction[]
+  id                   String                           @id @default(uuid()) @db.Uuid
+  code                 String                           @unique @db.VarChar(1)
+  name                 String                           @unique
+  description          String
+  active               Boolean                          @default(true)
+  createdAt            DateTime                         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime                         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  playerFocus          PlayerSkillFocus[]
+  focusHistory         PlayerSkillFocusHistory[]
+  playerProgress       PlayerSkillProgress[]
+  playerStreaks        PlayerSkillStreak[]
+  questSkills          QuestSkill[]
+  varietyTags          VarietyTag[]
+  questSkillSnapshots  PlayerQuestSkillSnapshot[]
+  failurePenaltySkills PlayerQuestFailurePenaltySkill[]
+  slots                PlayerQuestSlot[]
+  questSkillRewards    QuestSkillReward[]
+  xpTransactions       XpTransaction[]
 
   @@map("skills")
 }
@@ -408,40 +409,41 @@ model ChallengeSet {
 }
 
 model PlayerQuest {
-  id                            String                     @id @default(uuid()) @db.Uuid
-  playerId                      String                     @map("player_id") @db.Uuid
-  questDefinitionId             String                     @map("quest_definition_id") @db.Uuid
-  challengeSetId                String?                    @map("challenge_set_id") @db.Uuid
-  poolType                      QuestPoolType              @map("pool_type")
-  status                        PlayerQuestStatus          @default(AVAILABLE)
-  currentProgress               Int                        @default(0) @map("current_progress")
-  assignedAt                    DateTime                   @default(now()) @map("assigned_at") @db.Timestamptz(3)
-  acceptedAt                    DateTime?                  @map("accepted_at") @db.Timestamptz(3)
-  deadlineAt                    DateTime?                  @map("deadline_at") @db.Timestamptz(3)
-  completedAt                   DateTime?                  @map("completed_at") @db.Timestamptz(3)
-  abandonedAt                   DateTime?                  @map("abandoned_at") @db.Timestamptz(3)
-  expiredAt                     DateTime?                  @map("expired_at") @db.Timestamptz(3)
-  clearedAt                     DateTime?                  @map("cleared_at") @db.Timestamptz(3)
-  windowStartAt                 DateTime?                  @map("window_start_at") @db.Timestamptz(3)
-  windowEndAt                   DateTime?                  @map("window_end_at") @db.Timestamptz(3)
-  difficultySnapshot            Difficulty                 @map("difficulty_snapshot")
-  baseXpSnapshot                Int                        @map("base_xp_snapshot")
-  completionTypeSnapshot        CompletionType             @map("completion_type_snapshot")
-  completionTargetSnapshot      Int                        @map("completion_target_snapshot")
-  completionWindowHoursSnapshot Int?                       @map("completion_window_hours_snapshot")
-  rewardConfigVersionSnapshot   String                     @map("reward_config_version_snapshot")
-  titleSnapshot                 String?                    @map("title_snapshot")
-  descriptionSnapshot           String?                    @map("description_snapshot")
-  estimatedMinutesSnapshot      Int?                       @map("estimated_minutes_snapshot")
-  failurePenaltyXp              Int?                       @map("failure_penalty_xp")
-  failurePenaltyAppliedAt       DateTime?                  @map("failure_penalty_applied_at") @db.Timestamptz(3)
-  createdAt                     DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt                     DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(3)
-  player                        Player                     @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  questDefinition               QuestDefinition            @relation(fields: [questDefinitionId], references: [id], onDelete: Restrict)
-  challengeSet                  ChallengeSet?              @relation(fields: [challengeSetId], references: [id], onDelete: Restrict)
+  id                            String                           @id @default(uuid()) @db.Uuid
+  playerId                      String                           @map("player_id") @db.Uuid
+  questDefinitionId             String                           @map("quest_definition_id") @db.Uuid
+  challengeSetId                String?                          @map("challenge_set_id") @db.Uuid
+  poolType                      QuestPoolType                    @map("pool_type")
+  status                        PlayerQuestStatus                @default(AVAILABLE)
+  currentProgress               Int                              @default(0) @map("current_progress")
+  assignedAt                    DateTime                         @default(now()) @map("assigned_at") @db.Timestamptz(3)
+  acceptedAt                    DateTime?                        @map("accepted_at") @db.Timestamptz(3)
+  deadlineAt                    DateTime?                        @map("deadline_at") @db.Timestamptz(3)
+  completedAt                   DateTime?                        @map("completed_at") @db.Timestamptz(3)
+  abandonedAt                   DateTime?                        @map("abandoned_at") @db.Timestamptz(3)
+  expiredAt                     DateTime?                        @map("expired_at") @db.Timestamptz(3)
+  clearedAt                     DateTime?                        @map("cleared_at") @db.Timestamptz(3)
+  windowStartAt                 DateTime?                        @map("window_start_at") @db.Timestamptz(3)
+  windowEndAt                   DateTime?                        @map("window_end_at") @db.Timestamptz(3)
+  difficultySnapshot            Difficulty                       @map("difficulty_snapshot")
+  baseXpSnapshot                Int                              @map("base_xp_snapshot")
+  completionTypeSnapshot        CompletionType                   @map("completion_type_snapshot")
+  completionTargetSnapshot      Int                              @map("completion_target_snapshot")
+  completionWindowHoursSnapshot Int?                             @map("completion_window_hours_snapshot")
+  rewardConfigVersionSnapshot   String                           @map("reward_config_version_snapshot")
+  titleSnapshot                 String?                          @map("title_snapshot")
+  descriptionSnapshot           String?                          @map("description_snapshot")
+  estimatedMinutesSnapshot      Int?                             @map("estimated_minutes_snapshot")
+  failurePenaltyXp              Int?                             @map("failure_penalty_xp")
+  failurePenaltyAppliedAt       DateTime?                        @map("failure_penalty_applied_at") @db.Timestamptz(3)
+  createdAt                     DateTime                         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                     DateTime                         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  player                        Player                           @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  questDefinition               QuestDefinition                  @relation(fields: [questDefinitionId], references: [id], onDelete: Restrict)
+  challengeSet                  ChallengeSet?                    @relation(fields: [challengeSetId], references: [id], onDelete: Restrict)
   skillSnapshots                PlayerQuestSkillSnapshot[]
-  currentSlot                   PlayerQuestSlot?           @relation("CurrentSlotQuest")
+  failurePenaltySkills          PlayerQuestFailurePenaltySkill[]
+  currentSlot                   PlayerQuestSlot?                 @relation("CurrentSlotQuest")
   reward                        QuestReward?
   xpTransactions                XpTransaction[]
   interactions                  QuestInteraction[]
@@ -468,6 +470,19 @@ model PlayerQuestSkillSnapshot {
   @@id([playerQuestId, skillId])
   @@index([skillId])
   @@map("player_quest_skill_snapshots")
+}
+
+model PlayerQuestFailurePenaltySkill {
+  playerQuestId          String      @map("player_quest_id") @db.Uuid
+  skillId                String      @map("skill_id") @db.Uuid
+  intendedPenaltyXp      Int         @map("intended_penalty_xp")
+  actualAppliedPenaltyXp Int?        @map("actual_applied_penalty_xp")
+  playerQuest            PlayerQuest @relation(fields: [playerQuestId], references: [id], onDelete: Restrict)
+  skill                  Skill       @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([playerQuestId, skillId])
+  @@index([skillId])
+  @@map("player_quest_failure_penalty_skills")
 }
 
 model PlayerQuestSlot {
@@ -507,15 +522,17 @@ model QuestReward {
 }
 
 model QuestSkillReward {
-  id            String      @id @default(uuid()) @db.Uuid
-  questRewardId String      @map("quest_reward_id") @db.Uuid
-  skillId       String      @map("skill_id") @db.Uuid
-  rewardPercent Int         @map("reward_percent")
-  baseSkillXp   Int         @map("base_skill_xp")
-  bonusSkillXp  Int         @map("bonus_skill_xp")
-  finalSkillXp  Int         @map("final_skill_xp")
-  questReward   QuestReward @relation(fields: [questRewardId], references: [id], onDelete: Restrict)
-  skill         Skill       @relation(fields: [skillId], references: [id], onDelete: Restrict)
+  id             String      @id @default(uuid()) @db.Uuid
+  questRewardId  String      @map("quest_reward_id") @db.Uuid
+  skillId        String      @map("skill_id") @db.Uuid
+  rewardPercent  Int         @map("reward_percent")
+  baseSkillXp    Int         @map("base_skill_xp")
+  bonusSkillXp   Int         @map("bonus_skill_xp")
+  catchUpBonusXp Int         @default(0) @map("catch_up_bonus_xp")
+  streakBonusXp  Int         @default(0) @map("streak_bonus_xp")
+  finalSkillXp   Int         @map("final_skill_xp")
+  questReward    QuestReward @relation(fields: [questRewardId], references: [id], onDelete: Restrict)
+  skill          Skill       @relation(fields: [skillId], references: [id], onDelete: Restrict)
 
   @@unique([questRewardId, skillId])
   @@index([skillId])
@@ -536,6 +553,7 @@ model XpTransaction {
   playerQuest     PlayerQuest?      @relation(fields: [playerQuestId], references: [id], onDelete: Restrict)
   skill           Skill?            @relation(fields: [skillId], references: [id], onDelete: Restrict)
 
+  @@unique([operationId, xpScope, skillId, transactionType])
   @@index([playerId, createdAt(sort: Desc)])
   @@index([playerQuestId])
   @@index([operationId])

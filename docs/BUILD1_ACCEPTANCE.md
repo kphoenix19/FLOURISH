@@ -47,13 +47,13 @@ An authorized administrator can list/search/filter, create/edit/validate, submit
 
 Unit, integration, API, and end-to-end tests cover the workflows above. At minimum test boundary XP values, all reward splits after the rounding decision is resolved, every status transition, timezone/DST boundaries, all streak tiers, every level band, all feedback modifiers, eligibility filtering, family-tier skipping, and invalid/duplicate/concurrent requests.
 
-Build 1 cannot be accepted until the documented Overall and Skill XP level curves are resolved during the XP/progression implementation phase.
+The Overall and Skill XP level curves are resolved in Phase 05 and documented in GAME_RULES.md; no level-curve OPEN DECISION remains.
 
 ## Phase 03 verification scope
 
 Phase 03 implements Google-only Auth.js wiring, idempotent Player creation, explicit timezone confirmation, the complete 46-point allocation, transactional onboarding, initial progression/streak rows, Focus history/respec, timezone Settings, and server-side User/Player/admin guards. Unit/component and PostgreSQL tests exercise these boundaries without Google. Browser smoke coverage uses genuine Auth.js encrypted cookies minted by test-only fixture code, including reload persistence, completed-onboarding redirects, respec, timezone changes, admin denial/allowance, and sign-out on desktop/phone.
 
-The top-level Google sign-in acceptance box remains pending a developer-configured live Google OAuth round trip. Test cookies do not verify Google's consent/callback service. Full Build 1 boxes that include gameplay remain open. This phase explicitly verifies that no Standard Quest slots or PlayerQuests are generated and leaves level curves unresolved for the progression phase.
+The top-level Google sign-in acceptance box remains pending a developer-configured live Google OAuth round trip. Test cookies do not verify Google's consent/callback service. Full Build 1 boxes that include later gameplay phases remain open.
 
 ## Phase 04 verification scope
 

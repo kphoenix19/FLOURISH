@@ -270,6 +270,7 @@ export type XpTransactionOrderByWithRelationInput = {
 
 export type XpTransactionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  operationId_xpScope_skillId_transactionType?: Prisma.XpTransactionOperationIdXpScopeSkillIdTransactionTypeCompoundUniqueInput
   AND?: Prisma.XpTransactionWhereInput | Prisma.XpTransactionWhereInput[]
   OR?: Prisma.XpTransactionWhereInput[]
   NOT?: Prisma.XpTransactionWhereInput | Prisma.XpTransactionWhereInput[]
@@ -284,7 +285,7 @@ export type XpTransactionWhereUniqueInput = Prisma.AtLeast<{
   player?: Prisma.XOR<Prisma.PlayerScalarRelationFilter, Prisma.PlayerWhereInput>
   playerQuest?: Prisma.XOR<Prisma.PlayerQuestNullableScalarRelationFilter, Prisma.PlayerQuestWhereInput> | null
   skill?: Prisma.XOR<Prisma.SkillNullableScalarRelationFilter, Prisma.SkillWhereInput> | null
-}, "id">
+}, "id" | "operationId_xpScope_skillId_transactionType">
 
 export type XpTransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -407,6 +408,13 @@ export type XpTransactionListRelationFilter = {
 
 export type XpTransactionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type XpTransactionOperationIdXpScopeSkillIdTransactionTypeCompoundUniqueInput = {
+  operationId: string
+  xpScope: $Enums.XpScope
+  skillId: string
+  transactionType: $Enums.XpTransactionType
 }
 
 export type XpTransactionCountOrderByAggregateInput = {

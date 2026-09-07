@@ -5,7 +5,7 @@ import { gameConfig } from "../../../config/game";
 import { catchUpModifiers, primaryTag, type SelectionContext } from "./selection";
 import { definitionInclude, validDefinition } from "./content";
 
-export const slotInclude = { skill: true, currentPlayerQuest: { include: { questDefinition: { include: definitionInclude }, skillSnapshots: true } } } satisfies Prisma.PlayerQuestSlotInclude;
+export const slotInclude = { skill: true, currentPlayerQuest: { include: { questDefinition: { include: definitionInclude }, skillSnapshots: true, failurePenaltySkills: true } } } satisfies Prisma.PlayerQuestSlotInclude;
 export type Slot = Prisma.PlayerQuestSlotGetPayload<{ include: typeof slotInclude }>;
 export async function standardContext(tx: Prisma.TransactionClient, playerId: string) {
   // Lock order is library, then Player. Shared library locks allow concurrent players
@@ -20,11 +20,11 @@ export async function standardContext(tx: Prisma.TransactionClient, playerId: st
   const focus = Object.fromEntries(state.rows.map((r) => [r.skillId, r.focusPoints]));
   const catchUp = catchUpModifiers(progress.map((p) => ({ ...p, code: state.skills.find((s) => s.id === p.skillId)!.code })));
   const recent = new Map<string, SelectionContext["recent"]>();
+  const completed = await tx.playerQuest.findMany({ where: { playerId, status: "COMPLETED" }, orderBy: [{ completedAt: "desc" }, { id: "asc" }], include: { skillSnapshots: true, questDefinition: { include: definitionInclude } } });
   for (const skill of state.skills) {
-    const completed = await tx.playerQuest.findMany({ where: { playerId, status: "COMPLETED", skillSnapshots: { some: { skillId: skill.id } } }, orderBy: [{ completedAt: "desc" }, { id: "asc" }], take: gameConfig.recommendations.varietyHistoryWindow, include: { questDefinition: { include: definitionInclude } } });
-    recent.set(skill.id, completed.map((q) => ({ definitionId: q.questDefinitionId, primaryTagId: primaryTag(q.questDefinition) })));
+    recent.set(skill.id, completed.filter((q) => q.skillSnapshots.some((snapshot) => snapshot.skillId === skill.id)).slice(0, gameConfig.recommendations.varietyHistoryWindow).map((q) => ({ definitionId: q.questDefinitionId, primaryTagId: primaryTag(q.questDefinition) })));
   }
-  return { tx, playerId, state, candidates: (skillId: string) => definitions.filter((q) => validDefinition(q, skillId, ids)),
+  return { tx, playerId, state, progress, candidates: (skillId: string) => definitions.filter((q) => validDefinition(q, skillId, ids)),
     selection: (skillId: string, occupied: Set<string>): SelectionContext => ({ level: progress.find((p) => p.skillId === skillId)!.currentLevel, focus, catchUp, occupied, recent: recent.get(skillId)! }),
     valid: (q: Parameters<typeof validDefinition>[0], skillId: string) => validDefinition(q, skillId, ids) };
 }

@@ -432,6 +432,7 @@ export type PlayerQuestWhereInput = {
   questDefinition?: Prisma.XOR<Prisma.QuestDefinitionScalarRelationFilter, Prisma.QuestDefinitionWhereInput>
   challengeSet?: Prisma.XOR<Prisma.ChallengeSetNullableScalarRelationFilter, Prisma.ChallengeSetWhereInput> | null
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotListRelationFilter
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillListRelationFilter
   currentSlot?: Prisma.XOR<Prisma.PlayerQuestSlotNullableScalarRelationFilter, Prisma.PlayerQuestSlotWhereInput> | null
   reward?: Prisma.XOR<Prisma.QuestRewardNullableScalarRelationFilter, Prisma.QuestRewardWhereInput> | null
   xpTransactions?: Prisma.XpTransactionListRelationFilter
@@ -473,6 +474,7 @@ export type PlayerQuestOrderByWithRelationInput = {
   questDefinition?: Prisma.QuestDefinitionOrderByWithRelationInput
   challengeSet?: Prisma.ChallengeSetOrderByWithRelationInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotOrderByRelationAggregateInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillOrderByRelationAggregateInput
   currentSlot?: Prisma.PlayerQuestSlotOrderByWithRelationInput
   reward?: Prisma.QuestRewardOrderByWithRelationInput
   xpTransactions?: Prisma.XpTransactionOrderByRelationAggregateInput
@@ -517,6 +519,7 @@ export type PlayerQuestWhereUniqueInput = Prisma.AtLeast<{
   questDefinition?: Prisma.XOR<Prisma.QuestDefinitionScalarRelationFilter, Prisma.QuestDefinitionWhereInput>
   challengeSet?: Prisma.XOR<Prisma.ChallengeSetNullableScalarRelationFilter, Prisma.ChallengeSetWhereInput> | null
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotListRelationFilter
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillListRelationFilter
   currentSlot?: Prisma.XOR<Prisma.PlayerQuestSlotNullableScalarRelationFilter, Prisma.PlayerQuestSlotWhereInput> | null
   reward?: Prisma.XOR<Prisma.QuestRewardNullableScalarRelationFilter, Prisma.QuestRewardWhereInput> | null
   xpTransactions?: Prisma.XpTransactionListRelationFilter
@@ -627,6 +630,7 @@ export type PlayerQuestCreateInput = {
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
@@ -665,6 +669,7 @@ export type PlayerQuestUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -703,6 +708,7 @@ export type PlayerQuestUpdateInput = {
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
@@ -741,6 +747,7 @@ export type PlayerQuestUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -1119,6 +1126,20 @@ export type PlayerQuestUpdateOneRequiredWithoutSkillSnapshotsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PlayerQuestUpdateToOneWithWhereWithoutSkillSnapshotsInput, Prisma.PlayerQuestUpdateWithoutSkillSnapshotsInput>, Prisma.PlayerQuestUncheckedUpdateWithoutSkillSnapshotsInput>
 }
 
+export type PlayerQuestCreateNestedOneWithoutFailurePenaltySkillsInput = {
+  create?: Prisma.XOR<Prisma.PlayerQuestCreateWithoutFailurePenaltySkillsInput, Prisma.PlayerQuestUncheckedCreateWithoutFailurePenaltySkillsInput>
+  connectOrCreate?: Prisma.PlayerQuestCreateOrConnectWithoutFailurePenaltySkillsInput
+  connect?: Prisma.PlayerQuestWhereUniqueInput
+}
+
+export type PlayerQuestUpdateOneRequiredWithoutFailurePenaltySkillsNestedInput = {
+  create?: Prisma.XOR<Prisma.PlayerQuestCreateWithoutFailurePenaltySkillsInput, Prisma.PlayerQuestUncheckedCreateWithoutFailurePenaltySkillsInput>
+  connectOrCreate?: Prisma.PlayerQuestCreateOrConnectWithoutFailurePenaltySkillsInput
+  upsert?: Prisma.PlayerQuestUpsertWithoutFailurePenaltySkillsInput
+  connect?: Prisma.PlayerQuestWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlayerQuestUpdateToOneWithWhereWithoutFailurePenaltySkillsInput, Prisma.PlayerQuestUpdateWithoutFailurePenaltySkillsInput>, Prisma.PlayerQuestUncheckedUpdateWithoutFailurePenaltySkillsInput>
+}
+
 export type PlayerQuestCreateNestedOneWithoutCurrentSlotInput = {
   create?: Prisma.XOR<Prisma.PlayerQuestCreateWithoutCurrentSlotInput, Prisma.PlayerQuestUncheckedCreateWithoutCurrentSlotInput>
   connectOrCreate?: Prisma.PlayerQuestCreateOrConnectWithoutCurrentSlotInput
@@ -1225,6 +1246,7 @@ export type PlayerQuestCreateWithoutPlayerInput = {
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
@@ -1262,6 +1284,7 @@ export type PlayerQuestUncheckedCreateWithoutPlayerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -1360,6 +1383,7 @@ export type PlayerQuestCreateWithoutQuestDefinitionInput = {
   player: Prisma.PlayerCreateNestedOneWithoutQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
@@ -1397,6 +1421,7 @@ export type PlayerQuestUncheckedCreateWithoutQuestDefinitionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -1460,6 +1485,7 @@ export type PlayerQuestCreateWithoutChallengeSetInput = {
   player: Prisma.PlayerCreateNestedOneWithoutQuestsInput
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
@@ -1497,6 +1523,7 @@ export type PlayerQuestUncheckedCreateWithoutChallengeSetInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -1560,6 +1587,7 @@ export type PlayerQuestCreateWithoutSkillSnapshotsInput = {
   player: Prisma.PlayerCreateNestedOneWithoutQuestsInput
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
@@ -1597,6 +1625,7 @@ export type PlayerQuestUncheckedCreateWithoutSkillSnapshotsInput = {
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -1650,6 +1679,7 @@ export type PlayerQuestUpdateWithoutSkillSnapshotsInput = {
   player?: Prisma.PlayerUpdateOneRequiredWithoutQuestsNestedInput
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
@@ -1687,6 +1717,175 @@ export type PlayerQuestUncheckedUpdateWithoutSkillSnapshotsInput = {
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
+  reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
+  xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  interactions?: Prisma.QuestInteractionUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  recommendation?: Prisma.PlayerRecommendationUncheckedUpdateOneWithoutPlayerQuestNestedInput
+}
+
+export type PlayerQuestCreateWithoutFailurePenaltySkillsInput = {
+  id?: string
+  poolType: $Enums.QuestPoolType
+  status?: $Enums.PlayerQuestStatus
+  currentProgress?: number
+  assignedAt?: Date | string
+  acceptedAt?: Date | string | null
+  deadlineAt?: Date | string | null
+  completedAt?: Date | string | null
+  abandonedAt?: Date | string | null
+  expiredAt?: Date | string | null
+  clearedAt?: Date | string | null
+  windowStartAt?: Date | string | null
+  windowEndAt?: Date | string | null
+  difficultySnapshot: $Enums.Difficulty
+  baseXpSnapshot: number
+  completionTypeSnapshot: $Enums.CompletionType
+  completionTargetSnapshot: number
+  completionWindowHoursSnapshot?: number | null
+  rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
+  failurePenaltyXp?: number | null
+  failurePenaltyAppliedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  player: Prisma.PlayerCreateNestedOneWithoutQuestsInput
+  questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
+  challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
+  skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
+  reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
+  xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
+  interactions?: Prisma.QuestInteractionCreateNestedManyWithoutPlayerQuestInput
+  recommendation?: Prisma.PlayerRecommendationCreateNestedOneWithoutPlayerQuestInput
+}
+
+export type PlayerQuestUncheckedCreateWithoutFailurePenaltySkillsInput = {
+  id?: string
+  playerId: string
+  questDefinitionId: string
+  challengeSetId?: string | null
+  poolType: $Enums.QuestPoolType
+  status?: $Enums.PlayerQuestStatus
+  currentProgress?: number
+  assignedAt?: Date | string
+  acceptedAt?: Date | string | null
+  deadlineAt?: Date | string | null
+  completedAt?: Date | string | null
+  abandonedAt?: Date | string | null
+  expiredAt?: Date | string | null
+  clearedAt?: Date | string | null
+  windowStartAt?: Date | string | null
+  windowEndAt?: Date | string | null
+  difficultySnapshot: $Enums.Difficulty
+  baseXpSnapshot: number
+  completionTypeSnapshot: $Enums.CompletionType
+  completionTargetSnapshot: number
+  completionWindowHoursSnapshot?: number | null
+  rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
+  failurePenaltyXp?: number | null
+  failurePenaltyAppliedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
+  reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
+  xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
+  interactions?: Prisma.QuestInteractionUncheckedCreateNestedManyWithoutPlayerQuestInput
+  recommendation?: Prisma.PlayerRecommendationUncheckedCreateNestedOneWithoutPlayerQuestInput
+}
+
+export type PlayerQuestCreateOrConnectWithoutFailurePenaltySkillsInput = {
+  where: Prisma.PlayerQuestWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlayerQuestCreateWithoutFailurePenaltySkillsInput, Prisma.PlayerQuestUncheckedCreateWithoutFailurePenaltySkillsInput>
+}
+
+export type PlayerQuestUpsertWithoutFailurePenaltySkillsInput = {
+  update: Prisma.XOR<Prisma.PlayerQuestUpdateWithoutFailurePenaltySkillsInput, Prisma.PlayerQuestUncheckedUpdateWithoutFailurePenaltySkillsInput>
+  create: Prisma.XOR<Prisma.PlayerQuestCreateWithoutFailurePenaltySkillsInput, Prisma.PlayerQuestUncheckedCreateWithoutFailurePenaltySkillsInput>
+  where?: Prisma.PlayerQuestWhereInput
+}
+
+export type PlayerQuestUpdateToOneWithWhereWithoutFailurePenaltySkillsInput = {
+  where?: Prisma.PlayerQuestWhereInput
+  data: Prisma.XOR<Prisma.PlayerQuestUpdateWithoutFailurePenaltySkillsInput, Prisma.PlayerQuestUncheckedUpdateWithoutFailurePenaltySkillsInput>
+}
+
+export type PlayerQuestUpdateWithoutFailurePenaltySkillsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  poolType?: Prisma.EnumQuestPoolTypeFieldUpdateOperationsInput | $Enums.QuestPoolType
+  status?: Prisma.EnumPlayerQuestStatusFieldUpdateOperationsInput | $Enums.PlayerQuestStatus
+  currentProgress?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadlineAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  abandonedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clearedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  windowStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  windowEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  difficultySnapshot?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  baseXpSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
+  completionTypeSnapshot?: Prisma.EnumCompletionTypeFieldUpdateOperationsInput | $Enums.CompletionType
+  completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
+  completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  player?: Prisma.PlayerUpdateOneRequiredWithoutQuestsNestedInput
+  questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
+  challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
+  skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
+  reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
+  xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
+  interactions?: Prisma.QuestInteractionUpdateManyWithoutPlayerQuestNestedInput
+  recommendation?: Prisma.PlayerRecommendationUpdateOneWithoutPlayerQuestNestedInput
+}
+
+export type PlayerQuestUncheckedUpdateWithoutFailurePenaltySkillsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  playerId?: Prisma.StringFieldUpdateOperationsInput | string
+  questDefinitionId?: Prisma.StringFieldUpdateOperationsInput | string
+  challengeSetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poolType?: Prisma.EnumQuestPoolTypeFieldUpdateOperationsInput | $Enums.QuestPoolType
+  status?: Prisma.EnumPlayerQuestStatusFieldUpdateOperationsInput | $Enums.PlayerQuestStatus
+  currentProgress?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadlineAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  abandonedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clearedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  windowStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  windowEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  difficultySnapshot?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  baseXpSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
+  completionTypeSnapshot?: Prisma.EnumCompletionTypeFieldUpdateOperationsInput | $Enums.CompletionType
+  completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
+  completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -1725,6 +1924,7 @@ export type PlayerQuestCreateWithoutCurrentSlotInput = {
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
   interactions?: Prisma.QuestInteractionCreateNestedManyWithoutPlayerQuestInput
@@ -1762,6 +1962,7 @@ export type PlayerQuestUncheckedCreateWithoutCurrentSlotInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
   interactions?: Prisma.QuestInteractionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -1815,6 +2016,7 @@ export type PlayerQuestUpdateWithoutCurrentSlotInput = {
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
   interactions?: Prisma.QuestInteractionUpdateManyWithoutPlayerQuestNestedInput
@@ -1852,6 +2054,7 @@ export type PlayerQuestUncheckedUpdateWithoutCurrentSlotInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
   interactions?: Prisma.QuestInteractionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -1889,6 +2092,7 @@ export type PlayerQuestCreateWithoutRewardInput = {
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
   interactions?: Prisma.QuestInteractionCreateNestedManyWithoutPlayerQuestInput
@@ -1926,6 +2130,7 @@ export type PlayerQuestUncheckedCreateWithoutRewardInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
   interactions?: Prisma.QuestInteractionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -1979,6 +2184,7 @@ export type PlayerQuestUpdateWithoutRewardInput = {
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
   interactions?: Prisma.QuestInteractionUpdateManyWithoutPlayerQuestNestedInput
@@ -2016,6 +2222,7 @@ export type PlayerQuestUncheckedUpdateWithoutRewardInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
   interactions?: Prisma.QuestInteractionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -2053,6 +2260,7 @@ export type PlayerQuestCreateWithoutXpTransactionsInput = {
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   interactions?: Prisma.QuestInteractionCreateNestedManyWithoutPlayerQuestInput
@@ -2090,6 +2298,7 @@ export type PlayerQuestUncheckedCreateWithoutXpTransactionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   interactions?: Prisma.QuestInteractionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -2143,6 +2352,7 @@ export type PlayerQuestUpdateWithoutXpTransactionsInput = {
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   interactions?: Prisma.QuestInteractionUpdateManyWithoutPlayerQuestNestedInput
@@ -2180,6 +2390,7 @@ export type PlayerQuestUncheckedUpdateWithoutXpTransactionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   interactions?: Prisma.QuestInteractionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -2217,6 +2428,7 @@ export type PlayerQuestCreateWithoutInteractionsInput = {
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
@@ -2254,6 +2466,7 @@ export type PlayerQuestUncheckedCreateWithoutInteractionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -2307,6 +2520,7 @@ export type PlayerQuestUpdateWithoutInteractionsInput = {
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
@@ -2344,6 +2558,7 @@ export type PlayerQuestUncheckedUpdateWithoutInteractionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -2381,6 +2596,7 @@ export type PlayerQuestCreateWithoutRecommendationInput = {
   questDefinition: Prisma.QuestDefinitionCreateNestedOneWithoutPlayerQuestsInput
   challengeSet?: Prisma.ChallengeSetCreateNestedOneWithoutQuestsInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutPlayerQuestInput
@@ -2418,6 +2634,7 @@ export type PlayerQuestUncheckedCreateWithoutRecommendationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutPlayerQuestInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutPlayerQuestInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedCreateNestedOneWithoutCurrentPlayerQuestInput
   reward?: Prisma.QuestRewardUncheckedCreateNestedOneWithoutPlayerQuestInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutPlayerQuestInput
@@ -2471,6 +2688,7 @@ export type PlayerQuestUpdateWithoutRecommendationInput = {
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
@@ -2508,6 +2726,7 @@ export type PlayerQuestUncheckedUpdateWithoutRecommendationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -2575,6 +2794,7 @@ export type PlayerQuestUpdateWithoutPlayerInput = {
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
@@ -2612,6 +2832,7 @@ export type PlayerQuestUncheckedUpdateWithoutPlayerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -2711,6 +2932,7 @@ export type PlayerQuestUpdateWithoutQuestDefinitionInput = {
   player?: Prisma.PlayerUpdateOneRequiredWithoutQuestsNestedInput
   challengeSet?: Prisma.ChallengeSetUpdateOneWithoutQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
@@ -2748,6 +2970,7 @@ export type PlayerQuestUncheckedUpdateWithoutQuestDefinitionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -2847,6 +3070,7 @@ export type PlayerQuestUpdateWithoutChallengeSetInput = {
   player?: Prisma.PlayerUpdateOneRequiredWithoutQuestsNestedInput
   questDefinition?: Prisma.QuestDefinitionUpdateOneRequiredWithoutPlayerQuestsNestedInput
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutPlayerQuestNestedInput
@@ -2884,6 +3108,7 @@ export type PlayerQuestUncheckedUpdateWithoutChallengeSetInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutPlayerQuestNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutPlayerQuestNestedInput
   currentSlot?: Prisma.PlayerQuestSlotUncheckedUpdateOneWithoutCurrentPlayerQuestNestedInput
   reward?: Prisma.QuestRewardUncheckedUpdateOneWithoutPlayerQuestNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutPlayerQuestNestedInput
@@ -2929,12 +3154,14 @@ export type PlayerQuestUncheckedUpdateManyWithoutChallengeSetInput = {
 
 export type PlayerQuestCountOutputType = {
   skillSnapshots: number
+  failurePenaltySkills: number
   xpTransactions: number
   interactions: number
 }
 
 export type PlayerQuestCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   skillSnapshots?: boolean | PlayerQuestCountOutputTypeCountSkillSnapshotsArgs
+  failurePenaltySkills?: boolean | PlayerQuestCountOutputTypeCountFailurePenaltySkillsArgs
   xpTransactions?: boolean | PlayerQuestCountOutputTypeCountXpTransactionsArgs
   interactions?: boolean | PlayerQuestCountOutputTypeCountInteractionsArgs
 }
@@ -2954,6 +3181,13 @@ export type PlayerQuestCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
  */
 export type PlayerQuestCountOutputTypeCountSkillSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PlayerQuestSkillSnapshotWhereInput
+}
+
+/**
+ * PlayerQuestCountOutputType without action
+ */
+export type PlayerQuestCountOutputTypeCountFailurePenaltySkillsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlayerQuestFailurePenaltySkillWhereInput
 }
 
 /**
@@ -3005,6 +3239,7 @@ export type PlayerQuestSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   questDefinition?: boolean | Prisma.QuestDefinitionDefaultArgs<ExtArgs>
   challengeSet?: boolean | Prisma.PlayerQuest$challengeSetArgs<ExtArgs>
   skillSnapshots?: boolean | Prisma.PlayerQuest$skillSnapshotsArgs<ExtArgs>
+  failurePenaltySkills?: boolean | Prisma.PlayerQuest$failurePenaltySkillsArgs<ExtArgs>
   currentSlot?: boolean | Prisma.PlayerQuest$currentSlotArgs<ExtArgs>
   reward?: boolean | Prisma.PlayerQuest$rewardArgs<ExtArgs>
   xpTransactions?: boolean | Prisma.PlayerQuest$xpTransactionsArgs<ExtArgs>
@@ -3121,6 +3356,7 @@ export type PlayerQuestInclude<ExtArgs extends runtime.Types.Extensions.Internal
   questDefinition?: boolean | Prisma.QuestDefinitionDefaultArgs<ExtArgs>
   challengeSet?: boolean | Prisma.PlayerQuest$challengeSetArgs<ExtArgs>
   skillSnapshots?: boolean | Prisma.PlayerQuest$skillSnapshotsArgs<ExtArgs>
+  failurePenaltySkills?: boolean | Prisma.PlayerQuest$failurePenaltySkillsArgs<ExtArgs>
   currentSlot?: boolean | Prisma.PlayerQuest$currentSlotArgs<ExtArgs>
   reward?: boolean | Prisma.PlayerQuest$rewardArgs<ExtArgs>
   xpTransactions?: boolean | Prisma.PlayerQuest$xpTransactionsArgs<ExtArgs>
@@ -3146,6 +3382,7 @@ export type $PlayerQuestPayload<ExtArgs extends runtime.Types.Extensions.Interna
     questDefinition: Prisma.$QuestDefinitionPayload<ExtArgs>
     challengeSet: Prisma.$ChallengeSetPayload<ExtArgs> | null
     skillSnapshots: Prisma.$PlayerQuestSkillSnapshotPayload<ExtArgs>[]
+    failurePenaltySkills: Prisma.$PlayerQuestFailurePenaltySkillPayload<ExtArgs>[]
     currentSlot: Prisma.$PlayerQuestSlotPayload<ExtArgs> | null
     reward: Prisma.$QuestRewardPayload<ExtArgs> | null
     xpTransactions: Prisma.$XpTransactionPayload<ExtArgs>[]
@@ -3580,6 +3817,7 @@ export interface Prisma__PlayerQuestClient<T, Null = never, ExtArgs extends runt
   questDefinition<T extends Prisma.QuestDefinitionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestDefinitionDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestDefinitionClient<runtime.Types.Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   challengeSet<T extends Prisma.PlayerQuest$challengeSetArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlayerQuest$challengeSetArgs<ExtArgs>>): Prisma.Prisma__ChallengeSetClient<runtime.Types.Result.GetResult<Prisma.$ChallengeSetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   skillSnapshots<T extends Prisma.PlayerQuest$skillSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlayerQuest$skillSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlayerQuestSkillSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  failurePenaltySkills<T extends Prisma.PlayerQuest$failurePenaltySkillsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlayerQuest$failurePenaltySkillsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlayerQuestFailurePenaltySkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   currentSlot<T extends Prisma.PlayerQuest$currentSlotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlayerQuest$currentSlotArgs<ExtArgs>>): Prisma.Prisma__PlayerQuestSlotClient<runtime.Types.Result.GetResult<Prisma.$PlayerQuestSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reward<T extends Prisma.PlayerQuest$rewardArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlayerQuest$rewardArgs<ExtArgs>>): Prisma.Prisma__QuestRewardClient<runtime.Types.Result.GetResult<Prisma.$QuestRewardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   xpTransactions<T extends Prisma.PlayerQuest$xpTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlayerQuest$xpTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$XpTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4084,6 +4322,30 @@ export type PlayerQuest$skillSnapshotsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.PlayerQuestSkillSnapshotScalarFieldEnum | Prisma.PlayerQuestSkillSnapshotScalarFieldEnum[]
+}
+
+/**
+ * PlayerQuest.failurePenaltySkills
+ */
+export type PlayerQuest$failurePenaltySkillsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlayerQuestFailurePenaltySkill
+   */
+  select?: Prisma.PlayerQuestFailurePenaltySkillSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlayerQuestFailurePenaltySkill
+   */
+  omit?: Prisma.PlayerQuestFailurePenaltySkillOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlayerQuestFailurePenaltySkillInclude<ExtArgs> | null
+  where?: Prisma.PlayerQuestFailurePenaltySkillWhereInput
+  orderBy?: Prisma.PlayerQuestFailurePenaltySkillOrderByWithRelationInput | Prisma.PlayerQuestFailurePenaltySkillOrderByWithRelationInput[]
+  cursor?: Prisma.PlayerQuestFailurePenaltySkillWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlayerQuestFailurePenaltySkillScalarFieldEnum | Prisma.PlayerQuestFailurePenaltySkillScalarFieldEnum[]
 }
 
 /**

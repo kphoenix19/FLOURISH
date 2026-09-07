@@ -6,6 +6,7 @@ import { previewSnapshots, type Definition } from "./content";
 import { currentSlots, occupiedDefinitions, standardTransaction, slotInclude, type StandardContext, type Slot } from "./context";
 import { primaryTag, selectCandidate, type RandomSource } from "./selection";
 import { standardState } from "./view";
+import { reconcileExpiredInTransaction } from "./resolution";
 
 export async function ensureSlotsInTransaction(context: StandardContext) {
   const { tx, state, playerId } = context;
@@ -53,6 +54,6 @@ export async function reconcileInTransaction(context: StandardContext, random: R
   }
   return standardState(context);
 }
-export function reconcileStandardQuestSlots(db: PrismaClient, playerId: string, random: RandomSource = Math.random) {
-  return standardTransaction(db, playerId, (context) => reconcileInTransaction(context, random));
+export function reconcileStandardQuestSlots(db: PrismaClient, playerId: string, random: RandomSource = Math.random, now: () => Date = () => new Date()) {
+  return standardTransaction(db, playerId, async (context) => { const at = now(); await reconcileExpiredInTransaction(context, at); await reconcileInTransaction(context, random); return standardState(context, at); });
 }

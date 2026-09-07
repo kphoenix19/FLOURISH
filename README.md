@@ -4,7 +4,7 @@
 
 FLOURISH is a browser-based, gamified real-life progression system that rewards constructive actions with overall and life-skill progression. It is not a conventional to-do list. The MVP uses honor-system completion, a curated quest library, and server-authoritative gameplay.
 
-The repository includes the canonical seed library, Phase 03 authentication/onboarding, and Phase 04 persistent Standard Quest offers with acceptance, reroll, and curated harder-family replacement. Completion and XP resolution remain deferred.
+The repository includes the canonical seed library, authentication/onboarding, persistent Standard Quest offers, and Phase 05 completion, failure, XP, level, and streak resolution.
 
 ## Authoritative specifications
 
@@ -107,4 +107,4 @@ For browser coverage, set `E2E_DATABASE_URL` to a disposable migrated and seeded
 
 An onboarded player’s first visit to `/home` or `GET /api/quests/standard` creates and populates three persistent Standard slots for each of the eight Skills. Reloads return the same assignments. The Home cards use `GET /api/quests/standard` and three same-origin JSON mutations: `POST /api/quests/standard/:playerQuestId/accept`, `/reroll`, and `/bump`. Accept and bump bodies are `{}`; reroll accepts optional `{ "feedbackReason": "TOO_HARD" }` using the documented feedback enum.
 
-Acceptance starts the definition’s exact 24/48/72-hour elapsed deadline and freezes its gameplay and offer-text snapshots. Reroll and bump retain history and return the replacement assignment. Identity always comes from the Auth.js session. There are no Complete, Abandon, Clear, XP, level, streak, Challenge, or recommendation actions in this phase.
+Acceptance starts the definition’s exact 24/48/72-hour elapsed deadline and freezes its gameplay and offer-text snapshots. Reroll and bump retain history and return the replacement assignment. Accepted Standard quests can complete or be abandoned; overdue quests expire lazily and apply their stored penalty only after explicit clear. Resolution atomically updates XP, levels, Skill streaks, immutable reward/ledger history, and the slot replacement. Identity always comes from the Auth.js session. Challenge generation and Home recommendations remain deferred.

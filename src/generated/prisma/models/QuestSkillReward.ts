@@ -30,6 +30,8 @@ export type QuestSkillRewardAvgAggregateOutputType = {
   rewardPercent: number | null
   baseSkillXp: number | null
   bonusSkillXp: number | null
+  catchUpBonusXp: number | null
+  streakBonusXp: number | null
   finalSkillXp: number | null
 }
 
@@ -37,6 +39,8 @@ export type QuestSkillRewardSumAggregateOutputType = {
   rewardPercent: number | null
   baseSkillXp: number | null
   bonusSkillXp: number | null
+  catchUpBonusXp: number | null
+  streakBonusXp: number | null
   finalSkillXp: number | null
 }
 
@@ -47,6 +51,8 @@ export type QuestSkillRewardMinAggregateOutputType = {
   rewardPercent: number | null
   baseSkillXp: number | null
   bonusSkillXp: number | null
+  catchUpBonusXp: number | null
+  streakBonusXp: number | null
   finalSkillXp: number | null
 }
 
@@ -57,6 +63,8 @@ export type QuestSkillRewardMaxAggregateOutputType = {
   rewardPercent: number | null
   baseSkillXp: number | null
   bonusSkillXp: number | null
+  catchUpBonusXp: number | null
+  streakBonusXp: number | null
   finalSkillXp: number | null
 }
 
@@ -67,6 +75,8 @@ export type QuestSkillRewardCountAggregateOutputType = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp: number
+  streakBonusXp: number
   finalSkillXp: number
   _all: number
 }
@@ -76,6 +86,8 @@ export type QuestSkillRewardAvgAggregateInputType = {
   rewardPercent?: true
   baseSkillXp?: true
   bonusSkillXp?: true
+  catchUpBonusXp?: true
+  streakBonusXp?: true
   finalSkillXp?: true
 }
 
@@ -83,6 +95,8 @@ export type QuestSkillRewardSumAggregateInputType = {
   rewardPercent?: true
   baseSkillXp?: true
   bonusSkillXp?: true
+  catchUpBonusXp?: true
+  streakBonusXp?: true
   finalSkillXp?: true
 }
 
@@ -93,6 +107,8 @@ export type QuestSkillRewardMinAggregateInputType = {
   rewardPercent?: true
   baseSkillXp?: true
   bonusSkillXp?: true
+  catchUpBonusXp?: true
+  streakBonusXp?: true
   finalSkillXp?: true
 }
 
@@ -103,6 +119,8 @@ export type QuestSkillRewardMaxAggregateInputType = {
   rewardPercent?: true
   baseSkillXp?: true
   bonusSkillXp?: true
+  catchUpBonusXp?: true
+  streakBonusXp?: true
   finalSkillXp?: true
 }
 
@@ -113,6 +131,8 @@ export type QuestSkillRewardCountAggregateInputType = {
   rewardPercent?: true
   baseSkillXp?: true
   bonusSkillXp?: true
+  catchUpBonusXp?: true
+  streakBonusXp?: true
   finalSkillXp?: true
   _all?: true
 }
@@ -210,6 +230,8 @@ export type QuestSkillRewardGroupByOutputType = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp: number
+  streakBonusXp: number
   finalSkillXp: number
   _count: QuestSkillRewardCountAggregateOutputType | null
   _avg: QuestSkillRewardAvgAggregateOutputType | null
@@ -243,6 +265,8 @@ export type QuestSkillRewardWhereInput = {
   rewardPercent?: Prisma.IntFilter<"QuestSkillReward"> | number
   baseSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   bonusSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
+  catchUpBonusXp?: Prisma.IntFilter<"QuestSkillReward"> | number
+  streakBonusXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   finalSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   questReward?: Prisma.XOR<Prisma.QuestRewardScalarRelationFilter, Prisma.QuestRewardWhereInput>
   skill?: Prisma.XOR<Prisma.SkillScalarRelationFilter, Prisma.SkillWhereInput>
@@ -255,6 +279,8 @@ export type QuestSkillRewardOrderByWithRelationInput = {
   rewardPercent?: Prisma.SortOrder
   baseSkillXp?: Prisma.SortOrder
   bonusSkillXp?: Prisma.SortOrder
+  catchUpBonusXp?: Prisma.SortOrder
+  streakBonusXp?: Prisma.SortOrder
   finalSkillXp?: Prisma.SortOrder
   questReward?: Prisma.QuestRewardOrderByWithRelationInput
   skill?: Prisma.SkillOrderByWithRelationInput
@@ -271,6 +297,8 @@ export type QuestSkillRewardWhereUniqueInput = Prisma.AtLeast<{
   rewardPercent?: Prisma.IntFilter<"QuestSkillReward"> | number
   baseSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   bonusSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
+  catchUpBonusXp?: Prisma.IntFilter<"QuestSkillReward"> | number
+  streakBonusXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   finalSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   questReward?: Prisma.XOR<Prisma.QuestRewardScalarRelationFilter, Prisma.QuestRewardWhereInput>
   skill?: Prisma.XOR<Prisma.SkillScalarRelationFilter, Prisma.SkillWhereInput>
@@ -283,6 +311,8 @@ export type QuestSkillRewardOrderByWithAggregationInput = {
   rewardPercent?: Prisma.SortOrder
   baseSkillXp?: Prisma.SortOrder
   bonusSkillXp?: Prisma.SortOrder
+  catchUpBonusXp?: Prisma.SortOrder
+  streakBonusXp?: Prisma.SortOrder
   finalSkillXp?: Prisma.SortOrder
   _count?: Prisma.QuestSkillRewardCountOrderByAggregateInput
   _avg?: Prisma.QuestSkillRewardAvgOrderByAggregateInput
@@ -301,6 +331,8 @@ export type QuestSkillRewardScalarWhereWithAggregatesInput = {
   rewardPercent?: Prisma.IntWithAggregatesFilter<"QuestSkillReward"> | number
   baseSkillXp?: Prisma.IntWithAggregatesFilter<"QuestSkillReward"> | number
   bonusSkillXp?: Prisma.IntWithAggregatesFilter<"QuestSkillReward"> | number
+  catchUpBonusXp?: Prisma.IntWithAggregatesFilter<"QuestSkillReward"> | number
+  streakBonusXp?: Prisma.IntWithAggregatesFilter<"QuestSkillReward"> | number
   finalSkillXp?: Prisma.IntWithAggregatesFilter<"QuestSkillReward"> | number
 }
 
@@ -309,6 +341,8 @@ export type QuestSkillRewardCreateInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
   questReward: Prisma.QuestRewardCreateNestedOneWithoutSkillRewardsInput
   skill: Prisma.SkillCreateNestedOneWithoutQuestSkillRewardsInput
@@ -321,6 +355,8 @@ export type QuestSkillRewardUncheckedCreateInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
 }
 
@@ -329,6 +365,8 @@ export type QuestSkillRewardUpdateInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   questReward?: Prisma.QuestRewardUpdateOneRequiredWithoutSkillRewardsNestedInput
   skill?: Prisma.SkillUpdateOneRequiredWithoutQuestSkillRewardsNestedInput
@@ -341,6 +379,8 @@ export type QuestSkillRewardUncheckedUpdateInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -351,6 +391,8 @@ export type QuestSkillRewardCreateManyInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
 }
 
@@ -359,6 +401,8 @@ export type QuestSkillRewardUpdateManyMutationInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -369,6 +413,8 @@ export type QuestSkillRewardUncheckedUpdateManyInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -394,6 +440,8 @@ export type QuestSkillRewardCountOrderByAggregateInput = {
   rewardPercent?: Prisma.SortOrder
   baseSkillXp?: Prisma.SortOrder
   bonusSkillXp?: Prisma.SortOrder
+  catchUpBonusXp?: Prisma.SortOrder
+  streakBonusXp?: Prisma.SortOrder
   finalSkillXp?: Prisma.SortOrder
 }
 
@@ -401,6 +449,8 @@ export type QuestSkillRewardAvgOrderByAggregateInput = {
   rewardPercent?: Prisma.SortOrder
   baseSkillXp?: Prisma.SortOrder
   bonusSkillXp?: Prisma.SortOrder
+  catchUpBonusXp?: Prisma.SortOrder
+  streakBonusXp?: Prisma.SortOrder
   finalSkillXp?: Prisma.SortOrder
 }
 
@@ -411,6 +461,8 @@ export type QuestSkillRewardMaxOrderByAggregateInput = {
   rewardPercent?: Prisma.SortOrder
   baseSkillXp?: Prisma.SortOrder
   bonusSkillXp?: Prisma.SortOrder
+  catchUpBonusXp?: Prisma.SortOrder
+  streakBonusXp?: Prisma.SortOrder
   finalSkillXp?: Prisma.SortOrder
 }
 
@@ -421,6 +473,8 @@ export type QuestSkillRewardMinOrderByAggregateInput = {
   rewardPercent?: Prisma.SortOrder
   baseSkillXp?: Prisma.SortOrder
   bonusSkillXp?: Prisma.SortOrder
+  catchUpBonusXp?: Prisma.SortOrder
+  streakBonusXp?: Prisma.SortOrder
   finalSkillXp?: Prisma.SortOrder
 }
 
@@ -428,6 +482,8 @@ export type QuestSkillRewardSumOrderByAggregateInput = {
   rewardPercent?: Prisma.SortOrder
   baseSkillXp?: Prisma.SortOrder
   bonusSkillXp?: Prisma.SortOrder
+  catchUpBonusXp?: Prisma.SortOrder
+  streakBonusXp?: Prisma.SortOrder
   finalSkillXp?: Prisma.SortOrder
 }
 
@@ -520,6 +576,8 @@ export type QuestSkillRewardCreateWithoutSkillInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
   questReward: Prisma.QuestRewardCreateNestedOneWithoutSkillRewardsInput
 }
@@ -530,6 +588,8 @@ export type QuestSkillRewardUncheckedCreateWithoutSkillInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
 }
 
@@ -569,6 +629,8 @@ export type QuestSkillRewardScalarWhereInput = {
   rewardPercent?: Prisma.IntFilter<"QuestSkillReward"> | number
   baseSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   bonusSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
+  catchUpBonusXp?: Prisma.IntFilter<"QuestSkillReward"> | number
+  streakBonusXp?: Prisma.IntFilter<"QuestSkillReward"> | number
   finalSkillXp?: Prisma.IntFilter<"QuestSkillReward"> | number
 }
 
@@ -577,6 +639,8 @@ export type QuestSkillRewardCreateWithoutQuestRewardInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
   skill: Prisma.SkillCreateNestedOneWithoutQuestSkillRewardsInput
 }
@@ -587,6 +651,8 @@ export type QuestSkillRewardUncheckedCreateWithoutQuestRewardInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
 }
 
@@ -622,6 +688,8 @@ export type QuestSkillRewardCreateManySkillInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
 }
 
@@ -630,6 +698,8 @@ export type QuestSkillRewardUpdateWithoutSkillInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   questReward?: Prisma.QuestRewardUpdateOneRequiredWithoutSkillRewardsNestedInput
 }
@@ -640,6 +710,8 @@ export type QuestSkillRewardUncheckedUpdateWithoutSkillInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -649,6 +721,8 @@ export type QuestSkillRewardUncheckedUpdateManyWithoutSkillInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -658,6 +732,8 @@ export type QuestSkillRewardCreateManyQuestRewardInput = {
   rewardPercent: number
   baseSkillXp: number
   bonusSkillXp: number
+  catchUpBonusXp?: number
+  streakBonusXp?: number
   finalSkillXp: number
 }
 
@@ -666,6 +742,8 @@ export type QuestSkillRewardUpdateWithoutQuestRewardInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   skill?: Prisma.SkillUpdateOneRequiredWithoutQuestSkillRewardsNestedInput
 }
@@ -676,6 +754,8 @@ export type QuestSkillRewardUncheckedUpdateWithoutQuestRewardInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -685,6 +765,8 @@ export type QuestSkillRewardUncheckedUpdateManyWithoutQuestRewardInput = {
   rewardPercent?: Prisma.IntFieldUpdateOperationsInput | number
   baseSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
   bonusSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
+  catchUpBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakBonusXp?: Prisma.IntFieldUpdateOperationsInput | number
   finalSkillXp?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -697,6 +779,8 @@ export type QuestSkillRewardSelect<ExtArgs extends runtime.Types.Extensions.Inte
   rewardPercent?: boolean
   baseSkillXp?: boolean
   bonusSkillXp?: boolean
+  catchUpBonusXp?: boolean
+  streakBonusXp?: boolean
   finalSkillXp?: boolean
   questReward?: boolean | Prisma.QuestRewardDefaultArgs<ExtArgs>
   skill?: boolean | Prisma.SkillDefaultArgs<ExtArgs>
@@ -709,6 +793,8 @@ export type QuestSkillRewardSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   rewardPercent?: boolean
   baseSkillXp?: boolean
   bonusSkillXp?: boolean
+  catchUpBonusXp?: boolean
+  streakBonusXp?: boolean
   finalSkillXp?: boolean
   questReward?: boolean | Prisma.QuestRewardDefaultArgs<ExtArgs>
   skill?: boolean | Prisma.SkillDefaultArgs<ExtArgs>
@@ -721,6 +807,8 @@ export type QuestSkillRewardSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   rewardPercent?: boolean
   baseSkillXp?: boolean
   bonusSkillXp?: boolean
+  catchUpBonusXp?: boolean
+  streakBonusXp?: boolean
   finalSkillXp?: boolean
   questReward?: boolean | Prisma.QuestRewardDefaultArgs<ExtArgs>
   skill?: boolean | Prisma.SkillDefaultArgs<ExtArgs>
@@ -733,10 +821,12 @@ export type QuestSkillRewardSelectScalar = {
   rewardPercent?: boolean
   baseSkillXp?: boolean
   bonusSkillXp?: boolean
+  catchUpBonusXp?: boolean
+  streakBonusXp?: boolean
   finalSkillXp?: boolean
 }
 
-export type QuestSkillRewardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "questRewardId" | "skillId" | "rewardPercent" | "baseSkillXp" | "bonusSkillXp" | "finalSkillXp", ExtArgs["result"]["questSkillReward"]>
+export type QuestSkillRewardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "questRewardId" | "skillId" | "rewardPercent" | "baseSkillXp" | "bonusSkillXp" | "catchUpBonusXp" | "streakBonusXp" | "finalSkillXp", ExtArgs["result"]["questSkillReward"]>
 export type QuestSkillRewardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   questReward?: boolean | Prisma.QuestRewardDefaultArgs<ExtArgs>
   skill?: boolean | Prisma.SkillDefaultArgs<ExtArgs>
@@ -763,6 +853,8 @@ export type $QuestSkillRewardPayload<ExtArgs extends runtime.Types.Extensions.In
     rewardPercent: number
     baseSkillXp: number
     bonusSkillXp: number
+    catchUpBonusXp: number
+    streakBonusXp: number
     finalSkillXp: number
   }, ExtArgs["result"]["questSkillReward"]>
   composites: {}
@@ -1195,6 +1287,8 @@ export interface QuestSkillRewardFieldRefs {
   readonly rewardPercent: Prisma.FieldRef<"QuestSkillReward", 'Int'>
   readonly baseSkillXp: Prisma.FieldRef<"QuestSkillReward", 'Int'>
   readonly bonusSkillXp: Prisma.FieldRef<"QuestSkillReward", 'Int'>
+  readonly catchUpBonusXp: Prisma.FieldRef<"QuestSkillReward", 'Int'>
+  readonly streakBonusXp: Prisma.FieldRef<"QuestSkillReward", 'Int'>
   readonly finalSkillXp: Prisma.FieldRef<"QuestSkillReward", 'Int'>
 }
     

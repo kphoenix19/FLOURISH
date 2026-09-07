@@ -70,6 +70,7 @@ export const ModelName = {
   ChallengeSet: 'ChallengeSet',
   PlayerQuest: 'PlayerQuest',
   PlayerQuestSkillSnapshot: 'PlayerQuestSkillSnapshot',
+  PlayerQuestFailurePenaltySkill: 'PlayerQuestFailurePenaltySkill',
   PlayerQuestSlot: 'PlayerQuestSlot',
   QuestReward: 'QuestReward',
   QuestSkillReward: 'QuestSkillReward',
@@ -365,6 +366,16 @@ export const PlayerQuestSkillSnapshotScalarFieldEnum = {
 export type PlayerQuestSkillSnapshotScalarFieldEnum = (typeof PlayerQuestSkillSnapshotScalarFieldEnum)[keyof typeof PlayerQuestSkillSnapshotScalarFieldEnum]
 
 
+export const PlayerQuestFailurePenaltySkillScalarFieldEnum = {
+  playerQuestId: 'playerQuestId',
+  skillId: 'skillId',
+  intendedPenaltyXp: 'intendedPenaltyXp',
+  actualAppliedPenaltyXp: 'actualAppliedPenaltyXp'
+} as const
+
+export type PlayerQuestFailurePenaltySkillScalarFieldEnum = (typeof PlayerQuestFailurePenaltySkillScalarFieldEnum)[keyof typeof PlayerQuestFailurePenaltySkillScalarFieldEnum]
+
+
 export const PlayerQuestSlotScalarFieldEnum = {
   id: 'id',
   playerId: 'playerId',
@@ -401,6 +412,8 @@ export const QuestSkillRewardScalarFieldEnum = {
   rewardPercent: 'rewardPercent',
   baseSkillXp: 'baseSkillXp',
   bonusSkillXp: 'bonusSkillXp',
+  catchUpBonusXp: 'catchUpBonusXp',
+  streakBonusXp: 'streakBonusXp',
   finalSkillXp: 'finalSkillXp'
 } as const
 

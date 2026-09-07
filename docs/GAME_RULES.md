@@ -18,7 +18,19 @@ Status: authoritative gameplay contract for Build 1. Data enforcement is specifi
 - All eight skills use the same skill-level curve.
 - Failure penalties reduce Current Skill XP only, never Lifetime Skill XP.
 
-**OPEN DECISION — resolve during the XP/progression implementation phase:** exact Overall and Skill XP level curves. The configuration boundary must support them without schema redesign. Current Skill XP may never fall below 0.
+Build 1 uses gently accelerating integer polynomial curves. For the transition from level `L` to `L+1`, Skill XP required is `100 + 20(L-1) + 2(L-1)^2`; Overall XP required is `200 + 35(L-1) + 3(L-1)^2`. Cumulative XP is the exact integer sum of all prior transitions. Skill Level caps at 100, but earned Current Skill XP continues accumulating above the level-100 threshold. Overall Level is uncapped.
+
+| Level | Skill cumulative XP | Overall cumulative XP |
+|---:|---:|---:|
+| 2 | 100 | 200 |
+| 5 | 548 | 1,052 |
+| 10 | 2,028 | 3,672 |
+| 25 | 16,568 | 27,432 |
+| 50 | 104,468 | 165,032 |
+| 75 | 326,118 | 506,382 |
+| 100 | 744,018 | 1,145,232 |
+
+These curves make early levels reachable with ordinary Easy quests, slow gradually without exponential growth, and make Overall progression slower because every rewarded Skill contributes to Overall XP. Coefficients and the Skill cap live in version-controlled game configuration.
 
 ### Base XP and difficulty
 
@@ -36,7 +48,7 @@ Base XP is 50–1000. Initial configurable bands:
 
 Each QuestDefinition has exactly one primary skill, up to two secondary skills, and no more than three rewarded skills. Reward percentages total 100%. XP is distributed, never duplicated: a 100 XP quest split 70% Stewardship / 30% Us grants +70 and +30 skill XP and +100 Overall XP before bonuses.
 
-Streak bonuses apply to each distributed skill share; the sum of final rewarded skill shares contributes to Overall XP, along with any Overall-only set bonus. Catch-Up and Challenge bonus allocation are described below.
+Streak bonuses apply to each distributed skill share; the sum of final rewarded skill shares contributes to Overall XP, along with any Overall-only set bonus. Catch-Up and Challenge bonus allocation are described below. Percentage XP uses exact integer **round half up**: `floor((amount * percent + 50) / 100)`. Catch-Up and streak bonuses stack additively from each Base Skill XP share; streak is not applied to Catch-Up-enhanced XP.
 
 Whenever integer XP is distributed by percentages, use deterministic **largest-remainder allocation**: calculate proportional raw shares, floor each share, then assign remaining units in descending fractional-remainder order. Ties resolve by FLOURISH Skill code ascending. Distributed shares must reconcile exactly to the intended distributable total. Thus 101 XP at 70%/30% produces integer shares totaling exactly 101.
 
@@ -82,7 +94,7 @@ After the deadline, lazy or scheduled reconciliation changes `ACCEPTED → EXPIR
 
 Players may leave an expired quest uncleared indefinitely, avoiding the penalty while sacrificing the slot. Opening the application must never silently apply a deadline penalty.
 
-The initial configurable failure penalty is 20% of snapshotted Base XP. For multi-skill quests, distribute that penalty over snapshotted rewarded Skills/percentages using largest remainder. Reduce Current Skill XP only and clamp every Skill at 0; never reduce Overall or Lifetime Skill XP. Expiration stores this calculated distribution without applying it until clear; abandonment applies it immediately.
+The initial configurable failure penalty is 20% of snapshotted Base XP. For multi-skill quests, distribute that penalty over snapshotted rewarded Skills/percentages using largest remainder. Reduce Current Skill XP only and clamp every Skill at 0; never reduce Overall or Lifetime Skill XP. Expiration stores this calculated distribution without applying it until clear; abandonment applies it immediately. Immutable per-Skill detail records intended and actual applied XP; actual may be smaller because of the floor.
 
 ## Rerolls
 

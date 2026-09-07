@@ -13,6 +13,7 @@ import { ensureStandardQuestSlots, reconcileStandardQuestSlots } from "../../src
 import { mutateStandardQuest } from "../../src/modules/quests/standard/actions";
 import { definitionInclude, previewSnapshots } from "../../src/modules/quests/standard/content";
 import { createStandardApi } from "../../src/modules/quests/standard/api";
+import { resolveStandardQuest } from "../../src/modules/quests/standard/resolution";
 import type { StandardState } from "../../src/modules/quests/standard/view";
 
 const connectionString = process.env.DATABASE_URL;
@@ -40,12 +41,12 @@ beforeEach(async () => {
 });
 afterAll(async () => { await db.$disconnect(); await pool.end(); await admin.query(`DROP SCHEMA "${schema}" CASCADE`); await admin.end(); });
 
-async function fixtureOffer(key: string) {
+async function fixtureOfferInSlot(key: string, slotNumber: number) {
   await read();
   const d = await db.questDefinition.findUniqueOrThrow({ where: { stableKey: key }, include: definitionInclude });
   const skillId = d.skills.find((s) => s.isPrimary)!.skillId;
   // Only test-owned fixture state is changed, before exercising production operations.
-  const slot = await db.playerQuestSlot.findFirstOrThrow({ where: { playerId, skillId, slotNumber: 1 } });
+  const slot = await db.playerQuestSlot.findFirstOrThrow({ where: { playerId, skillId, slotNumber } });
   const existing = await db.playerQuestSlot.findFirst({ where: { playerId, currentPlayerQuest: { questDefinitionId: d.id } } });
   if (existing && existing.id !== slot.id) await db.playerQuestSlot.update({ where: { id: existing.id }, data: { currentPlayerQuestId: null } });
   const q = await db.playerQuest.create({ data: { playerId, questDefinitionId: d.id, poolType: "STANDARD", status: "AVAILABLE", ...previewSnapshots(d) } });
@@ -53,6 +54,7 @@ async function fixtureOffer(key: string) {
   await read();
   return { q, d, slot };
 }
+const fixtureOffer = (key: string) => fixtureOfferInSlot(key, 1);
 async function familyKey(family: string, difficulty: "EASY" | "MEDIUM" | "HARD" | "EPIC") {
   return (await db.questDefinition.findFirstOrThrow({ where: { family: { stableKey: family }, difficulty } })).stableKey;
 }
@@ -94,9 +96,9 @@ describe("Standard bootstrap and reconciliation", () => {
     expect(await db.playerQuest.findUnique({ where: { id: before.quest.id } })).toMatchObject({ status: "REROLLED" });
     expect(await read()).toEqual(await read()); await invariant();
   });
-  it("preserves ACCEPTED and EXPIRED blockers, repairs terminal pointers, and never auto-expires", async () => {
+  it("preserves active ACCEPTED and EXPIRED blockers and repairs terminal pointers", async () => {
     const before = flat(await read());
-    await mutateStandardQuest(db, playerId, before[0].quest.id, "accept", {}, { now: () => new Date("2020-01-01T12:00:00Z") });
+    await mutateStandardQuest(db, playerId, before[0].quest.id, "accept", {}, { now: () => new Date("2099-01-01T12:00:00Z") });
     await action(before[1].quest.id, "accept");
     await db.playerQuest.update({ where: { id: before[1].quest.id }, data: { status: "EXPIRED", expiredAt: new Date() } });
     await db.questDefinition.update({ where: { id: before[0].quest.definitionId }, data: { active: false } });
@@ -227,5 +229,122 @@ describe("Standard REST", () => {
     expect((await api.mutate(req(), id, "accept")).status).toBe(200);
     expect((await api.mutate(req(), id, "reroll")).status).toBe(409);
     expect((await api.mutate(req(), id, "bump")).status).toBe(409);
+  });
+});
+
+describe("Standard Phase 05 resolution", () => {
+  const at = (value: string) => () => new Date(value);
+  it("completes exactly once from snapshots, awards reconciled XP/streaks, and refills", async () => {
+    const before = flat(await read())[0]; const acceptedAt = "2026-09-06T12:00:00Z";
+    await mutateStandardQuest(db, playerId, before.quest.id, "accept", {}, { now: at(acceptedAt) });
+    await db.questDefinition.update({ where: { id: before.quest.definitionId }, data: { baseXp: 999 } });
+    const result = await resolveStandardQuest(db, playerId, before.quest.id, "complete", { now: at("2026-09-06T13:00:00Z"), random: () => 0.5 });
+    expect(flat(result).find((s) => s.id === before.id)!.quest.id).not.toBe(before.quest.id);
+    const quest = await db.playerQuest.findUniqueOrThrow({ where: { id: before.quest.id }, include: { reward: { include: { skillRewards: true } }, xpTransactions: true } });
+    expect(quest.status).toBe("COMPLETED"); expect(quest.reward!.baseXp).toBe(before.quest.baseXp);
+    expect(quest.reward!.skillRewards.reduce((n, r) => n + r.finalSkillXp, 0)).toBe(quest.reward!.finalOverallXp);
+    expect(quest.xpTransactions.filter((x) => x.xpScope === "OVERALL")).toHaveLength(1);
+    await expect(resolveStandardQuest(db, playerId, before.quest.id, "complete")).rejects.toMatchObject({ status: 409 });
+    expect(await db.questReward.count({ where: { playerQuestId: before.quest.id } })).toBe(1);
+  });
+  it("expires lazily without applying XP, then clears the stored penalty once", async () => {
+    const before = flat(await read())[0]; await mutateStandardQuest(db, playerId, before.quest.id, "accept", {}, { now: at("2026-09-01T00:00:00Z") });
+    const expired = await reconcileStandardQuestSlots(db, playerId, () => 0.5, at("2026-09-10T00:00:00Z"));
+    expect(flat(expired).find((s) => s.id === before.id)!.quest).toMatchObject({ status: "EXPIRED", failurePenaltyXp: Math.floor((before.quest.baseXp! * 20 + 50) / 100) });
+    expect(await db.xpTransaction.count({ where: { playerQuestId: before.quest.id } })).toBe(0);
+    const after = await resolveStandardQuest(db, playerId, before.quest.id, "clear", { now: at("2026-09-10T01:00:00Z"), random: () => 0.5 });
+    expect(flat(after).find((s) => s.id === before.id)!.quest.id).not.toBe(before.quest.id);
+    const quest = await db.playerQuest.findUniqueOrThrow({ where: { id: before.quest.id }, include: { failurePenaltySkills: true } });
+    expect(quest.clearedAt).not.toBeNull(); expect(quest.failurePenaltySkills.every((x) => x.actualAppliedPenaltyXp === 0)).toBe(true);
+    await expect(resolveStandardQuest(db, playerId, before.quest.id, "clear")).rejects.toMatchObject({ status: 409 });
+  });
+  it("abandons pre-deadline with a Current-only floor and replacement", async () => {
+    const before = flat(await read())[0]; await mutateStandardQuest(db, playerId, before.quest.id, "accept", {}, { now: at("2026-09-06T00:00:00Z") });
+    await resolveStandardQuest(db, playerId, before.quest.id, "abandon", { now: at("2026-09-06T01:00:00Z"), random: () => 0.5 });
+    const quest = await db.playerQuest.findUniqueOrThrow({ where: { id: before.quest.id }, include: { failurePenaltySkills: true } });
+    expect(quest).toMatchObject({ status: "ABANDONED", failurePenaltyAppliedAt: expect.any(Date) });
+    expect(quest.failurePenaltySkills.every((x) => x.actualAppliedPenaltyXp === 0)).toBe(true);
+    expect(await db.xpTransaction.count({ where: { playerQuestId: quest.id } })).toBe(0);
+  });
+});
+
+describe("Standard Phase 05 concurrency", () => {
+  const acceptedAt = new Date("2026-09-06T12:00:00Z");
+  const onTime = new Date("2026-09-06T13:00:00Z");
+  const accept = (id: string) => mutateStandardQuest(db, playerId, id, "accept", {}, { now: () => acceptedAt });
+  const resolve = (id: string, kind: "complete" | "abandon" | "clear", now = onTime) => resolveStandardQuest(db, playerId, id, kind, { now: () => now, random: () => 0.5 });
+  async function ledgerCurrent(skillId: string) {
+    const rows = await db.xpTransaction.findMany({ where: { playerId, skillId, xpScope: "SKILL" } });
+    return rows.reduce((sum, row) => sum + row.amount, 0);
+  }
+  it("serializes double completion without duplicate reward or XP", async () => {
+    const { q } = await fixtureOffer("F-WALK-01"); await accept(q.id);
+    const results = await Promise.allSettled([resolve(q.id, "complete"), resolve(q.id, "complete")]);
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    expect(await db.questReward.count({ where: { playerQuestId: q.id } })).toBe(1);
+    expect(await db.xpTransaction.count({ where: { playerQuestId: q.id, xpScope: "OVERALL" } })).toBe(1);
+  });
+  it("serializes complete versus abandon to one terminal outcome", async () => {
+    const { q } = await fixtureOffer("F-WALK-01"); await accept(q.id);
+    const results = await Promise.allSettled([resolve(q.id, "complete"), resolve(q.id, "abandon")]);
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const row = await db.playerQuest.findUniqueOrThrow({ where: { id: q.id } });
+    expect(["COMPLETED", "ABANDONED"]).toContain(row.status);
+    expect(await db.questReward.count({ where: { playerQuestId: q.id } })).toBe(row.status === "COMPLETED" ? 1 : 0);
+  });
+  it("completion racing overdue reconciliation expires with no hidden penalty", async () => {
+    const { q } = await fixtureOffer("F-WALK-01"); await accept(q.id); const overdue = new Date("2026-09-10T13:00:00Z");
+    await Promise.allSettled([resolve(q.id, "complete", overdue), reconcileStandardQuestSlots(db, playerId, () => 0.5, () => overdue)]);
+    expect(await db.playerQuest.findUnique({ where: { id: q.id } })).toMatchObject({ status: "EXPIRED", failurePenaltyAppliedAt: null });
+    expect(await db.questReward.count({ where: { playerQuestId: q.id } })).toBe(0);
+    expect(await db.xpTransaction.count({ where: { playerQuestId: q.id } })).toBe(0);
+  });
+  it("abandon racing expiration remains one unacknowledged expiration", async () => {
+    const { q } = await fixtureOffer("F-WALK-01"); await accept(q.id); const overdue = new Date("2026-09-10T13:00:00Z");
+    await Promise.allSettled([resolve(q.id, "abandon", overdue), reconcileStandardQuestSlots(db, playerId, () => 0.5, () => overdue)]);
+    expect(await db.playerQuest.findUnique({ where: { id: q.id } })).toMatchObject({ status: "EXPIRED", failurePenaltyAppliedAt: null });
+    expect(await db.questInteraction.count({ where: { playerQuestId: q.id, interactionType: "EXPIRED" } })).toBe(1);
+    expect(await db.xpTransaction.count({ where: { playerQuestId: q.id } })).toBe(0);
+  });
+  it("serializes double expired clear and applies at most once", async () => {
+    const { q } = await fixtureOffer("F-WALK-01"); await accept(q.id); const overdue = new Date("2026-09-10T13:00:00Z");
+    await reconcileStandardQuestSlots(db, playerId, () => 0.5, () => overdue);
+    const results = await Promise.allSettled([resolve(q.id, "clear", overdue), resolve(q.id, "clear", overdue)]);
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    expect(await db.questInteraction.count({ where: { playerQuestId: q.id, interactionType: "CLEARED" } })).toBe(1);
+    expect(await db.xpTransaction.count({ where: { playerQuestId: q.id, transactionType: "QUEST_FAILURE" } })).toBeLessThanOrEqual(1);
+  });
+  it("preserves both rewards when two quests complete concurrently into one Skill", async () => {
+    const first = await fixtureOfferInSlot("F-WALK-01", 1); const second = await fixtureOfferInSlot("F-MOB-01", 2); await accept(first.q.id); await accept(second.q.id);
+    await Promise.all([resolve(first.q.id, "complete"), resolve(second.q.id, "complete")]);
+    const skillId = first.d.skills.find((s) => s.isPrimary)!.skillId; const progress = await db.playerSkillProgress.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } });
+    expect(await db.questReward.count({ where: { playerQuestId: { in: [first.q.id, second.q.id] } } })).toBe(2);
+    expect(progress.currentXp).toBe(await ledgerCurrent(skillId));
+  });
+  it("preserves overlapping multi-Skill completion totals", async () => {
+    const first = await fixtureOfferInSlot("F-WALK-04", 1); const second = await fixtureOfferInSlot("F-NUT-03", 2); await accept(first.q.id); await accept(second.q.id);
+    await Promise.all([resolve(first.q.id, "complete"), resolve(second.q.id, "complete")]);
+    for (const skillId of new Set([...first.d.skills, ...second.d.skills].map((s) => s.skillId))) {
+      const progress = await db.playerSkillProgress.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } });
+      expect(progress.currentXp).toBe(await ledgerCurrent(skillId));
+      expect(progress.lifetimeXp).toBe((await db.xpTransaction.findMany({ where: { playerId, skillId, xpScope: "LIFETIME_SKILL" } })).reduce((sum, row) => sum + row.amount, 0));
+    }
+  });
+  it("serializes expired clear against positive completion with no lost Skill XP", async () => {
+    const expired = await fixtureOfferInSlot("F-WALK-01", 1); const positive = await fixtureOfferInSlot("F-MOB-01", 2); await accept(expired.q.id); await accept(positive.q.id);
+    const overdue = new Date("2026-09-10T13:00:00Z");
+    await reconcileStandardQuestSlots(db, playerId, () => 0.5, () => overdue);
+    // Give the positive quest a still-valid deadline while retaining the other quest's stored expiration facts.
+    await db.playerQuest.update({ where: { id: positive.q.id }, data: { status: "ACCEPTED", deadlineAt: new Date("2026-09-11T13:00:00Z"), expiredAt: null, failurePenaltyXp: null } });
+    await db.playerQuestFailurePenaltySkill.deleteMany({ where: { playerQuestId: positive.q.id } });
+    await db.questInteraction.deleteMany({ where: { playerQuestId: positive.q.id, interactionType: "EXPIRED" } });
+    await Promise.all([resolve(expired.q.id, "clear", overdue), resolve(positive.q.id, "complete", overdue)]);
+    const skillId = expired.d.skills.find((s) => s.isPrimary)!.skillId; const progress = await db.playerSkillProgress.findUniqueOrThrow({ where: { playerId_skillId: { playerId, skillId } } });
+    expect(progress.currentXp).toBe(await ledgerCurrent(skillId));
+    expect(progress.currentXp).toBeGreaterThanOrEqual(0);
+    expect(await db.questReward.count({ where: { playerQuestId: positive.q.id } })).toBe(1);
+    expect(await db.questInteraction.count({ where: { playerQuestId: expired.q.id, interactionType: "CLEARED" } })).toBe(1);
+    const slots = await db.playerQuestSlot.findMany({ where: { playerId }, include: { currentPlayerQuest: true } });
+    expect(slots).toHaveLength(24); expect(slots.every((s) => s.currentPlayerQuest?.playerId === playerId)).toBe(true);
   });
 });

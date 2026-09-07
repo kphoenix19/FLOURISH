@@ -132,7 +132,7 @@ The curve is configurable. Updates must reconcile exactly to ledger effects.
 | `current_level` | derived cache, capped at 100 |
 | `updated_at` | timestamp |
 
-Application transactions ensure Lifetime XP never decreases, failure penalties clamp Current XP at zero, and level matches Current XP. Exact Overall and Skill level curves remain **OPEN DECISION — resolve during the XP/progression implementation phase**.
+Application transactions ensure Lifetime XP never decreases, failure penalties clamp Current XP at zero, and level matches Current XP. The exact Build 1 curves are defined in GAME_RULES.md and centralized game configuration.
 
 ### PlayerSkillStreak
 
@@ -279,6 +279,8 @@ One QuestReward per completed quest. Formula must reconcile with QuestSkillRewar
 
 Rows snapshot the accepted distribution. Cross-row percent total is 100 and final values reconcile to reward totals; transactional validation.
 
+Build 1 stores `catch_up_bonus_xp` and `streak_bonus_xp` separately in addition to their reconciled `bonus_skill_xp` total. `PlayerQuestFailurePenaltySkill` stores one accepted Skill allocation with `intended_penalty_xp` and nullable `actual_applied_penalty_xp`; expiration creates it and clear/abandon fills the actual amount after applying the zero floor.
+
 ### XpTransaction
 
 | Field | Notes |
@@ -359,6 +361,10 @@ All completion, abandonment, expiration clearing, COUNT target completion, slot 
 Migration `20260906220000_standard_offer_snapshots` adds nullable title, description, and estimated-minute snapshots to `PlayerQuest`. Historical rows remain valid; new Standard acceptance fills them together with difficulty, Base XP, completion type/target/window, and normalized Skill reward snapshots. This preserves both promised rewards and accepted task instructions after later definition edits.
 
 Standard slot state is reconciled lazily under a Player row lock and shared curated-library locks. The transaction creates missing `(player, skill, slot_number)` rows, fills empty or terminally referenced slots, replaces invalid AVAILABLE definitions, and preserves valid AVAILABLE, ACCEPTED, and uncleared EXPIRED occupants. A replaced offer remains as a `REROLLED` PlayerQuest. `SHOWN` records assignment, while `REROLLED` or `UPGRADED` records the player action; a shared operation ID connects replacement records.
+
+## Phase 05 progression refinement
+
+Migration `20260907010000_xp_progression_resolution` adds immutable per-Skill failure penalty facts, split Catch-Up/streak reward components, ledger operation uniqueness, and checks that progression balances/levels and ledger scope/sign semantics remain valid.
 
 ## Phase 01 implementation mapping
 

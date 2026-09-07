@@ -205,6 +205,7 @@ export type SkillWhereInput = {
   questSkills?: Prisma.QuestSkillListRelationFilter
   varietyTags?: Prisma.VarietyTagListRelationFilter
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotListRelationFilter
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillListRelationFilter
   slots?: Prisma.PlayerQuestSlotListRelationFilter
   questSkillRewards?: Prisma.QuestSkillRewardListRelationFilter
   xpTransactions?: Prisma.XpTransactionListRelationFilter
@@ -225,6 +226,7 @@ export type SkillOrderByWithRelationInput = {
   questSkills?: Prisma.QuestSkillOrderByRelationAggregateInput
   varietyTags?: Prisma.VarietyTagOrderByRelationAggregateInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotOrderByRelationAggregateInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillOrderByRelationAggregateInput
   slots?: Prisma.PlayerQuestSlotOrderByRelationAggregateInput
   questSkillRewards?: Prisma.QuestSkillRewardOrderByRelationAggregateInput
   xpTransactions?: Prisma.XpTransactionOrderByRelationAggregateInput
@@ -248,6 +250,7 @@ export type SkillWhereUniqueInput = Prisma.AtLeast<{
   questSkills?: Prisma.QuestSkillListRelationFilter
   varietyTags?: Prisma.VarietyTagListRelationFilter
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotListRelationFilter
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillListRelationFilter
   slots?: Prisma.PlayerQuestSlotListRelationFilter
   questSkillRewards?: Prisma.QuestSkillRewardListRelationFilter
   xpTransactions?: Prisma.XpTransactionListRelationFilter
@@ -294,6 +297,7 @@ export type SkillCreateInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -314,6 +318,7 @@ export type SkillUncheckedCreateInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -334,6 +339,7 @@ export type SkillUpdateInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -354,6 +360,7 @@ export type SkillUncheckedUpdateInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -531,6 +538,20 @@ export type SkillUpdateOneRequiredWithoutQuestSkillSnapshotsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SkillUpdateToOneWithWhereWithoutQuestSkillSnapshotsInput, Prisma.SkillUpdateWithoutQuestSkillSnapshotsInput>, Prisma.SkillUncheckedUpdateWithoutQuestSkillSnapshotsInput>
 }
 
+export type SkillCreateNestedOneWithoutFailurePenaltySkillsInput = {
+  create?: Prisma.XOR<Prisma.SkillCreateWithoutFailurePenaltySkillsInput, Prisma.SkillUncheckedCreateWithoutFailurePenaltySkillsInput>
+  connectOrCreate?: Prisma.SkillCreateOrConnectWithoutFailurePenaltySkillsInput
+  connect?: Prisma.SkillWhereUniqueInput
+}
+
+export type SkillUpdateOneRequiredWithoutFailurePenaltySkillsNestedInput = {
+  create?: Prisma.XOR<Prisma.SkillCreateWithoutFailurePenaltySkillsInput, Prisma.SkillUncheckedCreateWithoutFailurePenaltySkillsInput>
+  connectOrCreate?: Prisma.SkillCreateOrConnectWithoutFailurePenaltySkillsInput
+  upsert?: Prisma.SkillUpsertWithoutFailurePenaltySkillsInput
+  connect?: Prisma.SkillWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SkillUpdateToOneWithWhereWithoutFailurePenaltySkillsInput, Prisma.SkillUpdateWithoutFailurePenaltySkillsInput>, Prisma.SkillUncheckedUpdateWithoutFailurePenaltySkillsInput>
+}
+
 export type SkillCreateNestedOneWithoutSlotsInput = {
   create?: Prisma.XOR<Prisma.SkillCreateWithoutSlotsInput, Prisma.SkillUncheckedCreateWithoutSlotsInput>
   connectOrCreate?: Prisma.SkillCreateOrConnectWithoutSlotsInput
@@ -589,6 +610,7 @@ export type SkillCreateWithoutPlayerFocusInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -608,6 +630,7 @@ export type SkillUncheckedCreateWithoutPlayerFocusInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -643,6 +666,7 @@ export type SkillUpdateWithoutPlayerFocusInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -662,6 +686,7 @@ export type SkillUncheckedUpdateWithoutPlayerFocusInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -681,6 +706,7 @@ export type SkillCreateWithoutFocusHistoryInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -700,6 +726,7 @@ export type SkillUncheckedCreateWithoutFocusHistoryInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -735,6 +762,7 @@ export type SkillUpdateWithoutFocusHistoryInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -754,6 +782,7 @@ export type SkillUncheckedUpdateWithoutFocusHistoryInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -773,6 +802,7 @@ export type SkillCreateWithoutPlayerProgressInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -792,6 +822,7 @@ export type SkillUncheckedCreateWithoutPlayerProgressInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -827,6 +858,7 @@ export type SkillUpdateWithoutPlayerProgressInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -846,6 +878,7 @@ export type SkillUncheckedUpdateWithoutPlayerProgressInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -865,6 +898,7 @@ export type SkillCreateWithoutPlayerStreaksInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -884,6 +918,7 @@ export type SkillUncheckedCreateWithoutPlayerStreaksInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -919,6 +954,7 @@ export type SkillUpdateWithoutPlayerStreaksInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -938,6 +974,7 @@ export type SkillUncheckedUpdateWithoutPlayerStreaksInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -957,6 +994,7 @@ export type SkillCreateWithoutQuestSkillsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -976,6 +1014,7 @@ export type SkillUncheckedCreateWithoutQuestSkillsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -1011,6 +1050,7 @@ export type SkillUpdateWithoutQuestSkillsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -1030,6 +1070,7 @@ export type SkillUncheckedUpdateWithoutQuestSkillsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -1049,6 +1090,7 @@ export type SkillCreateWithoutVarietyTagsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakCreateNestedManyWithoutSkillInput
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -1068,6 +1110,7 @@ export type SkillUncheckedCreateWithoutVarietyTagsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUncheckedCreateNestedManyWithoutSkillInput
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -1103,6 +1146,7 @@ export type SkillUpdateWithoutVarietyTagsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUpdateManyWithoutSkillNestedInput
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -1122,6 +1166,7 @@ export type SkillUncheckedUpdateWithoutVarietyTagsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUncheckedUpdateManyWithoutSkillNestedInput
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -1141,6 +1186,7 @@ export type SkillCreateWithoutQuestSkillSnapshotsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakCreateNestedManyWithoutSkillInput
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
@@ -1160,6 +1206,7 @@ export type SkillUncheckedCreateWithoutQuestSkillSnapshotsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUncheckedCreateNestedManyWithoutSkillInput
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
@@ -1195,6 +1242,7 @@ export type SkillUpdateWithoutQuestSkillSnapshotsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUpdateManyWithoutSkillNestedInput
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
@@ -1214,6 +1262,103 @@ export type SkillUncheckedUpdateWithoutQuestSkillSnapshotsInput = {
   playerStreaks?: Prisma.PlayerSkillStreakUncheckedUpdateManyWithoutSkillNestedInput
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
+  slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
+  questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
+  xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
+}
+
+export type SkillCreateWithoutFailurePenaltySkillsInput = {
+  id?: string
+  code: string
+  name: string
+  description: string
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  playerFocus?: Prisma.PlayerSkillFocusCreateNestedManyWithoutSkillInput
+  focusHistory?: Prisma.PlayerSkillFocusHistoryCreateNestedManyWithoutSkillInput
+  playerProgress?: Prisma.PlayerSkillProgressCreateNestedManyWithoutSkillInput
+  playerStreaks?: Prisma.PlayerSkillStreakCreateNestedManyWithoutSkillInput
+  questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
+  varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
+  questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
+  questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
+  xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
+}
+
+export type SkillUncheckedCreateWithoutFailurePenaltySkillsInput = {
+  id?: string
+  code: string
+  name: string
+  description: string
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  playerFocus?: Prisma.PlayerSkillFocusUncheckedCreateNestedManyWithoutSkillInput
+  focusHistory?: Prisma.PlayerSkillFocusHistoryUncheckedCreateNestedManyWithoutSkillInput
+  playerProgress?: Prisma.PlayerSkillProgressUncheckedCreateNestedManyWithoutSkillInput
+  playerStreaks?: Prisma.PlayerSkillStreakUncheckedCreateNestedManyWithoutSkillInput
+  questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
+  varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
+  questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
+  questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
+  xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
+}
+
+export type SkillCreateOrConnectWithoutFailurePenaltySkillsInput = {
+  where: Prisma.SkillWhereUniqueInput
+  create: Prisma.XOR<Prisma.SkillCreateWithoutFailurePenaltySkillsInput, Prisma.SkillUncheckedCreateWithoutFailurePenaltySkillsInput>
+}
+
+export type SkillUpsertWithoutFailurePenaltySkillsInput = {
+  update: Prisma.XOR<Prisma.SkillUpdateWithoutFailurePenaltySkillsInput, Prisma.SkillUncheckedUpdateWithoutFailurePenaltySkillsInput>
+  create: Prisma.XOR<Prisma.SkillCreateWithoutFailurePenaltySkillsInput, Prisma.SkillUncheckedCreateWithoutFailurePenaltySkillsInput>
+  where?: Prisma.SkillWhereInput
+}
+
+export type SkillUpdateToOneWithWhereWithoutFailurePenaltySkillsInput = {
+  where?: Prisma.SkillWhereInput
+  data: Prisma.XOR<Prisma.SkillUpdateWithoutFailurePenaltySkillsInput, Prisma.SkillUncheckedUpdateWithoutFailurePenaltySkillsInput>
+}
+
+export type SkillUpdateWithoutFailurePenaltySkillsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  playerFocus?: Prisma.PlayerSkillFocusUpdateManyWithoutSkillNestedInput
+  focusHistory?: Prisma.PlayerSkillFocusHistoryUpdateManyWithoutSkillNestedInput
+  playerProgress?: Prisma.PlayerSkillProgressUpdateManyWithoutSkillNestedInput
+  playerStreaks?: Prisma.PlayerSkillStreakUpdateManyWithoutSkillNestedInput
+  questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
+  varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
+  questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
+  questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
+  xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
+}
+
+export type SkillUncheckedUpdateWithoutFailurePenaltySkillsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  playerFocus?: Prisma.PlayerSkillFocusUncheckedUpdateManyWithoutSkillNestedInput
+  focusHistory?: Prisma.PlayerSkillFocusHistoryUncheckedUpdateManyWithoutSkillNestedInput
+  playerProgress?: Prisma.PlayerSkillProgressUncheckedUpdateManyWithoutSkillNestedInput
+  playerStreaks?: Prisma.PlayerSkillStreakUncheckedUpdateManyWithoutSkillNestedInput
+  questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
+  varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
+  questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
@@ -1234,6 +1379,7 @@ export type SkillCreateWithoutSlotsInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
 }
@@ -1253,6 +1399,7 @@ export type SkillUncheckedCreateWithoutSlotsInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
 }
@@ -1288,6 +1435,7 @@ export type SkillUpdateWithoutSlotsInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
 }
@@ -1307,6 +1455,7 @@ export type SkillUncheckedUpdateWithoutSlotsInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
 }
@@ -1326,6 +1475,7 @@ export type SkillCreateWithoutQuestSkillRewardsInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionCreateNestedManyWithoutSkillInput
 }
@@ -1345,6 +1495,7 @@ export type SkillUncheckedCreateWithoutQuestSkillRewardsInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   xpTransactions?: Prisma.XpTransactionUncheckedCreateNestedManyWithoutSkillInput
 }
@@ -1380,6 +1531,7 @@ export type SkillUpdateWithoutQuestSkillRewardsInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUpdateManyWithoutSkillNestedInput
 }
@@ -1399,6 +1551,7 @@ export type SkillUncheckedUpdateWithoutQuestSkillRewardsInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   xpTransactions?: Prisma.XpTransactionUncheckedUpdateManyWithoutSkillNestedInput
 }
@@ -1418,6 +1571,7 @@ export type SkillCreateWithoutXpTransactionsInput = {
   questSkills?: Prisma.QuestSkillCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardCreateNestedManyWithoutSkillInput
 }
@@ -1437,6 +1591,7 @@ export type SkillUncheckedCreateWithoutXpTransactionsInput = {
   questSkills?: Prisma.QuestSkillUncheckedCreateNestedManyWithoutSkillInput
   varietyTags?: Prisma.VarietyTagUncheckedCreateNestedManyWithoutSkillInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedCreateNestedManyWithoutSkillInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedCreateNestedManyWithoutSkillInput
   slots?: Prisma.PlayerQuestSlotUncheckedCreateNestedManyWithoutSkillInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedCreateNestedManyWithoutSkillInput
 }
@@ -1472,6 +1627,7 @@ export type SkillUpdateWithoutXpTransactionsInput = {
   questSkills?: Prisma.QuestSkillUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUpdateManyWithoutSkillNestedInput
 }
@@ -1491,6 +1647,7 @@ export type SkillUncheckedUpdateWithoutXpTransactionsInput = {
   questSkills?: Prisma.QuestSkillUncheckedUpdateManyWithoutSkillNestedInput
   varietyTags?: Prisma.VarietyTagUncheckedUpdateManyWithoutSkillNestedInput
   questSkillSnapshots?: Prisma.PlayerQuestSkillSnapshotUncheckedUpdateManyWithoutSkillNestedInput
+  failurePenaltySkills?: Prisma.PlayerQuestFailurePenaltySkillUncheckedUpdateManyWithoutSkillNestedInput
   slots?: Prisma.PlayerQuestSlotUncheckedUpdateManyWithoutSkillNestedInput
   questSkillRewards?: Prisma.QuestSkillRewardUncheckedUpdateManyWithoutSkillNestedInput
 }
@@ -1508,6 +1665,7 @@ export type SkillCountOutputType = {
   questSkills: number
   varietyTags: number
   questSkillSnapshots: number
+  failurePenaltySkills: number
   slots: number
   questSkillRewards: number
   xpTransactions: number
@@ -1521,6 +1679,7 @@ export type SkillCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   questSkills?: boolean | SkillCountOutputTypeCountQuestSkillsArgs
   varietyTags?: boolean | SkillCountOutputTypeCountVarietyTagsArgs
   questSkillSnapshots?: boolean | SkillCountOutputTypeCountQuestSkillSnapshotsArgs
+  failurePenaltySkills?: boolean | SkillCountOutputTypeCountFailurePenaltySkillsArgs
   slots?: boolean | SkillCountOutputTypeCountSlotsArgs
   questSkillRewards?: boolean | SkillCountOutputTypeCountQuestSkillRewardsArgs
   xpTransactions?: boolean | SkillCountOutputTypeCountXpTransactionsArgs
@@ -1588,6 +1747,13 @@ export type SkillCountOutputTypeCountQuestSkillSnapshotsArgs<ExtArgs extends run
 /**
  * SkillCountOutputType without action
  */
+export type SkillCountOutputTypeCountFailurePenaltySkillsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlayerQuestFailurePenaltySkillWhereInput
+}
+
+/**
+ * SkillCountOutputType without action
+ */
 export type SkillCountOutputTypeCountSlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PlayerQuestSlotWhereInput
 }
@@ -1622,6 +1788,7 @@ export type SkillSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   questSkills?: boolean | Prisma.Skill$questSkillsArgs<ExtArgs>
   varietyTags?: boolean | Prisma.Skill$varietyTagsArgs<ExtArgs>
   questSkillSnapshots?: boolean | Prisma.Skill$questSkillSnapshotsArgs<ExtArgs>
+  failurePenaltySkills?: boolean | Prisma.Skill$failurePenaltySkillsArgs<ExtArgs>
   slots?: boolean | Prisma.Skill$slotsArgs<ExtArgs>
   questSkillRewards?: boolean | Prisma.Skill$questSkillRewardsArgs<ExtArgs>
   xpTransactions?: boolean | Prisma.Skill$xpTransactionsArgs<ExtArgs>
@@ -1667,6 +1834,7 @@ export type SkillInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   questSkills?: boolean | Prisma.Skill$questSkillsArgs<ExtArgs>
   varietyTags?: boolean | Prisma.Skill$varietyTagsArgs<ExtArgs>
   questSkillSnapshots?: boolean | Prisma.Skill$questSkillSnapshotsArgs<ExtArgs>
+  failurePenaltySkills?: boolean | Prisma.Skill$failurePenaltySkillsArgs<ExtArgs>
   slots?: boolean | Prisma.Skill$slotsArgs<ExtArgs>
   questSkillRewards?: boolean | Prisma.Skill$questSkillRewardsArgs<ExtArgs>
   xpTransactions?: boolean | Prisma.Skill$xpTransactionsArgs<ExtArgs>
@@ -1685,6 +1853,7 @@ export type $SkillPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     questSkills: Prisma.$QuestSkillPayload<ExtArgs>[]
     varietyTags: Prisma.$VarietyTagPayload<ExtArgs>[]
     questSkillSnapshots: Prisma.$PlayerQuestSkillSnapshotPayload<ExtArgs>[]
+    failurePenaltySkills: Prisma.$PlayerQuestFailurePenaltySkillPayload<ExtArgs>[]
     slots: Prisma.$PlayerQuestSlotPayload<ExtArgs>[]
     questSkillRewards: Prisma.$QuestSkillRewardPayload<ExtArgs>[]
     xpTransactions: Prisma.$XpTransactionPayload<ExtArgs>[]
@@ -2098,6 +2267,7 @@ export interface Prisma__SkillClient<T, Null = never, ExtArgs extends runtime.Ty
   questSkills<T extends Prisma.Skill$questSkillsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Skill$questSkillsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   varietyTags<T extends Prisma.Skill$varietyTagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Skill$varietyTagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VarietyTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   questSkillSnapshots<T extends Prisma.Skill$questSkillSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Skill$questSkillSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlayerQuestSkillSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  failurePenaltySkills<T extends Prisma.Skill$failurePenaltySkillsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Skill$failurePenaltySkillsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlayerQuestFailurePenaltySkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   slots<T extends Prisma.Skill$slotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Skill$slotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlayerQuestSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   questSkillRewards<T extends Prisma.Skill$questSkillRewardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Skill$questSkillRewardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestSkillRewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   xpTransactions<T extends Prisma.Skill$xpTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Skill$xpTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$XpTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2695,6 +2865,30 @@ export type Skill$questSkillSnapshotsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.PlayerQuestSkillSnapshotScalarFieldEnum | Prisma.PlayerQuestSkillSnapshotScalarFieldEnum[]
+}
+
+/**
+ * Skill.failurePenaltySkills
+ */
+export type Skill$failurePenaltySkillsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlayerQuestFailurePenaltySkill
+   */
+  select?: Prisma.PlayerQuestFailurePenaltySkillSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlayerQuestFailurePenaltySkill
+   */
+  omit?: Prisma.PlayerQuestFailurePenaltySkillOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlayerQuestFailurePenaltySkillInclude<ExtArgs> | null
+  where?: Prisma.PlayerQuestFailurePenaltySkillWhereInput
+  orderBy?: Prisma.PlayerQuestFailurePenaltySkillOrderByWithRelationInput | Prisma.PlayerQuestFailurePenaltySkillOrderByWithRelationInput[]
+  cursor?: Prisma.PlayerQuestFailurePenaltySkillWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlayerQuestFailurePenaltySkillScalarFieldEnum | Prisma.PlayerQuestFailurePenaltySkillScalarFieldEnum[]
 }
 
 /**
