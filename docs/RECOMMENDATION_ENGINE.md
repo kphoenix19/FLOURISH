@@ -30,6 +30,8 @@ Use a seeded/persistently auditable random source where helpful for tests, but d
 
 Home difficulty coefficients and multi-signal History composition are configurable implementation details to finalize with Recommendation Engine implementation and tests; they must preserve light Home difficulty influence and the documented initial signal modifiers.
 
+Build 1 Phase 06 resolves those details as follows. The highest-weight difficulty tier in the Standard level band is `appropriate`; an adjacent tier is a `slight mismatch`; tiers two or more positions away are an `extreme mismatch`. Their modifiers are `1.00`, `0.95`, and `0.85`. When several of the most recent relevant history signals apply, V1 uses the strongest (lowest) applicable modifier rather than compounding them. `NO_TIME` applies only to candidates at least as long as the source quest, and `TOO_HARD` only to candidates at least as difficult as the source quest. These values and rules are implemented through the versioned game configuration and tested scoring functions.
+
 ## Focus modifier
 
 Combine relevant skill modifiers using each QuestSkill reward percentage (weighted arithmetic mean). Initial point-to-modifier table is in [PRODUCT_SPEC.md](PRODUCT_SPEC.md). Focus affects recommendations/selections only.

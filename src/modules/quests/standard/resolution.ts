@@ -29,7 +29,7 @@ async function storePenalty(context: StandardContext, q: NonNullable<Slot["curre
 export async function reconcileExpiredInTransaction(context: StandardContext, now: Date) {
   for (const slot of await currentSlots(context)) {
     const q = slot.currentPlayerQuest;
-    if (q?.status === "ACCEPTED" && q.deadlineAt && now.getTime() > q.deadlineAt.getTime()) await storePenalty(context, q, now);
+    if (q?.status === "ACCEPTED" && q.deadlineAt && now.getTime() > q.deadlineAt.getTime()) { await storePenalty(context, q, now); await context.tx.playerRecommendation.updateMany({ where: { playerId: context.playerId, invalidatedAt: null }, data: { invalidatedAt: now } }); }
   }
 }
 async function refill(context: StandardContext, slot: Slot, random: RandomSource) {
@@ -96,6 +96,7 @@ export function resolveStandardQuest(db: PrismaClient, playerId: string, questId
     const slot = (await currentSlots(context)).find((s) => s.currentPlayerQuestId === questId);
     if (!slot) { const owned = await context.tx.playerQuest.findFirst({ where: { id: questId, playerId } }); throw new ServiceError(owned ? 409 : 404, "QUEST_NOT_CURRENT", owned ? "This quest no longer occupies its slot." : "Quest not found."); }
     const q = slot.currentPlayerQuest!; const random = options.random ?? Math.random;
+    await context.tx.playerRecommendation.updateMany({ where: { playerId, invalidatedAt: null }, data: { invalidatedAt: now } });
     if (action === "complete") {
       if (q.status === "EXPIRED") throw new ServiceError(409, "QUEST_EXPIRED", "This quest expired and must be cleared without a reward.");
       if (q.status !== "ACCEPTED") throw new ServiceError(409, "INVALID_STATUS", "Only an accepted quest can be completed.");

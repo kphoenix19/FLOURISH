@@ -15,6 +15,7 @@ import { definitionInclude, previewSnapshots } from "../../src/modules/quests/st
 import { createStandardApi } from "../../src/modules/quests/standard/api";
 import { resolveStandardQuest } from "../../src/modules/quests/standard/resolution";
 import type { StandardState } from "../../src/modules/quests/standard/view";
+import { getHomeRecommendation } from "../../src/modules/recommendations/service";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL must point to a disposable test database.");
@@ -40,6 +41,38 @@ beforeEach(async () => {
   await completeOnboarding(db, userId, { timezone: "America/Denver", focus: focus() });
 });
 afterAll(async () => { await db.$disconnect(); await pool.end(); await admin.query(`DROP SCHEMA "${schema}" CASCADE`); await admin.end(); });
+
+describe("Home recommendations", () => {
+  it("persists one recommendation from existing AVAILABLE slots without changing progression", async () => {
+    const state = await read(); const existing = new Set(flat(state).map((s) => s.quest.id));
+    const first = await getHomeRecommendation(db, playerId, () => 0.5); const second = await getHomeRecommendation(db, playerId, () => 0.99);
+    expect(second).toEqual(first); expect(existing.has(first.playerQuestId)).toBe(true);
+    expect(await db.playerRecommendation.count({ where: { playerId } })).toBe(1);
+    expect(await db.playerQuest.count({ where: { playerId } })).toBe(24);
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
+    expect(await db.playerProgress.findUniqueOrThrow({ where: { playerId } })).toMatchObject({ overallXp: 0, overallLevel: 1 });
+  });
+  it("serializes concurrent generation and isolates ownership", async () => {
+    await read(); const results = await Promise.all([0, 1, 2].map(() => getHomeRecommendation(db, playerId, () => 0.5)));
+    expect(new Set(results.map((r) => r.playerQuestId)).size).toBe(1); expect(await db.playerRecommendation.count({ where: { playerId } })).toBe(1);
+    const otherUser = await db.user.create({ data: { email: "recommendation-other@example.test" } }); const other = await ensurePlayerForUser(db, otherUser.id); await completeOnboarding(db, otherUser.id, { timezone: "UTC", focus: focus() });
+    const theirs = await getHomeRecommendation(db, other.id, () => 0.5); expect(theirs.playerQuestId).not.toBe(results[0].playerQuestId);
+    expect((await db.playerQuest.findUniqueOrThrow({ where: { id: theirs.playerQuestId } })).playerId).toBe(other.id);
+  });
+  it("invalidates on Focus change and target mutation, then recalculates", async () => {
+    await read(); const original = await getHomeRecommendation(db, playerId, () => 0.5); const changed = focus(); changed[0].points--; changed[7].points++;
+    await respecFocus(db, userId, { focus: changed }); expect((await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } })).invalidatedAt).not.toBeNull();
+    await getHomeRecommendation(db, playerId, () => 0.5); await mutateStandardQuest(db, playerId, original.playerQuestId, "reroll", {}, { random: () => 0.5 });
+    const next = await getHomeRecommendation(db, playerId, () => 0.5); expect(next.playerQuestId).not.toBe(original.playerQuestId);
+  });
+  it("serializes generation racing a target reroll without retaining a stale target", async () => {
+    await read(); const original = await getHomeRecommendation(db, playerId, () => 0.5);
+    await Promise.all([getHomeRecommendation(db, playerId, () => 0.1), mutateStandardQuest(db, playerId, original.playerQuestId, "reroll", {}, { random: () => 0.5 })]);
+    const final = await getHomeRecommendation(db, playerId, () => 0.5); const quest = await db.playerQuest.findUniqueOrThrow({ where: { id: final.playerQuestId } });
+    expect(final.playerQuestId).not.toBe(original.playerQuestId); expect(quest).toMatchObject({ playerId, status: "AVAILABLE", poolType: "STANDARD" });
+    expect(await db.playerRecommendation.count({ where: { playerId } })).toBe(1);
+  });
+});
 
 async function fixtureOfferInSlot(key: string, slotNumber: number) {
   await read();

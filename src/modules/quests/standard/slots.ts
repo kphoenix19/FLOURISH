@@ -21,6 +21,7 @@ export function ensureStandardQuestSlots(db: PrismaClient, playerId: string) {
 // Phase 05 may reuse this after resolving the old quest in the same transaction.
 export async function replaceStandardSlotQuest(context: StandardContext, slot: Slot, definition: Definition, options: { operationId?: string; action?: "REROLLED" | "UPGRADED"; feedback?: QuestFeedbackReason | null } = {}) {
   const { tx, playerId } = context;
+  await tx.playerRecommendation.updateMany({ where: { playerId, invalidatedAt: null }, data: { invalidatedAt: new Date() } });
   const current = await tx.playerQuestSlot.findUniqueOrThrow({ where: { id: slot.id }, include: slotInclude });
   if (current.playerId !== playerId || current.currentPlayerQuestId !== slot.currentPlayerQuestId) throw new ServiceError(409, "SLOT_CHANGED", "This slot has changed. Refresh your quests.");
   const old = current.currentPlayerQuest;

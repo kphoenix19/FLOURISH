@@ -5,6 +5,9 @@
   --foreground: #193126;
   --accent: #28734c;
 }
+.recommendation-card { margin: 1.5rem 0; border: 2px solid var(--accent, #3f7d5b); }
+.recommendation-reasons { display: flex; flex-wrap: wrap; gap: .5rem; margin: .75rem 0 1rem; }
+.recommendation-reasons span { border-radius: 999px; background: #e8f3ec; color: #234d35; padding: .3rem .65rem; font-size: .875rem; font-weight: 700; }
 
 * {
   box-sizing: border-box;

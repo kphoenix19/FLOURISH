@@ -91,6 +91,7 @@ export async function respecFocus(db: PrismaClient, userId: string, input: unkno
       await tx.playerSkillFocusHistory.create({ data: { playerId: player.id, skillId, oldFocusPoints: previous, newFocusPoints: r.points, allocationChangeId } });
       changed++;
     }
+    if (changed) await tx.playerRecommendation.updateMany({ where: { playerId: player.id, invalidatedAt: null }, data: { invalidatedAt: new Date() } });
     return { changed, allocationChangeId: changed ? allocationChangeId : null };
   });
 }

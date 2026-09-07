@@ -28,8 +28,14 @@ test.describe("Standard quest experience", () => {
     expect(complete.ok()).toBe(true);
     await page.goto("/home");
     await expect(page.locator("[data-slot-id]")).toHaveCount(24);
+    const recommendation = page.locator("[data-recommended-quest-id]");
+    await expect(recommendation.getByText("What should I do next?")).toBeVisible();
+    await expect(recommendation.getByRole("link", { name: "View this Standard quest" })).toBeVisible();
+    const recommendedId = await recommendation.getAttribute("data-recommended-quest-id");
+    expect(await page.locator(`[data-quest-id="${recommendedId}"]`).count()).toBe(1);
     const ids = await page.locator("[data-quest-id]").evaluateAll((nodes) => nodes.map((n) => n.getAttribute("data-quest-id")));
     await page.reload();
+    await expect(page.locator("[data-recommended-quest-id]")).toHaveAttribute("data-recommended-quest-id", recommendedId!);
     expect(await page.locator("[data-quest-id]").evaluateAll((nodes) => nodes.map((n) => n.getAttribute("data-quest-id")))).toEqual(ids);
     const first = page.locator("[data-slot-id]").first();
     await first.getByRole("combobox").selectOption("JUST_DIFFERENT");

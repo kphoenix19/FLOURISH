@@ -57,6 +57,7 @@ export const gameConfigSchema = z.object({
     weeklySetBonusOverallXp: z.number().int().min(0),
   }),
   recommendations: z.object({
+    homeDifficultyFit: z.object({ appropriate: z.number().positive(), slightMismatch: z.number().positive(), extremeMismatch: z.number().positive() }),
     varietyHistoryWindow: z.number().int().positive(),
     varietyModifiersByOccurrences: z.record(z.coerce.number().int(), z.number().positive()),
     interactionHistoryWindow: z.number().int().positive(),
@@ -76,7 +77,7 @@ export const gameConfigSchema = z.object({
 export type GameConfig = z.infer<typeof gameConfigSchema>;
 
 const rawGameConfig = {
-  version: "build1-05-v1",
+  version: "build1-06-v1",
   progression: { skillLevelCap: 100, levelCurves: {
     skill: { base: 100, linear: 20, quadratic: 2 },
     overall: { base: 200, linear: 35, quadratic: 3 },
@@ -112,6 +113,7 @@ const rawGameConfig = {
   },
   challenges: { dailyCount: 3, weeklyCount: 5, dailyCompletionBonusPercent: 10, weeklyCompletionBonusPercent: 15, dailySetBonusOverallXp: 100, weeklySetBonusOverallXp: 300 },
   recommendations: {
+    homeDifficultyFit: { appropriate: 1, slightMismatch: 0.95, extremeMismatch: 0.85 },
     varietyHistoryWindow: 5,
     varietyModifiersByOccurrences: { 0: 1, 1: 0.95, 2: 0.9, 3: 0.85, 4: 0.8, 5: 0.75 },
     interactionHistoryWindow: 20,

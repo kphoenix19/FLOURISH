@@ -30,6 +30,7 @@ export function mutateStandardQuest(db: PrismaClient, playerId: string, questId:
     }
     if (q.status !== "AVAILABLE") throw new ServiceError(409, "QUEST_LOCKED", "Only available Standard quests allow this action.");
     const operationId = randomUUID();
+    await context.tx.playerRecommendation.updateMany({ where: { playerId, invalidatedAt: null }, data: { invalidatedAt: (options.now ?? (() => new Date()))() } });
     if (action === "accept") {
       if (!context.valid(q.questDefinition, slot.skillId)) throw new ServiceError(409, "OFFER_CHANGED", "This offer is no longer valid. Refresh your quests for a replacement.");
       const acceptedAt = (options.now ?? (() => new Date()))();
