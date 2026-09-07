@@ -46,4 +46,16 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .allocation-review div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid #e6ece3; }
 .error { color: #982e23; }
 .panel hr { margin: 40px 0; border: 0; border-top: 1px solid #dce6db; }
+.quest-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 18px 0 36px; }
+.quest-card { overflow-wrap: anywhere; }
+.quest-card .actions { gap: 8px; margin-top: 16px; }
+.quest-card .button { padding: 10px 12px; }
+.quest-skill { scroll-margin-top: 20px; }
+.skill-links { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.skill-links a { padding: 12px 0; text-decoration: underline; }
+.reroll-feedback { display: block; margin-top: 16px; font-size: 13px; }
+.reroll-feedback select { display: block; width: 100%; min-height: 44px; border: 1px solid #a8c3ac; border-radius: 8px; margin-top: 6px; padding: 8px; background: white; font: inherit; }
+select:focus-visible { outline: 3px solid #d29329; outline-offset: 3px; }
+.deadline { font-weight: 700; }
+@media (max-width: 850px) { .quest-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .skill-grid { grid-template-columns: 1fr; } .page-shell { padding: 16px 12px 40px; } .page-nav { gap: 12px; } }

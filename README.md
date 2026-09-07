@@ -4,7 +4,7 @@
 
 FLOURISH is a browser-based, gamified real-life progression system that rewards constructive actions with overall and life-skill progression. It is not a conventional to-do list. The MVP uses honor-system completion, a curated quest library, and server-authoritative gameplay.
 
-The repository includes the canonical seed library and Phase 03 authentication, onboarding, and Focus Settings. Quest gameplay is deferred to later phases.
+The repository includes the canonical seed library, Phase 03 authentication/onboarding, and Phase 04 persistent Standard Quest offers with acceptance, reroll, and curated harder-family replacement. Completion and XP resolution remain deferred.
 
 ## Authoritative specifications
 
@@ -93,7 +93,7 @@ Create a Google Cloud OAuth client of type Web application, configure its consen
 
 Apply migrations, run `db:seed`, start the app, then open `/login` and choose **Continue with Google**. First sign-in creates/reuses a User, links its Google account, and ensures one Player. The Player starts with an unset timezone and incomplete onboarding. `/onboarding` introduces the database-loaded Skills, asks for an IANA timezone (with an explicit device-timezone shortcut), offers the balanced 6/6/6/6/6/6/5/5 Focus default, and confirms the choices. Completion atomically persists all eight Focus rows/history, initializes missing progression and streak state, and opens `/home`.
 
-Initial history records `old_focus_points = null`. Settings respecs are free/unlimited and record only changed Skills under one change ID; saving the same allocation adds no history. Matching onboarding retries succeed without resets; differing completed-state retries return 409 and direct the player to Settings. `/settings` also changes timezone without rewriting existing quest/challenge history. Quest slots are not generated yet. `/admin` is a guarded placeholder, with no role-editing or curation UI. Matching emails are not automatically merged across identities; an `OAuthAccountNotLinked` error needs explicit administrator investigation.
+Initial history records `old_focus_points = null`. Settings respecs are free/unlimited and record only changed Skills under one change ID; saving the same allocation adds no history. Matching onboarding retries succeed without resets; differing completed-state retries return 409 and direct the player to Settings. `/settings` also changes timezone without rewriting existing quest/challenge history. `/admin` is a guarded placeholder, with no role-editing or curation UI. Matching emails are not automatically merged across identities; an `OAuthAccountNotLinked` error needs explicit administrator investigation.
 
 REST endpoints are `GET /api/me`, `POST /api/onboarding/complete`, `PUT /api/me/focus`, `PUT /api/me/timezone`, and the read-only `GET /api/admin` authorization probe. Onboarding accepts `{ "timezone": "America/Denver", "focus": [{ "skillCode": "F", "points": 6 }, ...] }` with exactly eight unique Skills. Focus updates accept the complete `focus` array; timezone updates accept `timezone`. Identity is always derived from the session. Browser mutations use same-origin JSON; do not send User/Player IDs or roles. Responses use 400 for invalid input, 401 for missing session, 403 for forbidden access/origin, 409 for conflicting or incomplete player state, and 503 for missing canonical Skills.
 
@@ -102,3 +102,9 @@ REST endpoints are `GET /api/me`, `POST /api/onboarding/complete`, `PUT /api/me/
 `corepack pnpm test` runs domain/component tests. Set `DATABASE_URL` to a disposable migrated database for `corepack pnpm test:integration`. Phase 03 tests migrate an isolated random schema and cover real transactions, rollback, history, adapter collisions, authorization, and REST handlers. Never run the full integration suite against a valuable database: the existing Phase 01 constraint tests truncate public fixture tables.
 
 For browser coverage, set `E2E_DATABASE_URL` to a disposable migrated and seeded database, then run `corepack pnpm test:e2e`. The harness starts a dedicated server at `http://127.0.0.1:3103`, generates a temporary auth secret, and mints normal Auth.js encrypted session cookies for test-owned User fixtures. There is no application login bypass or test endpoint. Desktop Chromium and a phone-sized Chromium viewport cover onboarding through Settings and sign-out. Screenshots/traces are saved in ignored `test-results/`. Without `E2E_DATABASE_URL`, authenticated tests are skipped explicitly and the public smoke tests still run. Live Google consent and callback verification remain a manual configuration check.
+
+## Standard Quest engine
+
+An onboarded player’s first visit to `/home` or `GET /api/quests/standard` creates and populates three persistent Standard slots for each of the eight Skills. Reloads return the same assignments. The Home cards use `GET /api/quests/standard` and three same-origin JSON mutations: `POST /api/quests/standard/:playerQuestId/accept`, `/reroll`, and `/bump`. Accept and bump bodies are `{}`; reroll accepts optional `{ "feedbackReason": "TOO_HARD" }` using the documented feedback enum.
+
+Acceptance starts the definition’s exact 24/48/72-hour elapsed deadline and freezes its gameplay and offer-text snapshots. Reroll and bump retain history and return the replacement assignment. Identity always comes from the Auth.js session. There are no Complete, Abandon, Clear, XP, level, streak, Challenge, or recommendation actions in this phase.

@@ -44,6 +44,14 @@ Unit tests use pure guards/domain validation; PostgreSQL tests inject a fixture-
 
 ## Atomic gameplay operations
 
+### Phase 04 Standard Quest engine
+
+`src/modules/quests/standard/` separates pure scoring/tier selection, content validation, transaction context, slot reconciliation, lifecycle actions, response mapping, and REST adapters. First Home/API access lazily creates three Standard slots per canonical Skill and fills all 24 in one transaction. A Player row lock serializes population and mutations for that Player; shared library locks keep definitions and their allocations stable while offers are validated or accepted. Reads reconcile invalid AVAILABLE content but preserve accepted and uncleared-expired blockers. Assignments never change merely because Home reloads or Focus changes.
+
+Quest generation uses configured level-band difficulty weights. Candidate scores multiply difficulty, reward-weighted Focus, reward-weighted Catch-Up, recent variety/history, and bounded randomness. Current duplicates and the immediate reroll definition are hard exclusions. Recent completed definitions and same reroll variety are soft exclusions and relax when necessary. Catch-Up does not alter the fixed three slots per Skill. Randomness is injected for deterministic tests; production randomness runs only inside authoritative assignment transactions.
+
+Accept, reroll, and harder-family actions enter through authenticated REST services and resolve ownership from the session. Acceptance snapshots the current valid definition and calculates an exact elapsed-hour deadline. An already valid ACCEPTED quest returns idempotent success. Reroll and upgrade atomically retain the old PlayerQuest as `REROLLED`, append interaction history, create one AVAILABLE replacement, and repoint the same slot. Upgrade directly selects the closest eligible higher family tier, skipping absent, invalid, or currently occupied tiers. Phase 04 does not transition overdue quests or resolve XP.
+
 Use database transactions and row locking where appropriate for completion, abandonment, expired clearing, COUNT progress, slot replacement, and Daily/Weekly set bonuses. Use UUID `operation_id` values for action grouping/idempotency.
 
 Completion transaction:

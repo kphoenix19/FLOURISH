@@ -229,6 +229,7 @@ Exactly one primary, 1–3 total rows, and sum 100. A partial unique index can e
 | `completion_target_snapshot` | required |
 | `completion_window_hours_snapshot` | nullable/non-null according to Standard eligibility/use |
 | `reward_snapshot` | structured immutable rewarded Skill IDs/codes and percentages plus reward-affecting configuration/version inputs |
+| `title_snapshot`, `description_snapshot`, `estimated_minutes_snapshot` | nullable accepted-offer text/time snapshots; populated on Phase 04 acceptance |
 | `failure_penalty_xp` | nullable until calculated; nonnegative stored magnitude |
 | `failure_penalty_applied_at` | nullable |
 | `created_at`, `updated_at` | timestamps |
@@ -352,6 +353,12 @@ The product requires a persisted recommendation and invalidation. Add a `PlayerR
 Database constraints should enforce scalar checks, foreign keys, uniqueness, and “at most one primary.” Transactions/application validation must enforce cross-row totals/counts, exactly one primary, full Focus allocation, state-machine timestamps, configurable bands, accepted snapshots, reward/ledger reconciliation, slot ownership/state, set-bonus once-only semantics, and progression caches matching immutable ledger effects.
 
 All completion, abandonment, expiration clearing, COUNT target completion, slot replacement, and set-award operations lock affected rows and use operation IDs. No operation may expose partial state.
+
+## Phase 04 Standard Quest refinement
+
+Migration `20260906220000_standard_offer_snapshots` adds nullable title, description, and estimated-minute snapshots to `PlayerQuest`. Historical rows remain valid; new Standard acceptance fills them together with difficulty, Base XP, completion type/target/window, and normalized Skill reward snapshots. This preserves both promised rewards and accepted task instructions after later definition edits.
+
+Standard slot state is reconciled lazily under a Player row lock and shared curated-library locks. The transaction creates missing `(player, skill, slot_number)` rows, fills empty or terminally referenced slots, replaces invalid AVAILABLE definitions, and preserves valid AVAILABLE, ACCEPTED, and uncleared EXPIRED occupants. A replaced offer remains as a `REROLLED` PlayerQuest. `SHOWN` records assignment, while `REROLLED` or `UPGRADED` records the player action; a shared operation ID connects replacement records.
 
 ## Phase 01 implementation mapping
 

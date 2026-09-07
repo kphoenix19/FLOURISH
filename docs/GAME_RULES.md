@@ -56,6 +56,8 @@ Every Player has exactly three explicit Standard slots for each of eight skills:
 
 An AVAILABLE Standard quest has no deadline or penalty, persists across reloads, and does not auto-expire. It may be accepted, rerolled, or upgraded through 🔥 when eligible. Generating a Standard quest fills a slot; it never creates an untracked “25th quest.”
 
+Phase 04 assigns slots lazily on first Standard-state access. Reconciliation preserves valid current offers and blocking quests, replaces only invalid AVAILABLE or unexpectedly terminal occupants, and never changes existing assignments after a Focus respec. Within a Skill slot, multi-Skill reward percentages give Focus and recommendation Catch-Up a meaningful weighted effect; these modifiers never change slot counts or XP.
+
 ## Standard lifecycle
 
 ```text

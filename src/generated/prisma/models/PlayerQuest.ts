@@ -31,6 +31,7 @@ export type PlayerQuestAvgAggregateOutputType = {
   baseXpSnapshot: number | null
   completionTargetSnapshot: number | null
   completionWindowHoursSnapshot: number | null
+  estimatedMinutesSnapshot: number | null
   failurePenaltyXp: number | null
 }
 
@@ -39,6 +40,7 @@ export type PlayerQuestSumAggregateOutputType = {
   baseXpSnapshot: number | null
   completionTargetSnapshot: number | null
   completionWindowHoursSnapshot: number | null
+  estimatedMinutesSnapshot: number | null
   failurePenaltyXp: number | null
 }
 
@@ -65,6 +67,9 @@ export type PlayerQuestMinAggregateOutputType = {
   completionTargetSnapshot: number | null
   completionWindowHoursSnapshot: number | null
   rewardConfigVersionSnapshot: string | null
+  titleSnapshot: string | null
+  descriptionSnapshot: string | null
+  estimatedMinutesSnapshot: number | null
   failurePenaltyXp: number | null
   failurePenaltyAppliedAt: Date | null
   createdAt: Date | null
@@ -94,6 +99,9 @@ export type PlayerQuestMaxAggregateOutputType = {
   completionTargetSnapshot: number | null
   completionWindowHoursSnapshot: number | null
   rewardConfigVersionSnapshot: string | null
+  titleSnapshot: string | null
+  descriptionSnapshot: string | null
+  estimatedMinutesSnapshot: number | null
   failurePenaltyXp: number | null
   failurePenaltyAppliedAt: Date | null
   createdAt: Date | null
@@ -123,6 +131,9 @@ export type PlayerQuestCountAggregateOutputType = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot: number
   rewardConfigVersionSnapshot: number
+  titleSnapshot: number
+  descriptionSnapshot: number
+  estimatedMinutesSnapshot: number
   failurePenaltyXp: number
   failurePenaltyAppliedAt: number
   createdAt: number
@@ -136,6 +147,7 @@ export type PlayerQuestAvgAggregateInputType = {
   baseXpSnapshot?: true
   completionTargetSnapshot?: true
   completionWindowHoursSnapshot?: true
+  estimatedMinutesSnapshot?: true
   failurePenaltyXp?: true
 }
 
@@ -144,6 +156,7 @@ export type PlayerQuestSumAggregateInputType = {
   baseXpSnapshot?: true
   completionTargetSnapshot?: true
   completionWindowHoursSnapshot?: true
+  estimatedMinutesSnapshot?: true
   failurePenaltyXp?: true
 }
 
@@ -170,6 +183,9 @@ export type PlayerQuestMinAggregateInputType = {
   completionTargetSnapshot?: true
   completionWindowHoursSnapshot?: true
   rewardConfigVersionSnapshot?: true
+  titleSnapshot?: true
+  descriptionSnapshot?: true
+  estimatedMinutesSnapshot?: true
   failurePenaltyXp?: true
   failurePenaltyAppliedAt?: true
   createdAt?: true
@@ -199,6 +215,9 @@ export type PlayerQuestMaxAggregateInputType = {
   completionTargetSnapshot?: true
   completionWindowHoursSnapshot?: true
   rewardConfigVersionSnapshot?: true
+  titleSnapshot?: true
+  descriptionSnapshot?: true
+  estimatedMinutesSnapshot?: true
   failurePenaltyXp?: true
   failurePenaltyAppliedAt?: true
   createdAt?: true
@@ -228,6 +247,9 @@ export type PlayerQuestCountAggregateInputType = {
   completionTargetSnapshot?: true
   completionWindowHoursSnapshot?: true
   rewardConfigVersionSnapshot?: true
+  titleSnapshot?: true
+  descriptionSnapshot?: true
+  estimatedMinutesSnapshot?: true
   failurePenaltyXp?: true
   failurePenaltyAppliedAt?: true
   createdAt?: true
@@ -344,6 +366,9 @@ export type PlayerQuestGroupByOutputType = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot: string | null
+  descriptionSnapshot: string | null
+  estimatedMinutesSnapshot: number | null
   failurePenaltyXp: number | null
   failurePenaltyAppliedAt: Date | null
   createdAt: Date
@@ -396,6 +421,9 @@ export type PlayerQuestWhereInput = {
   completionTargetSnapshot?: Prisma.IntFilter<"PlayerQuest"> | number
   completionWindowHoursSnapshot?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFilter<"PlayerQuest"> | string
+  titleSnapshot?: Prisma.StringNullableFilter<"PlayerQuest"> | string | null
+  descriptionSnapshot?: Prisma.StringNullableFilter<"PlayerQuest"> | string | null
+  estimatedMinutesSnapshot?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   failurePenaltyXp?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   failurePenaltyAppliedAt?: Prisma.DateTimeNullableFilter<"PlayerQuest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PlayerQuest"> | Date | string
@@ -434,6 +462,9 @@ export type PlayerQuestOrderByWithRelationInput = {
   completionTargetSnapshot?: Prisma.SortOrder
   completionWindowHoursSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardConfigVersionSnapshot?: Prisma.SortOrder
+  titleSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  descriptionSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedMinutesSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   failurePenaltyXp?: Prisma.SortOrderInput | Prisma.SortOrder
   failurePenaltyAppliedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -475,6 +506,9 @@ export type PlayerQuestWhereUniqueInput = Prisma.AtLeast<{
   completionTargetSnapshot?: Prisma.IntFilter<"PlayerQuest"> | number
   completionWindowHoursSnapshot?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFilter<"PlayerQuest"> | string
+  titleSnapshot?: Prisma.StringNullableFilter<"PlayerQuest"> | string | null
+  descriptionSnapshot?: Prisma.StringNullableFilter<"PlayerQuest"> | string | null
+  estimatedMinutesSnapshot?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   failurePenaltyXp?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   failurePenaltyAppliedAt?: Prisma.DateTimeNullableFilter<"PlayerQuest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PlayerQuest"> | Date | string
@@ -513,6 +547,9 @@ export type PlayerQuestOrderByWithAggregationInput = {
   completionTargetSnapshot?: Prisma.SortOrder
   completionWindowHoursSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardConfigVersionSnapshot?: Prisma.SortOrder
+  titleSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  descriptionSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedMinutesSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   failurePenaltyXp?: Prisma.SortOrderInput | Prisma.SortOrder
   failurePenaltyAppliedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -550,6 +587,9 @@ export type PlayerQuestScalarWhereWithAggregatesInput = {
   completionTargetSnapshot?: Prisma.IntWithAggregatesFilter<"PlayerQuest"> | number
   completionWindowHoursSnapshot?: Prisma.IntNullableWithAggregatesFilter<"PlayerQuest"> | number | null
   rewardConfigVersionSnapshot?: Prisma.StringWithAggregatesFilter<"PlayerQuest"> | string
+  titleSnapshot?: Prisma.StringNullableWithAggregatesFilter<"PlayerQuest"> | string | null
+  descriptionSnapshot?: Prisma.StringNullableWithAggregatesFilter<"PlayerQuest"> | string | null
+  estimatedMinutesSnapshot?: Prisma.IntNullableWithAggregatesFilter<"PlayerQuest"> | number | null
   failurePenaltyXp?: Prisma.IntNullableWithAggregatesFilter<"PlayerQuest"> | number | null
   failurePenaltyAppliedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PlayerQuest"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PlayerQuest"> | Date | string
@@ -576,6 +616,9 @@ export type PlayerQuestCreateInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -614,6 +657,9 @@ export type PlayerQuestUncheckedCreateInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -646,6 +692,9 @@ export type PlayerQuestUpdateInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -684,6 +733,9 @@ export type PlayerQuestUncheckedUpdateInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -719,6 +771,9 @@ export type PlayerQuestCreateManyInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -745,6 +800,9 @@ export type PlayerQuestUpdateManyMutationInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -774,6 +832,9 @@ export type PlayerQuestUncheckedUpdateManyInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -813,6 +874,9 @@ export type PlayerQuestCountOrderByAggregateInput = {
   completionTargetSnapshot?: Prisma.SortOrder
   completionWindowHoursSnapshot?: Prisma.SortOrder
   rewardConfigVersionSnapshot?: Prisma.SortOrder
+  titleSnapshot?: Prisma.SortOrder
+  descriptionSnapshot?: Prisma.SortOrder
+  estimatedMinutesSnapshot?: Prisma.SortOrder
   failurePenaltyXp?: Prisma.SortOrder
   failurePenaltyAppliedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -824,6 +888,7 @@ export type PlayerQuestAvgOrderByAggregateInput = {
   baseXpSnapshot?: Prisma.SortOrder
   completionTargetSnapshot?: Prisma.SortOrder
   completionWindowHoursSnapshot?: Prisma.SortOrder
+  estimatedMinutesSnapshot?: Prisma.SortOrder
   failurePenaltyXp?: Prisma.SortOrder
 }
 
@@ -850,6 +915,9 @@ export type PlayerQuestMaxOrderByAggregateInput = {
   completionTargetSnapshot?: Prisma.SortOrder
   completionWindowHoursSnapshot?: Prisma.SortOrder
   rewardConfigVersionSnapshot?: Prisma.SortOrder
+  titleSnapshot?: Prisma.SortOrder
+  descriptionSnapshot?: Prisma.SortOrder
+  estimatedMinutesSnapshot?: Prisma.SortOrder
   failurePenaltyXp?: Prisma.SortOrder
   failurePenaltyAppliedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -879,6 +947,9 @@ export type PlayerQuestMinOrderByAggregateInput = {
   completionTargetSnapshot?: Prisma.SortOrder
   completionWindowHoursSnapshot?: Prisma.SortOrder
   rewardConfigVersionSnapshot?: Prisma.SortOrder
+  titleSnapshot?: Prisma.SortOrder
+  descriptionSnapshot?: Prisma.SortOrder
+  estimatedMinutesSnapshot?: Prisma.SortOrder
   failurePenaltyXp?: Prisma.SortOrder
   failurePenaltyAppliedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -890,6 +961,7 @@ export type PlayerQuestSumOrderByAggregateInput = {
   baseXpSnapshot?: Prisma.SortOrder
   completionTargetSnapshot?: Prisma.SortOrder
   completionWindowHoursSnapshot?: Prisma.SortOrder
+  estimatedMinutesSnapshot?: Prisma.SortOrder
   failurePenaltyXp?: Prisma.SortOrder
 }
 
@@ -1143,6 +1215,9 @@ export type PlayerQuestCreateWithoutPlayerInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1179,6 +1254,9 @@ export type PlayerQuestUncheckedCreateWithoutPlayerInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1243,6 +1321,9 @@ export type PlayerQuestScalarWhereInput = {
   completionTargetSnapshot?: Prisma.IntFilter<"PlayerQuest"> | number
   completionWindowHoursSnapshot?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFilter<"PlayerQuest"> | string
+  titleSnapshot?: Prisma.StringNullableFilter<"PlayerQuest"> | string | null
+  descriptionSnapshot?: Prisma.StringNullableFilter<"PlayerQuest"> | string | null
+  estimatedMinutesSnapshot?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   failurePenaltyXp?: Prisma.IntNullableFilter<"PlayerQuest"> | number | null
   failurePenaltyAppliedAt?: Prisma.DateTimeNullableFilter<"PlayerQuest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PlayerQuest"> | Date | string
@@ -1269,6 +1350,9 @@ export type PlayerQuestCreateWithoutQuestDefinitionInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1305,6 +1389,9 @@ export type PlayerQuestUncheckedCreateWithoutQuestDefinitionInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1363,6 +1450,9 @@ export type PlayerQuestCreateWithoutChallengeSetInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1399,6 +1489,9 @@ export type PlayerQuestUncheckedCreateWithoutChallengeSetInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1457,6 +1550,9 @@ export type PlayerQuestCreateWithoutSkillSnapshotsInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1494,6 +1590,9 @@ export type PlayerQuestUncheckedCreateWithoutSkillSnapshotsInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1541,6 +1640,9 @@ export type PlayerQuestUpdateWithoutSkillSnapshotsInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1578,6 +1680,9 @@ export type PlayerQuestUncheckedUpdateWithoutSkillSnapshotsInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1609,6 +1714,9 @@ export type PlayerQuestCreateWithoutCurrentSlotInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1646,6 +1754,9 @@ export type PlayerQuestUncheckedCreateWithoutCurrentSlotInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1693,6 +1804,9 @@ export type PlayerQuestUpdateWithoutCurrentSlotInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1730,6 +1844,9 @@ export type PlayerQuestUncheckedUpdateWithoutCurrentSlotInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1761,6 +1878,9 @@ export type PlayerQuestCreateWithoutRewardInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1798,6 +1918,9 @@ export type PlayerQuestUncheckedCreateWithoutRewardInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1845,6 +1968,9 @@ export type PlayerQuestUpdateWithoutRewardInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1882,6 +2008,9 @@ export type PlayerQuestUncheckedUpdateWithoutRewardInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1913,6 +2042,9 @@ export type PlayerQuestCreateWithoutXpTransactionsInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1950,6 +2082,9 @@ export type PlayerQuestUncheckedCreateWithoutXpTransactionsInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -1997,6 +2132,9 @@ export type PlayerQuestUpdateWithoutXpTransactionsInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2034,6 +2172,9 @@ export type PlayerQuestUncheckedUpdateWithoutXpTransactionsInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2065,6 +2206,9 @@ export type PlayerQuestCreateWithoutInteractionsInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -2102,6 +2246,9 @@ export type PlayerQuestUncheckedCreateWithoutInteractionsInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -2149,6 +2296,9 @@ export type PlayerQuestUpdateWithoutInteractionsInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2186,6 +2336,9 @@ export type PlayerQuestUncheckedUpdateWithoutInteractionsInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2217,6 +2370,9 @@ export type PlayerQuestCreateWithoutRecommendationInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -2254,6 +2410,9 @@ export type PlayerQuestUncheckedCreateWithoutRecommendationInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -2301,6 +2460,9 @@ export type PlayerQuestUpdateWithoutRecommendationInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2338,6 +2500,9 @@ export type PlayerQuestUncheckedUpdateWithoutRecommendationInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2371,6 +2536,9 @@ export type PlayerQuestCreateManyPlayerInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -2397,6 +2565,9 @@ export type PlayerQuestUpdateWithoutPlayerInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2433,6 +2604,9 @@ export type PlayerQuestUncheckedUpdateWithoutPlayerInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2467,6 +2641,9 @@ export type PlayerQuestUncheckedUpdateManyWithoutPlayerInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2495,6 +2672,9 @@ export type PlayerQuestCreateManyQuestDefinitionInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -2521,6 +2701,9 @@ export type PlayerQuestUpdateWithoutQuestDefinitionInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2557,6 +2740,9 @@ export type PlayerQuestUncheckedUpdateWithoutQuestDefinitionInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2591,6 +2777,9 @@ export type PlayerQuestUncheckedUpdateManyWithoutQuestDefinitionInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2619,6 +2808,9 @@ export type PlayerQuestCreateManyChallengeSetInput = {
   completionTargetSnapshot: number
   completionWindowHoursSnapshot?: number | null
   rewardConfigVersionSnapshot: string
+  titleSnapshot?: string | null
+  descriptionSnapshot?: string | null
+  estimatedMinutesSnapshot?: number | null
   failurePenaltyXp?: number | null
   failurePenaltyAppliedAt?: Date | string | null
   createdAt?: Date | string
@@ -2645,6 +2837,9 @@ export type PlayerQuestUpdateWithoutChallengeSetInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2681,6 +2876,9 @@ export type PlayerQuestUncheckedUpdateWithoutChallengeSetInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2715,6 +2913,9 @@ export type PlayerQuestUncheckedUpdateManyWithoutChallengeSetInput = {
   completionTargetSnapshot?: Prisma.IntFieldUpdateOperationsInput | number
   completionWindowHoursSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   rewardConfigVersionSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  titleSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descriptionSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMinutesSnapshot?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyXp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   failurePenaltyAppliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2793,6 +2994,9 @@ export type PlayerQuestSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   completionTargetSnapshot?: boolean
   completionWindowHoursSnapshot?: boolean
   rewardConfigVersionSnapshot?: boolean
+  titleSnapshot?: boolean
+  descriptionSnapshot?: boolean
+  estimatedMinutesSnapshot?: boolean
   failurePenaltyXp?: boolean
   failurePenaltyAppliedAt?: boolean
   createdAt?: boolean
@@ -2832,6 +3036,9 @@ export type PlayerQuestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   completionTargetSnapshot?: boolean
   completionWindowHoursSnapshot?: boolean
   rewardConfigVersionSnapshot?: boolean
+  titleSnapshot?: boolean
+  descriptionSnapshot?: boolean
+  estimatedMinutesSnapshot?: boolean
   failurePenaltyXp?: boolean
   failurePenaltyAppliedAt?: boolean
   createdAt?: boolean
@@ -2864,6 +3071,9 @@ export type PlayerQuestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   completionTargetSnapshot?: boolean
   completionWindowHoursSnapshot?: boolean
   rewardConfigVersionSnapshot?: boolean
+  titleSnapshot?: boolean
+  descriptionSnapshot?: boolean
+  estimatedMinutesSnapshot?: boolean
   failurePenaltyXp?: boolean
   failurePenaltyAppliedAt?: boolean
   createdAt?: boolean
@@ -2896,13 +3106,16 @@ export type PlayerQuestSelectScalar = {
   completionTargetSnapshot?: boolean
   completionWindowHoursSnapshot?: boolean
   rewardConfigVersionSnapshot?: boolean
+  titleSnapshot?: boolean
+  descriptionSnapshot?: boolean
+  estimatedMinutesSnapshot?: boolean
   failurePenaltyXp?: boolean
   failurePenaltyAppliedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PlayerQuestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "playerId" | "questDefinitionId" | "challengeSetId" | "poolType" | "status" | "currentProgress" | "assignedAt" | "acceptedAt" | "deadlineAt" | "completedAt" | "abandonedAt" | "expiredAt" | "clearedAt" | "windowStartAt" | "windowEndAt" | "difficultySnapshot" | "baseXpSnapshot" | "completionTypeSnapshot" | "completionTargetSnapshot" | "completionWindowHoursSnapshot" | "rewardConfigVersionSnapshot" | "failurePenaltyXp" | "failurePenaltyAppliedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["playerQuest"]>
+export type PlayerQuestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "playerId" | "questDefinitionId" | "challengeSetId" | "poolType" | "status" | "currentProgress" | "assignedAt" | "acceptedAt" | "deadlineAt" | "completedAt" | "abandonedAt" | "expiredAt" | "clearedAt" | "windowStartAt" | "windowEndAt" | "difficultySnapshot" | "baseXpSnapshot" | "completionTypeSnapshot" | "completionTargetSnapshot" | "completionWindowHoursSnapshot" | "rewardConfigVersionSnapshot" | "titleSnapshot" | "descriptionSnapshot" | "estimatedMinutesSnapshot" | "failurePenaltyXp" | "failurePenaltyAppliedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["playerQuest"]>
 export type PlayerQuestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   player?: boolean | Prisma.PlayerDefaultArgs<ExtArgs>
   questDefinition?: boolean | Prisma.QuestDefinitionDefaultArgs<ExtArgs>
@@ -2962,6 +3175,9 @@ export type $PlayerQuestPayload<ExtArgs extends runtime.Types.Extensions.Interna
     completionTargetSnapshot: number
     completionWindowHoursSnapshot: number | null
     rewardConfigVersionSnapshot: string
+    titleSnapshot: string | null
+    descriptionSnapshot: string | null
+    estimatedMinutesSnapshot: number | null
     failurePenaltyXp: number | null
     failurePenaltyAppliedAt: Date | null
     createdAt: Date
@@ -3420,6 +3636,9 @@ export interface PlayerQuestFieldRefs {
   readonly completionTargetSnapshot: Prisma.FieldRef<"PlayerQuest", 'Int'>
   readonly completionWindowHoursSnapshot: Prisma.FieldRef<"PlayerQuest", 'Int'>
   readonly rewardConfigVersionSnapshot: Prisma.FieldRef<"PlayerQuest", 'String'>
+  readonly titleSnapshot: Prisma.FieldRef<"PlayerQuest", 'String'>
+  readonly descriptionSnapshot: Prisma.FieldRef<"PlayerQuest", 'String'>
+  readonly estimatedMinutesSnapshot: Prisma.FieldRef<"PlayerQuest", 'Int'>
   readonly failurePenaltyXp: Prisma.FieldRef<"PlayerQuest", 'Int'>
   readonly failurePenaltyAppliedAt: Prisma.FieldRef<"PlayerQuest", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"PlayerQuest", 'DateTime'>
