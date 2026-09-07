@@ -138,6 +138,8 @@ If skills remain tied after Level and Current XP, resolve the single lowest Skil
 
 Streaks belong to skills. A streak advances or is maintained when at least one accepted Standard, Daily, or Weekly quest rewarding that skill completes during a local calendar day. Multi-skill completion qualifies every rewarded skill. Multiple completions in one skill/day count once. Abandoned, expired, and rerolled quests do not count. Missing one calendar day resets the streak; MVP has no grace/freeze.
 
+There is no separate Daily-Challenge or Weekly-Challenge streak in Build 1. A Challenge completion participates only in the existing Player-by-Skill streak rows for the Skills it rewards; completing a full Challenge set does not advance another streak.
+
 Initial configurable tiers:
 
 | Current streak | Bonus |

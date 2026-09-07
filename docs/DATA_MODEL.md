@@ -275,11 +275,12 @@ One QuestReward per completed quest. Formula must reconcile with QuestSkillRewar
 | `reward_percent` | check 1–100 |
 | `base_skill_xp` | nonnegative integer |
 | `bonus_skill_xp` | nonnegative integer |
+| `catch_up_bonus_xp`, `streak_bonus_xp`, `challenge_bonus_xp` | nonnegative auditable components of bonus Skill XP |
 | `final_skill_xp` | nonnegative integer |
 
 Rows snapshot the accepted distribution. Cross-row percent total is 100 and final values reconcile to reward totals; transactional validation.
 
-Build 1 stores `catch_up_bonus_xp` and `streak_bonus_xp` separately in addition to their reconciled `bonus_skill_xp` total. `PlayerQuestFailurePenaltySkill` stores one accepted Skill allocation with `intended_penalty_xp` and nullable `actual_applied_penalty_xp`; expiration creates it and clear/abandon fills the actual amount after applying the zero floor.
+Build 1 stores `catch_up_bonus_xp`, `streak_bonus_xp`, and `challenge_bonus_xp` separately in addition to their reconciled `bonus_skill_xp` total. `PlayerQuestFailurePenaltySkill` stores one accepted Skill allocation with `intended_penalty_xp` and nullable `actual_applied_penalty_xp`; expiration creates it and clear/abandon fills the actual amount after applying the zero floor.
 
 ### XpTransaction
 

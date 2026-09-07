@@ -60,6 +60,10 @@ Authenticated Standard reads and resolution mutations lazily reconcile overdue a
 
 Phase 07 reuses the Phase 05 completion transaction as the sole authoritative Skill-streak write path. Player-facing reads derive an effective streak from the stored local qualifying date without writing merely because time passed, and expose active state plus progress toward the next configured bonus tier. Calendar helpers use the Player's IANA timezone; a Monday-based local-week helper establishes the boundary needed by Phase 08, while weekly Challenge-driven streak advancement remains deferred until that engine exists.
 
+### Phase 08 Challenge engine
+
+`src/modules/challenges/` owns timezone-window calculation, constrained Daily/Weekly selection, lazy reconciliation, lifecycle/progress services, reward settlement, response mapping, and REST adapters. Daily and Weekly generation share the Player lock so concurrent pool generation cannot overlap definitions. Challenge completion updates the same progression and Player-by-Skill streak state as Standard completion, records per-Skill Challenge bonus components, evaluates the persisted set bonus, and invalidates recommendations in one transaction. No separate Challenge streak exists.
+
 Use database transactions and row locking where appropriate for completion, abandonment, expired clearing, COUNT progress, slot replacement, and Daily/Weekly set bonuses. Use UUID `operation_id` values for action grouping/idempotency.
 
 Completion transaction:

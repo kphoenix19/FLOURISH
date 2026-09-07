@@ -2798,6 +2798,7 @@ export const QuestSkillRewardScalarFieldEnum = {
   bonusSkillXp: 'bonusSkillXp',
   catchUpBonusXp: 'catchUpBonusXp',
   streakBonusXp: 'streakBonusXp',
+  challengeBonusXp: 'challengeBonusXp',
   finalSkillXp: 'finalSkillXp'
 } as const
 

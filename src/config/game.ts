@@ -77,7 +77,7 @@ export const gameConfigSchema = z.object({
 export type GameConfig = z.infer<typeof gameConfigSchema>;
 
 const rawGameConfig = {
-  version: "build1-06-v1",
+  version: "build1-08-v1",
   progression: { skillLevelCap: 100, levelCurves: {
     skill: { base: 100, linear: 20, quadratic: 2 },
     overall: { base: 200, linear: 35, quadratic: 3 },

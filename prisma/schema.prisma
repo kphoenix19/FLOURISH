@@ -530,6 +530,7 @@ model QuestSkillReward {
   bonusSkillXp   Int         @map("bonus_skill_xp")
   catchUpBonusXp Int         @default(0) @map("catch_up_bonus_xp")
   streakBonusXp  Int         @default(0) @map("streak_bonus_xp")
+  challengeBonusXp Int       @default(0) @map("challenge_bonus_xp")
   finalSkillXp   Int         @map("final_skill_xp")
   questReward    QuestReward @relation(fields: [questRewardId], references: [id], onDelete: Restrict)
   skill          Skill       @relation(fields: [skillId], references: [id], onDelete: Restrict)

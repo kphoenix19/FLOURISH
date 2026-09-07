@@ -64,3 +64,7 @@ The Standard slot, persistence, reroll, upgrade, and acceptance items above are 
 ## Phase 07 verification scope
 
 Phase 07 completes and verifies the Skill-level streak system established by Phase 05: local-calendar qualification, same-day suppression, resets after gaps, post-completion bonus tiers, independent multi-Skill advancement, effective stale reads, timezone/DST boundaries, transactional concurrency, and restrained Home visibility. Monday-based local-week calculation is available for Phase 08; no Standard quest advances a weekly Challenge streak and no Challenge behavior is implemented early.
+
+## Phase 08 verification scope
+
+Phase 08 implements persisted Daily and Weekly Challenge windows, constrained non-overlapping selection, explicit acceptance, SINGLE completion, atomic COUNT correction/completion, no-penalty expiration, distributed Challenge/Catch-Up/streak rewards, and Overall-only set bonuses. Challenge completion advances only the existing Player-by-Skill streak rows. Lazy reconciliation provides the same correctness boundary required by future scheduled maintenance without adding cron infrastructure.

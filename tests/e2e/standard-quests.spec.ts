@@ -37,6 +37,18 @@ test.describe("Standard quest experience", () => {
     const ids = await page.locator("[data-quest-id]").evaluateAll((nodes) => nodes.map((n) => n.getAttribute("data-quest-id")));
     await page.reload();
     await expect(page.locator("[data-recommended-quest-id]")).toHaveAttribute("data-recommended-quest-id", recommendedId!);
+    await expect(page.getByRole("region", { name: "Daily Challenges", exact: true })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Weekly Challenges", exact: true })).toBeVisible();
+    const dailyChallenge = page.getByRole("region", { name: "Daily Challenges", exact: true }).locator("[data-challenge-id]").first();
+    await dailyChallenge.getByRole("button", { name: "Accept", exact: true }).click();
+    await expect(page.getByText("Challenge accepted.", { exact: true })).toBeVisible();
+    const weeklyId = await page.getByRole("region", { name: "Weekly Challenges", exact: true }).locator("[data-challenge-id]").first().getAttribute("data-challenge-id");
+    await db.query(`UPDATE player_quests pq SET quest_definition_id=d.id,difficulty_snapshot=d.difficulty,base_xp_snapshot=d.base_xp,completion_type_snapshot=d.completion_type,completion_target_snapshot=d.completion_target FROM quest_definitions d WHERE pq.id=$1 AND d.id=(SELECT id FROM quest_definitions WHERE completion_type='COUNT' AND weekly_eligible AND active AND review_status='APPROVED' ORDER BY stable_key LIMIT 1)`, [weeklyId]);
+    await page.reload();
+    const weeklyCount = page.locator(`[data-challenge-id="${weeklyId}"]`);
+    await weeklyCount.getByRole("button", { name: "Accept", exact: true }).click();
+    await weeklyCount.getByRole("button", { name: /Increase .* progress/ }).click();
+    await expect(weeklyCount.getByText(/^1\/\d+$/)).toBeVisible();
     expect(await page.locator("[data-quest-id]").evaluateAll((nodes) => nodes.map((n) => n.getAttribute("data-quest-id")))).toEqual(ids);
     const first = page.locator("[data-slot-id]").first();
     await first.getByRole("combobox").selectOption("JUST_DIFFERENT");
