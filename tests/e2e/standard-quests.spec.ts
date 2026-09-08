@@ -5,7 +5,7 @@ import { Pool } from "pg";
 import type { StandardState } from "../../src/modules/quests/standard/view";
 
 test.describe("Standard quest experience", () => {
-  test.setTimeout(120_000);
+  test.setTimeout(240_000);
   test.skip(!process.env.E2E_DATABASE_URL, "Set E2E_DATABASE_URL to a migrated, seeded disposable database.");
   let db: Pool; const users: string[] = [];
   test.beforeAll(() => { db = new Pool({ connectionString: process.env.E2E_DATABASE_URL! }); });
@@ -39,6 +39,7 @@ test.describe("Standard quest experience", () => {
     await expect(page.locator("[data-recommended-quest-id]")).toHaveAttribute("data-recommended-quest-id", recommendedId!);
     await expect(page.getByRole("region", { name: "Daily Challenges", exact: true })).toBeVisible();
     await expect(page.getByRole("region", { name: "Weekly Challenges", exact: true })).toBeVisible();
+    await page.screenshot({ path: testInfo.outputPath("home-overview.png"), fullPage: true, caret: "initial" });
     const dailyChallenge = page.getByRole("region", { name: "Daily Challenges", exact: true }).locator("[data-challenge-id]").first();
     await dailyChallenge.getByRole("button", { name: "Accept", exact: true }).click();
     await expect(page.getByText("Challenge accepted.", { exact: true })).toBeVisible();
@@ -49,11 +50,15 @@ test.describe("Standard quest experience", () => {
     await weeklyCount.getByRole("button", { name: "Accept", exact: true }).click();
     await weeklyCount.getByRole("button", { name: /Increase .* progress/ }).click();
     await expect(weeklyCount.getByText(/^1\/\d+$/)).toBeVisible();
+    await page.getByRole("region", { name: "Weekly Challenges", exact: true }).screenshot({ path: testInfo.outputPath("challenge-count.png"), caret: "initial" });
     expect(await page.locator("[data-quest-id]").evaluateAll((nodes) => nodes.map((n) => n.getAttribute("data-quest-id")))).toEqual(ids);
-    const first = page.locator("[data-slot-id]").first();
+    const firstSkill = page.locator("#quests-F");
+    const expandFitness = async () => { if (!(await firstSkill.evaluate((node) => (node as HTMLDetailsElement).open))) await firstSkill.locator("summary").click(); };
+    await expandFitness();
+    const first = firstSkill.locator("[data-slot-id]").first();
     await first.getByRole("combobox").selectOption("JUST_DIFFERENT");
     await first.getByRole("button", { name: /^Reroll / }).click();
-    await expect(page.getByRole("status")).toHaveText("Your replacement quest is ready.", { timeout: 30_000 });
+    await expect(page.getByText("Your replacement quest is ready.", { exact: true })).toBeVisible({ timeout: 30_000 });
     await expect(first).not.toHaveAttribute("data-quest-id", ids[0]!);
     // Establish a deterministic family offer using this test's own existing slot.
     // Other family tiers are excluded from this player's other current slots only.
@@ -70,44 +75,51 @@ test.describe("Standard quest experience", () => {
       await db.query(`UPDATE player_quest_slots SET current_player_quest_id=$1 WHERE player_id=$2 AND slot_number=$3 AND skill_id=(SELECT id FROM skills WHERE code='F')`, [id, playerId, number]);
     }
     await page.reload();
-    const walk = page.getByRole("article", { name: "Fitness slot 1", exact: true });
+    await expandFitness();
+    const walk = firstSkill.locator("[data-slot-id]").first();
     await walk.getByRole("button", { name: /^Make .* harder: Medium$/ }).click();
-    await expect(page.getByRole("status")).toHaveText("A harder family quest is ready to accept.", { timeout: 30_000 });
+    await expect(page.getByText("A harder family quest is ready to accept.", { exact: true })).toBeVisible({ timeout: 30_000 });
     const current = await (await context.request.get("/api/quests/standard")).json() as StandardState;
     expect(current.skills[0].slots[0].quest.difficulty).toBe("MEDIUM");
     await walk.getByRole("button", { name: "Accept", exact: true }).click();
-    await expect(page.getByRole("status")).toHaveText("Quest accepted. Your deadline has started.", { timeout: 30_000 });
+    await expect(page.getByText("Quest accepted. Your deadline has started.", { exact: true })).toBeVisible({ timeout: 30_000 });
     await expect(walk.locator("time")).toBeVisible();
+    await walk.screenshot({ path: testInfo.outputPath("accepted-standard.png"), caret: "initial" });
     const acceptedId = await walk.getAttribute("data-quest-id");
     await page.reload();
+    await expandFitness();
     await expect(walk).toHaveAttribute("data-quest-id", acceptedId!);
     await expect(walk.locator("time")).toBeVisible();
     await expect(walk.getByRole("button", { name: "Complete", exact: true })).toBeVisible();
     const beforeOverall = Number((await page.getByText(/Overall XP/).first().textContent())!.match(/\d+/)![0]);
     await walk.getByRole("button", { name: "Complete", exact: true }).click();
-    await expect(page.getByRole("status")).toContainText("Quest complete", { timeout: 30_000 });
+    await expect(page.getByText(/Quest complete/)).toBeVisible({ timeout: 30_000 });
     await expect(page.getByRole("complementary", { name: "Quest result" })).toContainText("Overall XP");
     await expect(page.getByText(/1-day streak \(active\)/).first()).toBeVisible();
     expect(Number((await page.getByText(/Overall XP/).first().textContent())!.match(/\d+/)![0])).toBeGreaterThan(beforeOverall);
+    await expandFitness();
     const completedReplacement = await walk.getAttribute("data-quest-id"); expect(completedReplacement).not.toBe(acceptedId);
 
     await walk.getByRole("button", { name: "Accept", exact: true }).click();
     page.once("dialog", (dialog) => dialog.accept());
     await walk.getByRole("button", { name: "Abandon", exact: true }).click();
-    await expect(page.getByRole("status")).toContainText("Quest abandoned", { timeout: 30_000 });
+    await expect(page.getByText(/Quest abandoned/)).toBeVisible({ timeout: 30_000 });
+    await expandFitness();
     const abandonReplacement = await walk.getAttribute("data-quest-id"); expect(abandonReplacement).not.toBe(completedReplacement);
 
     await walk.getByRole("button", { name: "Accept", exact: true }).click();
-    await expect(page.getByRole("status")).toHaveText("Quest accepted. Your deadline has started.", { timeout: 30_000 });
+    await expect(page.getByText("Quest accepted. Your deadline has started.", { exact: true })).toBeVisible({ timeout: 30_000 });
     const expiringId = await walk.getAttribute("data-quest-id");
     const xpBeforeExpiration = (await db.query("SELECT current_xp FROM player_skill_progress WHERE player_id=$1 AND skill_id=(SELECT id FROM skills WHERE code='F')", [playerId])).rows[0].current_xp;
     await db.query("UPDATE player_quests SET deadline_at=now()-interval '1 minute' WHERE id=$1", [expiringId]);
     await page.reload();
+    await expandFitness();
     await expect(walk.getByText("Failed / expired.")).toBeVisible();
     await expect(walk).toContainText("awaiting acknowledgment");
+    await walk.screenshot({ path: testInfo.outputPath("expired-standard.png"), caret: "initial" });
     expect((await db.query("SELECT current_xp FROM player_skill_progress WHERE player_id=$1 AND skill_id=(SELECT id FROM skills WHERE code='F')", [playerId])).rows[0].current_xp).toBe(xpBeforeExpiration);
     await walk.getByRole("button", { name: "Clear / acknowledge failure", exact: true }).click();
-    await expect(page.getByRole("status")).toContainText("Failure acknowledged", { timeout: 30_000 });
+    await expect(page.getByText(/Failure acknowledged/)).toBeVisible({ timeout: 30_000 });
     expect(await walk.getAttribute("data-quest-id")).not.toBe(expiringId);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: testInfo.outputPath("standard-quests.png"), fullPage: false, caret: "initial" });

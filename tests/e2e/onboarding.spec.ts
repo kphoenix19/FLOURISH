@@ -23,6 +23,7 @@ test.describe("authenticated onboarding", () => {
     await context.addCookies([{ name: "next-auth.session-token", value: jwt, domain: "127.0.0.1", path: "/", httpOnly: true, secure: false, sameSite: "Lax" }]);
     await page.goto("/home");
     await expect(page).toHaveURL(/\/onboarding$/);
+    await page.screenshot({ path: testInfo.outputPath("onboarding-welcome.png"), fullPage: true, caret: "initial" });
     await page.getByRole("button", { name: "Continue", exact: true }).click();
     await page.getByLabel("Your timezone").fill("America/Denver");
     await page.getByRole("button", { name: "Continue", exact: true }).click();
