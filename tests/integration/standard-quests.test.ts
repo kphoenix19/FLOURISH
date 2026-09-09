@@ -18,6 +18,7 @@ import type { StandardState } from "../../src/modules/quests/standard/view";
 import { getHomeRecommendation } from "../../src/modules/recommendations/service";
 import { percentRoundHalfUp } from "../../src/modules/progression/math";
 import { getChallengeState, mutateChallenge } from "../../src/modules/challenges/service";
+import { runGameStateReconciliation } from "../../src/modules/jobs/reconciliation";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL must point to a disposable test database.");
@@ -53,6 +54,51 @@ describe("Phase 08 Challenge engine",()=>{
   it("expires unfinished challenges without penalty and generates rollover sets",async()=>{const old=await getChallengeState(db,playerId,{now,random:()=>0.5});const later=()=>new Date("2026-09-10T18:00:00Z");const next=await getChallengeState(db,playerId,{now:later,random:()=>0.5});expect(next.daily.id).not.toBe(old.daily.id);expect(await db.playerQuest.count({where:{challengeSetId:old.daily.id,status:"EXPIRED"}})).toBe(3);expect(await db.xpTransaction.count()).toBe(0);expect(await db.playerQuestFailurePenaltySkill.count()).toBe(0);});
   it("commits lazy expiration before rejecting late progress and enforces ownership",async()=>{const state=await getChallengeState(db,playerId,{now,random:()=>0.5});const q=state.daily.quests[0];await mutateChallenge(db,playerId,q.id,"accept",{now});await expect(mutateChallenge(db,playerId,q.id,q.completionType==="SINGLE"?"complete":"increment",{now:()=>new Date("2026-09-10T18:00:00Z")})).rejects.toMatchObject({code:"CHALLENGE_EXPIRED"});expect(await db.playerQuest.findUniqueOrThrow({where:{id:q.id}})).toMatchObject({status:"EXPIRED",failurePenaltyXp:null});const otherUser=await db.user.create({data:{email:"challenge-other@example.test"}});const other=await ensurePlayerForUser(db,otherUser.id);await completeOnboarding(db,otherUser.id,{timezone:"UTC",focus:focus()});await expect(mutateChallenge(db,other.id,q.id,"accept",{now})).rejects.toMatchObject({status:404});});
   it("awards Daily and Weekly set bonuses once and Overall-only",async()=>{const state=await getChallengeState(db,playerId,{now,random:()=>0.5});for(const q of state.daily.quests)await finish(q);for(const q of state.weekly.quests)await finish(q);const sets=await db.challengeSet.findMany({where:{playerId}});expect(sets.every(s=>s.setBonusAwardedAt)).toBe(true);expect(await db.xpTransaction.count({where:{transactionType:"DAILY_SET_BONUS",xpScope:"OVERALL",skillId:null,amount:100}})).toBe(1);expect(await db.xpTransaction.count({where:{transactionType:"WEEKLY_SET_BONUS",xpScope:"OVERALL",skillId:null,amount:300}})).toBe(1);expect(await db.xpTransaction.count({where:{transactionType:{in:["DAILY_SET_BONUS","WEEKLY_SET_BONUS"]},skillId:{not:null}}})).toBe(0);});
+});
+
+describe("Phase 11 scheduled reconciliation", () => {
+  it("reconciles Standard and Challenge state idempotently without XP or streak mutation", async () => {
+    const standard = await fixtureOffer("F-WALK-01"); await action(standard.q.id, "accept");
+    await db.playerQuest.update({ where: { id: standard.q.id }, data: { deadlineAt: new Date("2026-09-10T00:00:00Z") } });
+    await getHomeRecommendation(db, playerId, () => 0.5);
+    await getChallengeState(db, playerId, { now: () => new Date("2026-09-09T18:00:00Z"), random: () => 0.5 });
+    const progressBefore = await db.playerSkillProgress.findMany({ where: { playerId }, orderBy: { skillId: "asc" } });
+    const streaksBefore = await db.playerSkillStreak.findMany({ where: { playerId }, orderBy: { skillId: "asc" } });
+    const first = await runGameStateReconciliation(db, { now: new Date("2026-09-10T18:00:00Z"), batchSize: 1, random: () => 0.5 });
+    expect(first).toMatchObject({ candidatesScanned: 1, playersProcessed: 1, standardQuestsExpired: 1, challengeQuestsExpired: 3, challengeSetsCreated: 1, staleRecommendationsInvalidated: 1, failures: [] });
+    expect(await db.playerQuest.findUniqueOrThrow({ where: { id: standard.q.id } })).toMatchObject({ status: "EXPIRED", failurePenaltyAppliedAt: null, clearedAt: null });
+    expect(await db.playerQuestSlot.findUniqueOrThrow({ where: { id: standard.slot.id } })).toMatchObject({ currentPlayerQuestId: standard.q.id });
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
+    expect(await db.playerSkillProgress.findMany({ where: { playerId }, orderBy: { skillId: "asc" } })).toEqual(progressBefore);
+    expect(await db.playerSkillStreak.findMany({ where: { playerId }, orderBy: { skillId: "asc" } })).toEqual(streaksBefore);
+    const second = await runGameStateReconciliation(db, { now: new Date("2026-09-10T18:00:00Z"), batchSize: 1, random: () => 0.5 });
+    expect(second).toMatchObject({ standardQuestsExpired: 0, challengeQuestsExpired: 0, challengeSetsCreated: 0, staleRecommendationsInvalidated: 0, failures: [] });
+  });
+
+  it("converges safely when two workers overlap", async () => {
+    await getChallengeState(db, playerId, { now: () => new Date("2026-09-09T18:00:00Z"), random: () => 0.5 });
+    const results = await Promise.all([runGameStateReconciliation(db, { now: new Date("2026-09-10T18:00:00Z"), random: () => 0.5 }), runGameStateReconciliation(db, { now: new Date("2026-09-10T18:00:00Z"), random: () => 0.5 })]);
+    expect(results.reduce((sum, result) => sum + result.challengeQuestsExpired, 0)).toBe(3);
+    expect(await db.challengeSet.count({ where: { playerId, poolType: "DAILY" } })).toBe(2);
+    expect(await db.challengeSet.count({ where: { playerId, poolType: "WEEKLY" } })).toBe(1);
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
+  });
+
+  it("converges in both job-first and lazy-first orders", async () => {
+    const first = await fixtureOffer("F-WALK-01"); await action(first.q.id, "accept");
+    await db.playerQuest.update({ where: { id: first.q.id }, data: { deadlineAt: new Date("2026-09-10T00:00:00Z") } });
+    const at = new Date("2026-09-10T18:00:00Z");
+    expect((await runGameStateReconciliation(db, { now: at, random: () => 0.5 })).standardQuestsExpired).toBe(1);
+    await reconcileStandardQuestSlots(db, playerId, () => 0.5, () => at);
+    expect((await db.playerQuest.findUniqueOrThrow({ where: { id: first.q.id } })).status).toBe("EXPIRED");
+
+    const second = await fixtureOfferInSlot("F-MOB-01", 2); await action(second.q.id, "accept");
+    await db.playerQuest.update({ where: { id: second.q.id }, data: { deadlineAt: new Date("2026-09-10T00:00:00Z") } });
+    await reconcileStandardQuestSlots(db, playerId, () => 0.5, () => at);
+    expect((await runGameStateReconciliation(db, { now: at, random: () => 0.5 })).standardQuestsExpired).toBe(0);
+    expect((await db.playerQuest.findUniqueOrThrow({ where: { id: second.q.id } })).status).toBe("EXPIRED");
+    expect(await db.questInteraction.count({ where: { playerQuestId: { in: [first.q.id, second.q.id] }, interactionType: "EXPIRED" } })).toBe(2);
+  });
 });
 
 describe("Home recommendations", () => {

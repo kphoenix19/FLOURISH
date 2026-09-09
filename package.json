@@ -10,7 +10,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" \"prisma/**/*.ts\" \"*.ts\" --max-warnings=0",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" \"prisma/**/*.ts\" \"scripts/**/*.ts\" \"*.ts\" --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
@@ -21,6 +21,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "seed:validate": "tsx prisma/seed-validate.ts",
     "seed:review": "tsx prisma/seed-validate.ts --review",
+    "jobs:reconcile": "tsx scripts/reconcile.ts",
     "db:studio": "prisma studio"
   },
   "dependencies": {

@@ -87,6 +87,14 @@ Any critical failure rolls the complete operation back. Recommendation recalcula
 
 Store database instants in UTC and Player timezone as IANA identity. Compute local daily/weekly boundaries with a timezone-aware library. Challenge windows are fixed at creation. Use both scheduled maintenance and defensive lazy reconciliation in relevant requests; cron is an optimization, not the sole correctness mechanism.
 
+### Phase 11 jobs and operations
+
+Build 1 uses an externally scheduled, process-to-completion command rather than an in-process timer: `pnpm jobs:reconcile`. The command pages through onboarded Players in bounded batches (50 by default), then uses the same Player-row locks and domain transactions as lazy Standard and Challenge reconciliation. Each Player and subsystem has an independent transaction so one reported failure does not prevent safe work for other Players. Repeated and overlapping runs are safe; database constraints, status predicates, and Player locks make gameplay outcomes idempotent.
+
+Run the command hourly in production. Any platform scheduler capable of executing it is sufficient; local development can invoke it directly from PowerShell. The command requires only `DATABASE_URL`, prints one JSON summary with scan/change/failure counts and elapsed time, and exits nonzero when any per-Player reconciliation failed.
+
+The job expires overdue accepted Standard quests while storing—but never applying—the penalty and leaving slots blocked. It expires unfinished old Challenge quests without penalties or partial XP, creates current fixed-window Daily/Weekly sets when absent, and invalidates a persisted recommendation when lifecycle state changed. It never clears failures, awards XP or set bonuses, advances streaks, generates recommendations, curates content, reseeds data, or performs speculative repair. Request-time lazy checks remain enabled and converge to the same durable state if scheduling is delayed or unavailable.
+
 ## Configuration
 
 Centralize and version:

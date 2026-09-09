@@ -22,7 +22,11 @@ async function context(tx: Prisma.TransactionClient, playerId: string) {
 }
 const transaction = <T>(db: PrismaClient, playerId: string, fn: (c: Context) => Promise<T>) => db.$transaction(async (tx) => fn(await context(tx, playerId)), { maxWait: 10_000, timeout: 20_000 });
 const expired = (set: { windowEndAt: Date | null }, now: Date) => !set.windowEndAt || now.getTime() >= set.windowEndAt.getTime();
-async function expireSets(c: Context, now: Date) { await c.tx.playerQuest.updateMany({ where: { playerId: c.playerId, poolType: { in: ["DAILY", "WEEKLY"] }, status: { in: ["AVAILABLE", "ACCEPTED"] }, windowEndAt: { lte: now } }, data: { status: "EXPIRED", expiredAt: now } }); }
+async function expireSets(c: Context, now: Date) {
+  const result = await c.tx.playerQuest.updateMany({ where: { playerId: c.playerId, poolType: { in: ["DAILY", "WEEKLY"] }, status: { in: ["AVAILABLE", "ACCEPTED"] }, windowEndAt: { lte: now } }, data: { status: "EXPIRED", expiredAt: now } });
+  if (result.count) await c.tx.playerRecommendation.updateMany({ where: { playerId: c.playerId, invalidatedAt: null }, data: { invalidatedAt: now } });
+  return result.count;
+}
 async function ensureSet(c: Context, poolType: "DAILY" | "WEEKLY", now: Date, random: RandomSource) {
   const window = challengeWindow(poolType, now, c.state.player.timezone!); const existing = await c.tx.challengeSet.findUnique({ where: { playerId_poolType_windowStartAt: { playerId: c.playerId, poolType, windowStartAt: window.start } }, include: setInclude });
   if (existing) return existing;
@@ -39,6 +43,18 @@ async function ensureSet(c: Context, poolType: "DAILY" | "WEEKLY", now: Date, ra
 function mapSet(set: Prisma.ChallengeSetGetPayload<{ include: typeof setInclude }>, codes: Record<string, string>) { return { id: set.id, poolType: set.poolType, windowStartAt: set.windowStartAt.toISOString(), windowEndAt: set.windowEndAt.toISOString(), completedCount: set.quests.filter((q) => q.status === "COMPLETED").length, totalCount: set.quests.length, setBonusXp: set.poolType === "DAILY" ? gameConfig.challenges.dailySetBonusOverallXp : gameConfig.challenges.weeklySetBonusOverallXp, setBonusAwarded: Boolean(set.setBonusAwardedAt), quests: set.quests.map((q) => ({ id: q.id, title: q.status === "AVAILABLE" ? q.questDefinition.title : q.titleSnapshot ?? q.questDefinition.title, description: q.status === "AVAILABLE" ? q.questDefinition.shortDescription : q.descriptionSnapshot ?? q.questDefinition.shortDescription, difficulty: q.difficultySnapshot, baseXp: q.baseXpSnapshot, estimatedMinutes: q.estimatedMinutesSnapshot ?? q.questDefinition.estimatedMinutes, completionType: q.completionTypeSnapshot, target: q.completionTargetSnapshot, currentProgress: q.currentProgress, status: q.status, primarySkill: codes[q.questDefinition.skills.find((s) => s.isPrimary)!.skillId], challengeBonusPercent: q.poolType === "DAILY" ? gameConfig.challenges.dailyCompletionBonusPercent : gameConfig.challenges.weeklyCompletionBonusPercent })) } }
 const skillCodes = (c: Context) => Object.fromEntries(c.state.skills.map((s) => [s.id, s.code]));
 export function getChallengeState(db: PrismaClient, playerId: string, options: { now?: () => Date; random?: RandomSource } = {}) { return transaction(db, playerId, async (c) => { const now = (options.now ?? (() => new Date()))(); await expireSets(c, now); const daily = await ensureSet(c, "DAILY", now, options.random ?? Math.random); const weekly = await ensureSet(c, "WEEKLY", now, options.random ?? Math.random); const codes=skillCodes(c); return { timezone: c.state.player.timezone!, daily: mapSet(daily,codes), weekly: mapSet(weekly,codes) }; }); }
+
+export function reconcilePlayerChallenges(db: PrismaClient, playerId: string, options: { now?: Date; random?: RandomSource } = {}) {
+  return transaction(db, playerId, async (c) => {
+    const now = options.now ?? new Date();
+    const expiredCount = await expireSets(c, now);
+    const before = await c.tx.challengeSet.count({ where: { playerId } });
+    await ensureSet(c, "DAILY", now, options.random ?? Math.random);
+    await ensureSet(c, "WEEKLY", now, options.random ?? Math.random);
+    const after = await c.tx.challengeSet.count({ where: { playerId } });
+    return { expiredCount, challengeSetsCreated: after - before };
+  });
+}
 
 async function complete(c: Context, q: Prisma.PlayerQuestGetPayload<{ include: { skillSnapshots: true } }>, now: Date) {
   const operationId = randomUUID(); const codes = Object.fromEntries(c.state.skills.map((s) => [s.id, s.code])); const base = allocateLargestRemainder(q.baseXpSnapshot, q.skillSnapshots.map((s) => ({ key: codes[s.skillId], weight: s.rewardPercent }))); const lowest = [...c.progress].sort((a,b) => a.currentLevel-b.currentLevel || a.currentXp-b.currentXp || codes[a.skillId].localeCompare(codes[b.skillId]))[0].skillId; const streaks = await c.tx.playerSkillStreak.findMany({ where: { playerId: c.playerId } }); const day = localDate(now, c.state.player.timezone!); const challengePercent = q.poolType === "DAILY" ? gameConfig.challenges.dailyCompletionBonusPercent : gameConfig.challenges.weeklyCompletionBonusPercent;

@@ -27,10 +27,16 @@ async function storePenalty(context: StandardContext, q: NonNullable<Slot["curre
   await context.tx.questInteraction.create({ data: { playerId: context.playerId, playerQuestId: q.id, questDefinitionId: q.questDefinitionId, interactionType: "EXPIRED", operationId: randomUUID(), createdAt: now } });
 }
 export async function reconcileExpiredInTransaction(context: StandardContext, now: Date) {
+  let expiredCount = 0;
   for (const slot of await currentSlots(context)) {
     const q = slot.currentPlayerQuest;
-    if (q?.status === "ACCEPTED" && q.deadlineAt && now.getTime() > q.deadlineAt.getTime()) { await storePenalty(context, q, now); await context.tx.playerRecommendation.updateMany({ where: { playerId: context.playerId, invalidatedAt: null }, data: { invalidatedAt: now } }); }
+    if (q?.status === "ACCEPTED" && q.deadlineAt && now.getTime() > q.deadlineAt.getTime()) { await storePenalty(context, q, now); await context.tx.playerRecommendation.updateMany({ where: { playerId: context.playerId, invalidatedAt: null }, data: { invalidatedAt: now } }); expiredCount++; }
   }
+  return expiredCount;
+}
+
+export function reconcileExpiredStandardQuests(db: PrismaClient, playerId: string, now: Date = new Date()) {
+  return standardTransaction(db, playerId, (context) => reconcileExpiredInTransaction(context, now));
 }
 async function refill(context: StandardContext, slot: Slot, random: RandomSource) {
   const occupied = occupiedDefinitions(await currentSlots(context)); occupied.delete(slot.currentPlayerQuest!.questDefinitionId);
