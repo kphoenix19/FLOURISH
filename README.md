@@ -8,6 +8,7 @@ The repository contains the complete Build 1 MVP: canonical content, Google-comp
 
 ## Authoritative specifications
 
+- [Consolidated Build 1 baseline and Build 2 planning handoff](docs/BUILD1_DOCUMENTATION.md)
 - [Product scope and experience](docs/PRODUCT_SPEC.md)
 - [Gameplay rules and lifecycle](docs/GAME_RULES.md)
 - [Domain/data model](docs/DATA_MODEL.md)
