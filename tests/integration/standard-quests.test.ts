@@ -8,7 +8,6 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 import { loadCanonicalSeed } from "../../src/modules/quests/seed/load";
 import { persistCanonicalSeed } from "../../src/modules/quests/seed/persist";
 import { completeOnboarding, ensurePlayerForUser, respecFocus, updateTimezone } from "../../src/modules/player/services";
-import { initialFocusAllocation } from "../../src/modules/player/domain/focus";
 import { ensureStandardQuestSlots, reconcileStandardQuestSlots } from "../../src/modules/quests/standard/slots";
 import { mutateStandardQuest } from "../../src/modules/quests/standard/actions";
 import { definitionInclude, previewSnapshots } from "../../src/modules/quests/standard/content";
@@ -16,6 +15,7 @@ import { createStandardApi } from "../../src/modules/quests/standard/api";
 import { resolveStandardQuest } from "../../src/modules/quests/standard/resolution";
 import type { StandardState } from "../../src/modules/quests/standard/view";
 import { getHomeRecommendation } from "../../src/modules/recommendations/service";
+import { createRecommendationApi } from "../../src/modules/recommendations/api";
 import { percentRoundHalfUp } from "../../src/modules/progression/math";
 import { getChallengeState, mutateChallenge } from "../../src/modules/challenges/service";
 import { runGameStateReconciliation } from "../../src/modules/jobs/reconciliation";
@@ -28,7 +28,7 @@ const pool = new Pool({ connectionString, options: `-c search_path=${schema}` })
 const db = new PrismaClient({ adapter: new PrismaPg(pool, { schema }) });
 vi.setConfig({ testTimeout: 120_000, hookTimeout: 120_000 });
 let playerId: string; let userId: string;
-const focus = () => Object.entries(initialFocusAllocation()).map(([skillCode, points]) => ({ skillCode, points }));
+const focus = () => Object.entries({ F: 6, L: 6, O: 6, U: 6, R: 6, I: 6, S: 5, H: 5 }).map(([skillCode, points]) => ({ skillCode, points }));
 const flat = (s: StandardState) => s.skills.flatMap((x) => x.slots);
 const read = () => reconcileStandardQuestSlots(db, playerId, () => 0.5);
 const action = (id: string, kind: "accept" | "reroll" | "bump", input = {}) => mutateStandardQuest(db, playerId, id, kind, input, { random: () => 0.5 });
@@ -130,6 +130,37 @@ describe("Home recommendations", () => {
     const final = await getHomeRecommendation(db, playerId, () => 0.5); const quest = await db.playerQuest.findUniqueOrThrow({ where: { id: final.playerQuestId } });
     expect(final.playerQuestId).not.toBe(original.playerQuestId); expect(quest).toMatchObject({ playerId, status: "AVAILABLE", poolType: "STANDARD" });
     expect(await db.playerRecommendation.count({ where: { playerId } })).toBe(1);
+  });
+  it("refreshes to a different persisted existing slot without changing assignments", async () => {
+    const state = await read(); const before = flat(state).map((slot) => [slot.id, slot.quest.id]);
+    const original = await getHomeRecommendation(db, playerId, () => 0.5);
+    const different = await getHomeRecommendation(db, playerId, () => 0.5, () => new Date(), original.playerQuestId);
+    expect(different.playerQuestId).not.toBe(original.playerQuestId); expect(different.differentAvailable).toBe(true);
+    expect((await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } })).playerQuestId).toBe(different.playerQuestId);
+    expect(flat(await read()).map((slot) => [slot.id, slot.quest.id])).toEqual(before);
+    expect(await db.playerQuest.count({ where: { playerId } })).toBe(24);
+  });
+  it("serializes repeated refreshes and rejects the stale displayed recommendation", async () => {
+    await read(); const original = await getHomeRecommendation(db, playerId, () => 0.5);
+    const results = await Promise.allSettled([getHomeRecommendation(db, playerId, () => 0.1, () => new Date(), original.playerQuestId), getHomeRecommendation(db, playerId, () => 0.9, () => new Date(), original.playerQuestId)]);
+    expect(results.filter((result) => result.status === "fulfilled")).toHaveLength(1);
+    expect(results.find((result) => result.status === "rejected")).toMatchObject({ reason: { code: "STALE_RECOMMENDATION" } });
+    const persisted = await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } });
+    expect(persisted.playerQuestId).not.toBe(original.playerQuestId); expect(persisted.invalidatedAt).toBeNull();
+  });
+  it("retains the only available recommendation and reports no alternative", async () => {
+    const initial = flat(await read());
+    for (const slot of initial.slice(0, -1)) await mutateStandardQuest(db, playerId, slot.quest.id, "accept");
+    const only = await getHomeRecommendation(db, playerId, () => 0.5);
+    const result = await getHomeRecommendation(db, playerId, () => 0.5, () => new Date(), only.playerQuestId);
+    expect(result).toMatchObject({ playerQuestId: only.playerQuestId, differentAvailable: false });
+  });
+  it("accepts the exact recommendation through the existing Standard service and invalidates it", async () => {
+    await read(); const recommended = await getHomeRecommendation(db, playerId, () => 0.5); const at = new Date("2026-09-09T12:00:00Z");
+    const result = await mutateStandardQuest(db, playerId, recommended.playerQuestId, "accept", {}, { now: () => at });
+    const accepted = flat(result).find((slot) => slot.quest.id === recommended.playerQuestId)!.quest;
+    expect(accepted).toMatchObject({ status: "ACCEPTED", acceptedAt: at.toISOString() }); expect(new Date(accepted.deadlineAt!).getTime()).toBeGreaterThan(at.getTime());
+    expect((await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } })).invalidatedAt).not.toBeNull();
   });
 });
 
@@ -321,6 +352,15 @@ describe("Standard REST", () => {
     expect((await api.mutate(req(), id, "accept")).status).toBe(200);
     expect((await api.mutate(req(), id, "reroll")).status).toBe(409);
     expect((await api.mutate(req(), id, "bump")).status).toBe(409);
+  });
+  it("exposes authenticated recommendation refresh with strict input and ownership", async () => {
+    const recommendationApi = createRecommendationApi({ getDb: () => db, resolveUser: principal });
+    await read(); const current = await getHomeRecommendation(db, playerId, () => 0.5);
+    expect((await recommendationApi.refresh(req({ playerQuestId: current.playerQuestId }))).status).toBe(200);
+    expect((await recommendationApi.refresh(req({ playerQuestId: current.playerQuestId, playerId }))).status).toBe(400);
+    expect((await recommendationApi.refresh(req({ playerQuestId: current.playerQuestId }, "https://attacker.example"))).status).toBe(403);
+    const anonymous = createRecommendationApi({ getDb: () => db, resolveUser: async () => null });
+    expect((await anonymous.refresh(req({ playerQuestId: current.playerQuestId }))).status).toBe(401);
   });
 });
 

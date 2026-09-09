@@ -6,13 +6,8 @@ export type FocusValidationResult = { success: true } | { success: false; errors
 
 export function initialFocusAllocation(): Record<FlourishSkillCode, number> {
   const { totalPoints, minPerSkill, maxPerSkill } = gameConfig.focus;
-  const allocation = Object.fromEntries(FLOURISH_SKILL_CODES.map((code) => [code, minPerSkill])) as Record<FlourishSkillCode, number>;
-  let remaining = totalPoints - minPerSkill * FLOURISH_SKILL_CODES.length;
-  if (remaining < 0 || totalPoints > maxPerSkill * FLOURISH_SKILL_CODES.length) throw new Error("Invalid Focus configuration");
-  while (remaining > 0) for (const code of FLOURISH_SKILL_CODES) {
-    if (remaining > 0 && allocation[code] < maxPerSkill) { allocation[code]++; remaining--; }
-  }
-  return allocation;
+  if (minPerSkill * FLOURISH_SKILL_CODES.length > totalPoints || totalPoints > maxPerSkill * FLOURISH_SKILL_CODES.length) throw new Error("Invalid Focus configuration");
+  return Object.fromEntries(FLOURISH_SKILL_CODES.map((code) => [code, minPerSkill])) as Record<FlourishSkillCode, number>;
 }
 
 export function validateFocusAllocation(

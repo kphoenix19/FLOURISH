@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import { DifficultyBadge, Feedback, ProgressBar, SkillBadge, StatusBadge } from "@/components/game-ui";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { ConfirmationDialog, DifficultyBadge, Feedback, ProgressBar, SkillBadge, StatusBadge } from "@/components/game-ui";
 
 describe("game UI primitives", () => {
   it("exposes progress semantics and clamps its visual value", () => {
@@ -22,5 +22,14 @@ describe("game UI primitives", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Quest accepted.");
     rerender(<Feedback message="" error="Please try again." />);
     expect(screen.getByRole("alert")).toHaveTextContent("Please try again.");
+  });
+
+  it("traps focus and supports Escape dismissal for confirmations", () => {
+    const cancel = vi.fn();
+    render(<ConfirmationDialog open title="Abandon quest?" confirmLabel="Abandon quest" pending={false} onCancel={cancel} onConfirm={vi.fn()}><p>Quest name</p></ConfirmationDialog>);
+    const dialog = screen.getByRole("alertdialog", { name: "Abandon quest?" });
+    expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
+    fireEvent.keyDown(dialog, { key: "Escape" });
+    expect(cancel).toHaveBeenCalledOnce();
   });
 });

@@ -17,9 +17,10 @@ async function save(path: string, method: string, body: unknown) {
 
 export function FocusAllocator({ skills, value, onChange, disabled = false }: { skills: SkillDisplay[]; value: Allocation; onChange: (value: Allocation) => void; disabled?: boolean }) {
   const remaining = gameConfig.focus.totalPoints - Object.values(value).reduce((sum, n) => sum + n, 0);
+  const allocated = gameConfig.focus.totalPoints - remaining;
   return <div>
     <p>Focus Points influence what FLOURISH recommends more often; they do not change XP rewards or levels.</p>
-    <p className="point-total" role="status" aria-live="polite">{remaining} points remaining · {gameConfig.focus.totalPoints} total</p>
+    <p className="point-total" role="status" aria-live="polite">{allocated} points allocated · {remaining} points remaining · {gameConfig.focus.totalPoints} total required</p>
     <div className="skill-grid">
       {skills.map((s) => <section className="skill-card" key={s.code} aria-label={`${s.name} Focus`}>
         <div><h3><span className="skill-code">{s.code}</span> {s.name}</h3><p>{s.description}</p></div>

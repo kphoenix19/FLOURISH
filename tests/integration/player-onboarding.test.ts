@@ -6,7 +6,6 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { ensurePlayerForUser, completeOnboarding, respecFocus, updateTimezone, assertOnboardingIntegrity } from "../../src/modules/player/services";
-import { initialFocusAllocation } from "../../src/modules/player/domain/focus";
 import { createPlayerApi } from "../../src/modules/player/api";
 import { flourishAdapter } from "../../src/modules/auth/adapter";
 import skills from "../../data/seeds/skills.json";
@@ -17,7 +16,7 @@ const schema = `onboarding_test_${randomUUID().replaceAll("-", "")}`;
 const admin = new Pool({ connectionString });
 const pool = new Pool({ connectionString, options: `-c search_path=${schema}` });
 const db = new PrismaClient({ adapter: new PrismaPg(pool, { schema }) });
-const input = () => ({ timezone: "America/Denver", focus: Object.entries(initialFocusAllocation()).map(([skillCode, points]) => ({ skillCode, points })) });
+const input = () => ({ timezone: "America/Denver", focus: Object.entries({ F: 6, L: 6, O: 6, U: 6, R: 6, I: 6, S: 5, H: 5 }).map(([skillCode, points]) => ({ skillCode, points })) });
 let userId: string;
 let playerId: string;
 

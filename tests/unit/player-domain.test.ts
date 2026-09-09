@@ -6,10 +6,10 @@ import { requireAdmin, requireAuthenticatedUser, requireCompletedOnboardingPlaye
 import { normalizeEmail } from "../../src/modules/auth/adapter";
 import { oauthConfigurationStatus } from "../../src/config/env";
 
-const focus = () => Object.entries(initialFocusAllocation()).map(([skillCode, points]) => ({ skillCode, points }));
+const focus = () => Object.entries({ F: 6, L: 6, O: 6, U: 6, R: 6, I: 6, S: 5, H: 5 }).map(([skillCode, points]) => ({ skillCode, points }));
 describe("Phase 03 domain boundaries", () => {
-  it("provides the deterministic balanced starting allocation", () => {
-    expect(initialFocusAllocation()).toEqual({ F: 6, L: 6, O: 6, U: 6, R: 6, I: 6, S: 5, H: 5 });
+  it("provides one initial point for every Skill", () => {
+    expect(initialFocusAllocation()).toEqual({ F: 1, L: 1, O: 1, U: 1, R: 1, I: 1, S: 1, H: 1 });
   });
   it.each(["America/Denver", "America/New_York", "Europe/London", "UTC"])("accepts %s", (zone) => expect(isIanaTimezone(zone)).toBe(true));
   it.each(["Mountain Time", "Denver", "UTC-7", "+01:00", "", " Europe/London", "Etc/Imaginary"])("rejects %s", (zone) => expect(isIanaTimezone(zone)).toBe(false));

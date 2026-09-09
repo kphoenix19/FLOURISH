@@ -10,13 +10,18 @@ import { reasonCodes, scoreRecommendation, type RecommendationCandidate, type Re
 export type HomeRecommendation = { playerQuestId: string; slotId: string; skillCode: string; skillName: string; title: string; description: string; difficulty: string; estimatedMinutes: number; reasonCodes: string[]; calculatedAt: string };
 const mapReason = (code: string) => ({ MATCHES_FOCUS: "Matches your Focus", CATCH_UP: "Skill needs attention", ADDS_VARIETY: "Something different", GOOD_DIFFICULTY_FIT: "Matches your experience" }[code] ?? code);
 
-export function getHomeRecommendation(db: PrismaClient, playerId: string, random: RandomSource = Math.random, now: () => Date = () => new Date()) {
+export function getHomeRecommendation(db: PrismaClient, playerId: string, random: RandomSource = Math.random, now: () => Date = () => new Date(), excludePlayerQuestId?: string) {
   return standardTransaction(db, playerId, async (context) => {
     const at = now(); await reconcileExpiredInTransaction(context, at); await reconcileInTransaction(context, random);
-    const slots = await currentSlots(context); const eligible = slots.filter((s) => s.currentPlayerQuest?.status === "AVAILABLE" && context.valid(s.currentPlayerQuest.questDefinition, s.skillId));
+    const slots = await currentSlots(context); const allEligible = slots.filter((s) => s.currentPlayerQuest?.status === "AVAILABLE" && context.valid(s.currentPlayerQuest.questDefinition, s.skillId));
     const persisted = await context.tx.playerRecommendation.findUnique({ where: { playerId } });
-    const persistedSlot = persisted && !persisted.invalidatedAt ? eligible.find((s) => s.currentPlayerQuestId === persisted.playerQuestId) : undefined;
+    const persistedSlot = persisted && !persisted.invalidatedAt ? allEligible.find((s) => s.currentPlayerQuestId === persisted.playerQuestId) : undefined;
+    if (excludePlayerQuestId && persistedSlot?.currentPlayerQuestId !== excludePlayerQuestId) throw new ServiceError(409, "STALE_RECOMMENDATION", "That recommendation is no longer current. Your Home recommendation has been refreshed.");
+    const eligible = excludePlayerQuestId ? allEligible.filter((s) => s.currentPlayerQuestId !== excludePlayerQuestId) : allEligible;
+    const recommendationView = (slot: (typeof slots)[number], codes: string[], calculatedAt: Date, differentAvailable?: boolean) => { const q = slot.currentPlayerQuest!; const skill = context.state.skills.find((s) => s.id === slot.skillId)!; return { playerQuestId: q.id, slotId: slot.id, skillCode: skill.code, skillName: skill.name, title: q.questDefinition.title, description: q.questDefinition.shortDescription, difficulty: q.questDefinition.difficulty, estimatedMinutes: q.questDefinition.estimatedMinutes, reasonCodes: codes.map(mapReason), calculatedAt: calculatedAt.toISOString(), differentAvailable }; };
+    if (excludePlayerQuestId && !eligible.length && persistedSlot?.currentPlayerQuestId === excludePlayerQuestId) return recommendationView(persistedSlot, persisted?.reasonCodes ?? [], persisted?.calculatedAt ?? at, false);
     let selected = persistedSlot; let reasons = persisted?.reasonCodes ?? []; let calculatedAt = persisted?.calculatedAt ?? at;
+    if (excludePlayerQuestId) { selected = undefined; reasons = []; calculatedAt = at; }
     if (!selected) {
       if (!eligible.length) throw new ServiceError(409, "NO_RECOMMENDATION_CANDIDATE", "No available Standard quest can be recommended right now.");
       const focus = Object.fromEntries(context.state.rows.map((r) => [r.skillId, r.focusPoints]));
@@ -30,7 +35,6 @@ export function getHomeRecommendation(db: PrismaClient, playerId: string, random
       await context.tx.playerRecommendation.upsert({ where: { playerId }, create: { playerId, playerQuestId: selected.currentPlayerQuestId!, reasonCodes: reasons, configVersion: gameConfig.version, calculatedAt }, update: { playerQuestId: selected.currentPlayerQuestId!, reasonCodes: reasons, configVersion: gameConfig.version, calculatedAt, invalidatedAt: null } });
       const q = selected.currentPlayerQuest!; await context.tx.questInteraction.create({ data: { playerId, playerQuestId: q.id, questDefinitionId: q.questDefinitionId, interactionType: "RECOMMENDED", createdAt: at } });
     }
-    const q = selected.currentPlayerQuest!; const skill = context.state.skills.find((s) => s.id === selected!.skillId)!;
-    return { playerQuestId: q.id, slotId: selected.id, skillCode: skill.code, skillName: skill.name, title: q.questDefinition.title, description: q.questDefinition.shortDescription, difficulty: q.questDefinition.difficulty, estimatedMinutes: q.questDefinition.estimatedMinutes, reasonCodes: reasons.map(mapReason), calculatedAt: calculatedAt.toISOString() };
+    return recommendationView(selected, reasons, calculatedAt, excludePlayerQuestId ? true : undefined);
   });
 }
