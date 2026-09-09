@@ -42,6 +42,13 @@ test.describe("authenticated onboarding", () => {
     const me = await (await context.request.get("/api/me")).json();
     expect(me.player.id).toBe(user.player!.id);
     expect(me.player.focus).toHaveLength(8);
+    await page.goto("/profile");
+    await expect(page.getByRole("heading", { name: "Profile & Progress" })).toBeVisible();
+    await expect(page.getByLabel("Overall progress")).toContainText("Overall level1");
+    await expect(page.getByRole("link", { name: "Change Focus or timezone" })).toHaveAttribute("href", "/settings");
+    if (testInfo.project.name === "phone") await expect(page.getByRole("navigation", { name: "Mobile player navigation" }).getByRole("link", { name: "Profile" })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath("profile.png"), fullPage: true, caret: "initial" });
     await page.goto("/settings");
     await expect(page.getByLabel("Fitness points")).toHaveText("5");
     await page.getByRole("button", { name: "Decrease Hobbies Focus" }).click();

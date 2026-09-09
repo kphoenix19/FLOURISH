@@ -4,7 +4,7 @@
 
 FLOURISH is a browser-based, gamified real-life progression system that rewards constructive actions with overall and life-skill progression. It is not a conventional to-do list. The MVP uses honor-system completion, a curated quest library, and server-authoritative gameplay.
 
-The repository includes the canonical seed library, authentication/onboarding, persistent Standard Quest offers, and Phase 05 completion, failure, XP, level, and streak resolution.
+The repository contains the complete Build 1 MVP: canonical content, Google-compatible authentication and onboarding, Standard quests, progression and Skill streaks, persisted recommendations, Daily/Weekly Challenges, admin curation, and scheduled/manual reconciliation.
 
 ## Authoritative specifications
 
@@ -41,13 +41,14 @@ corepack pnpm install
 Copy-Item .env.example .env
 docker compose up -d postgres
 corepack pnpm db:generate
-corepack pnpm db:migrate
+corepack pnpm exec prisma migrate deploy
+corepack pnpm db:seed
 corepack pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000). `GET /api/health` returns a small JSON response when the application is running.
 
-Phase 01 includes the relational domain schema and the `establish_domain_model` migration. Docker runs PostgreSQL; Next.js runs directly on the Windows host.
+Docker runs PostgreSQL; Next.js runs directly on the Windows host. Use `docker compose ps` to confirm PostgreSQL is healthy and `docker compose stop` to stop services safely. If `docker` is not found after installing Docker Desktop, restart the terminal so its CLI path is refreshed.
 
 The checked-in `.env.example` uses local-only development defaults. Replace `AUTH_SECRET` with a unique local value before authentication work and never commit `.env` files or real OAuth credentials.
 
@@ -60,9 +61,10 @@ corepack pnpm test
 corepack pnpm test:integration
 corepack pnpm build
 corepack pnpm test:e2e
+corepack pnpm jobs:reconcile
 ```
 
-The integration suite verifies real PostgreSQL constraints and requires `DATABASE_URL` to target a disposable local development/test database. It truncates only its test fixtures. The Playwright smoke test starts the development server automatically and requires a locally installed Chromium browser. Install it once with `corepack pnpm exec playwright install chromium` if needed.
+The integration suite requires `DATABASE_URL` to target a disposable local test database. The Playwright suite requires `E2E_DATABASE_URL` to target a separate migrated and seeded disposable database; this enables all authenticated desktop and Pixel 7 tests. Install Chromium once with `corepack pnpm exec playwright install chromium` if needed.
 
 ## Database and seed commands
 
@@ -93,9 +95,9 @@ Create a Google Cloud OAuth client of type Web application, configure its consen
 
 Apply migrations, run `db:seed`, start the app, then open `/login` and choose **Continue with Google**. First sign-in creates/reuses a User, links its Google account, and ensures one Player. The Player starts with an unset timezone and incomplete onboarding. `/onboarding` introduces the database-loaded Skills, asks for an IANA timezone (with an explicit device-timezone shortcut), offers the balanced 6/6/6/6/6/6/5/5 Focus default, and confirms the choices. Completion atomically persists all eight Focus rows/history, initializes missing progression and streak state, and opens `/home`.
 
-Initial history records `old_focus_points = null`. Settings respecs are free/unlimited and record only changed Skills under one change ID; saving the same allocation adds no history. Matching onboarding retries succeed without resets; differing completed-state retries return 409 and direct the player to Settings. `/settings` also changes timezone without rewriting existing quest/challenge history. `/admin` is a guarded placeholder, with no role-editing or curation UI. Matching emails are not automatically merged across identities; an `OAuthAccountNotLinked` error needs explicit administrator investigation.
+Initial history records `old_focus_points = null`. Settings respecs are free/unlimited and record only changed Skills under one change ID; saving the same allocation adds no history. Matching onboarding retries succeed without resets; differing completed-state retries return 409 and direct the player to Settings. `/settings` changes timezone without rewriting existing history. `/profile` summarizes progress and links to Settings. `/admin` provides guarded quest curation but no role-editing UI. Matching emails are not automatically merged across identities; an `OAuthAccountNotLinked` error needs explicit administrator investigation.
 
-REST endpoints are `GET /api/me`, `POST /api/onboarding/complete`, `PUT /api/me/focus`, `PUT /api/me/timezone`, and the read-only `GET /api/admin` authorization probe. Onboarding accepts `{ "timezone": "America/Denver", "focus": [{ "skillCode": "F", "points": 6 }, ...] }` with exactly eight unique Skills. Focus updates accept the complete `focus` array; timezone updates accept `timezone`. Identity is always derived from the session. Browser mutations use same-origin JSON; do not send User/Player IDs or roles. Responses use 400 for invalid input, 401 for missing session, 403 for forbidden access/origin, 409 for conflicting or incomplete player state, and 503 for missing canonical Skills.
+Identity endpoints are `GET /api/me`, `POST /api/onboarding/complete`, `PUT /api/me/focus`, and `PUT /api/me/timezone`; gameplay and curation routes live under `/api/quests`, `/api/challenges`, `/api/recommendations`, and `/api/admin`. Onboarding accepts `{ "timezone": "America/Denver", "focus": [{ "skillCode": "F", "points": 6 }, ...] }` with exactly eight unique Skills. Identity and admin role always come from the session. Browser mutations require same-origin JSON and reject client User/Player IDs or roles.
 
 ## Authentication tests without Google
 
@@ -103,8 +105,12 @@ REST endpoints are `GET /api/me`, `POST /api/onboarding/complete`, `PUT /api/me/
 
 For browser coverage, set `E2E_DATABASE_URL` to a disposable migrated and seeded database, then run `corepack pnpm test:e2e`. The harness starts a dedicated server at `http://127.0.0.1:3103`, generates a temporary auth secret, and mints normal Auth.js encrypted session cookies for test-owned User fixtures. There is no application login bypass or test endpoint. Desktop Chromium and a phone-sized Chromium viewport cover onboarding through Settings and sign-out. Screenshots/traces are saved in ignored `test-results/`. Without `E2E_DATABASE_URL`, authenticated tests are skipped explicitly and the public smoke tests still run. Live Google consent and callback verification remain a manual configuration check.
 
-## Standard Quest engine
+## Build 1 gameplay and operations
 
 An onboarded player’s first visit to `/home` or `GET /api/quests/standard` creates and populates three persistent Standard slots for each of the eight Skills. Reloads return the same assignments. The Home cards use `GET /api/quests/standard` and three same-origin JSON mutations: `POST /api/quests/standard/:playerQuestId/accept`, `/reroll`, and `/bump`. Accept and bump bodies are `{}`; reroll accepts optional `{ "feedbackReason": "TOO_HARD" }` using the documented feedback enum.
 
-Acceptance starts the definition’s exact 24/48/72-hour elapsed deadline and freezes its gameplay and offer-text snapshots. Reroll and bump retain history and return the replacement assignment. Accepted Standard quests can complete or be abandoned; overdue quests expire lazily and apply their stored penalty only after explicit clear. Resolution atomically updates XP, levels, Skill streaks, immutable reward/ledger history, and the slot replacement. Identity always comes from the Auth.js session. Challenge generation and Home recommendations remain deferred.
+Acceptance starts the definition’s exact 24/48/72-hour elapsed deadline and freezes its gameplay and offer-text snapshots. Reroll and bump retain history and return the replacement assignment. Accepted Standard quests can complete or be abandoned; overdue quests expire lazily and apply their stored penalty only after explicit clear. Resolution atomically updates XP, levels, Skill streaks, immutable reward/ledger history, and the slot replacement. Identity always comes from the Auth.js session.
+
+Home recommendations point only to existing eligible Standard slots and remain stable until invalidated. Daily and Weekly Challenges use fixed player-local windows, explicit acceptance, no-penalty expiration, atomic COUNT progress, configured bonuses, and exactly-once set bonuses. Challenge completions advance only ordinary per-Skill streaks.
+
+Run `corepack pnpm jobs:reconcile` manually or hourly through an external scheduler. It uses the same Player locks and domain reconciliation as lazy request-time fallback. It never applies penalties, clears failures, awards XP, advances streaks, or generates recommendations.

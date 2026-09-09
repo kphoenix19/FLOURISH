@@ -58,7 +58,7 @@ Authenticated Standard reads and resolution mutations lazily reconcile overdue a
 
 ### Phase 07 streak completion
 
-Phase 07 reuses the Phase 05 completion transaction as the sole authoritative Skill-streak write path. Player-facing reads derive an effective streak from the stored local qualifying date without writing merely because time passed, and expose active state plus progress toward the next configured bonus tier. Calendar helpers use the Player's IANA timezone; a Monday-based local-week helper establishes the boundary needed by Phase 08, while weekly Challenge-driven streak advancement remains deferred until that engine exists.
+Phase 07 reuses the Phase 05 completion transaction as the authoritative Skill-streak write pattern. Player-facing reads derive an effective streak from the stored local qualifying date without writing merely because time passed, and expose active state plus progress toward the next configured bonus tier. Calendar helpers use the Player's IANA timezone; a Monday-based local-week helper supplies Phase 08 Challenge windows. Daily and Weekly Challenge completions advance this same per-Skill streak state and never create a separate Challenge streak.
 
 ### Phase 08 Challenge engine
 

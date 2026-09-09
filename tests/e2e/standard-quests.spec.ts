@@ -102,6 +102,8 @@ test.describe("Standard quest experience", () => {
     const completedReplacement = await walk.getAttribute("data-quest-id"); expect(completedReplacement).not.toBe(acceptedId);
 
     await walk.getByRole("button", { name: "Accept", exact: true }).click();
+    await expect(page.getByText("Quest accepted. Your deadline has started.", { exact: true })).toBeVisible({ timeout: 30_000 });
+    await expect(walk.getByRole("button", { name: "Abandon", exact: true })).toBeEnabled();
     page.once("dialog", (dialog) => dialog.accept());
     await walk.getByRole("button", { name: "Abandon", exact: true }).click();
     await expect(page.getByText(/Quest abandoned/)).toBeVisible({ timeout: 30_000 });
