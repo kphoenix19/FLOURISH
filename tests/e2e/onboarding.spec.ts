@@ -59,7 +59,7 @@ test.describe("authenticated onboarding", () => {
     await page.goto("/admin"); await expect(page).toHaveURL(/\/not-authorized$/);
     await db.query("UPDATE users SET role = 'ADMIN', updated_at = now() WHERE id = $1", [user.id]);
     expect((await context.request.get("/api/admin")).status()).toBe(200);
-    await page.goto("/admin"); await expect(page.getByRole("heading", { name: "Administrator access" })).toBeVisible();
+    await page.goto("/admin"); await expect(page.getByRole("heading", { name: "Quest library" })).toBeVisible();
     expect((await db.query("SELECT count(*)::int FROM player_quest_slots WHERE player_id = $1", [user.player.id])).rows[0].count).toBe(24);
     expect((await db.query("SELECT count(*)::int FROM player_skill_focus_history WHERE player_id = $1", [user.player.id])).rows[0].count).toBe(10);
     await page.getByRole("button", { name: "Sign out", exact: true }).click();

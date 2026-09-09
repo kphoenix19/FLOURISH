@@ -41,6 +41,16 @@ Persist important curator actions—creation, edits, submit, approve, reject, ac
 
 Repository seed files are canonical. Validate them before persistence, use stable human-readable quest identifiers alongside database keys, and upsert canonical definitions. Seeding must not silently hard-delete existing definitions; content removed from canonical runtime selection becomes inactive where appropriate. Direct admin database edits never rewrite repository seeds automatically; deliberate repository changes are required to promote them into canonical data.
 
+## Build 1 implementation contract
+
+The curator UI lists QuestDefinitions with server-side text search, filters, and pagination. Filters cover rewarded Skill, difficulty, family, review state, active state, eligible pool, and seed/admin ownership. The editor exposes the Build 1 definition, reward, taxonomy, eligibility, family, review, and safety fields. It also shows every selected family's occupied and missing difficulty tiers.
+
+All curation REST endpoints independently require an authenticated `ADMIN` session and strict same-origin JSON mutation requests. Request DTOs use an explicit allowlist; clients cannot assign ownership, review state, activation, reviewer, or audit fields through the definition editor. Create, edit, submit, approve, reject, activate, and deactivate execute with their audit record in one serializable transaction. Edit and transition requests carry the last observed `updated_at`; stale requests fail with a conflict instead of overwriting newer work.
+
+Admin-created definitions use `seed_managed = false`, begin `DRAFT + INACTIVE`, and retain stable human-readable keys. Seed-managed definitions display a warning that database edits do not change repository JSON and can be overwritten by a later canonical import. Build 1 offers no hard-delete operation: deactivation preserves accepted snapshots and runtime history.
+
+Definition saves enforce structural validation, configured difficulty XP bands, SINGLE/COUNT targets, Standard windows, at least one eligible pool, 1–3 unique rewarded Skills with exactly one primary and a 100% total, and 1–3 unique controlled Variety Tags with exactly one primary. Every selected tag must belong to a rewarded Skill. Family/difficulty uniqueness is checked transactionally and remains backed by the database constraint.
+
 ## Not Build 1
 
 No AI quest-generation UI, team permission system, CSV import system, or sophisticated CMS. See [BACKLOG.md](BACKLOG.md).

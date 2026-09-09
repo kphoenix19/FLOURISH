@@ -1,0 +1,2 @@
+import { AdminEditor } from "@/components/admin-editor";import { AdminShell } from "@/components/admin-shell";import { getDb } from "@/lib/db";import { adminReferenceData } from "@/modules/admin/service";import { pageUser } from "@/modules/auth/session";
+export const dynamic="force-dynamic";export default async function NewQuest(){await pageUser("admin");const refs=await adminReferenceData(getDb());return <AdminShell><AdminEditor references={JSON.parse(JSON.stringify(refs))}/></AdminShell>}

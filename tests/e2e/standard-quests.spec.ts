@@ -83,6 +83,7 @@ test.describe("Standard quest experience", () => {
     expect(current.skills[0].slots[0].quest.difficulty).toBe("MEDIUM");
     await walk.getByRole("button", { name: "Accept", exact: true }).click();
     await expect(page.getByText("Quest accepted. Your deadline has started.", { exact: true })).toBeVisible({ timeout: 30_000 });
+    await expandFitness();
     await expect(walk.locator("time")).toBeVisible();
     await walk.screenshot({ path: testInfo.outputPath("accepted-standard.png"), caret: "initial" });
     const acceptedId = await walk.getAttribute("data-quest-id");
