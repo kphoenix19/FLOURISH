@@ -11,9 +11,10 @@ describe("game UI primitives", () => {
   });
 
   it("renders skill, difficulty, and status as text rather than color alone", () => {
-    render(<><SkillBadge code="F" name="Fitness" /><DifficultyBadge difficulty="HARD" /><StatusBadge status="EXPIRED" /></>);
+    render(<><SkillBadge code="F" name="Fitness" /><DifficultyBadge difficulty="HARD" /><StatusBadge status="ACCEPTED" /><StatusBadge status="EXPIRED" /></>);
     expect(screen.getByText("Fitness")).toBeInTheDocument();
     expect(screen.getByText("Hard")).toBeInTheDocument();
+    expect(screen.getByText("Active")).toBeInTheDocument();
     expect(screen.getByText("Expired")).toBeInTheDocument();
   });
 

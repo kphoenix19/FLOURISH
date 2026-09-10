@@ -19,7 +19,7 @@ export function DifficultyBadge({ difficulty }: { difficulty: string }) {
 }
 
 export function StatusBadge({ status }: { status: string }) {
-  const text = status.charAt(0) + status.slice(1).toLowerCase();
+  const text = status === "ACCEPTED" ? "Active" : status.charAt(0) + status.slice(1).toLowerCase();
   return <span className={`badge status status-${status.toLowerCase()}`}>{text}</span>;
 }
 

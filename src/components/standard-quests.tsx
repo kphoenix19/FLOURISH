@@ -1,27 +1,33 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState } from "react";
 import type { StandardState } from "@/modules/quests/standard/view";
 import type { StandardAction } from "@/modules/quests/standard/actions";
 import type { ResolutionAction } from "@/modules/quests/standard/resolution";
 import type { HomeRecommendation } from "@/modules/recommendations/service";
 import { gameConfig } from "@/config/game";
+import type { ChallengeAction, ChallengeState } from "@/modules/challenges/service";
+import { ChallengeControls, Challenges } from "./challenges";
 import { ConfirmationDialog, DifficultyBadge, Feedback, ProgressBar, SkillBadge, StatusBadge } from "./game-ui";
 
 const label = (text: string) => text.charAt(0) + text.slice(1).toLowerCase();
 const formatDue = (date: string, timezone: string) => new Intl.DateTimeFormat("en-US", { timeZone: timezone, month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" }).format(new Date(date));
 
-export function StandardQuests({ initial, initialRecommendation, challenges }: { initial: StandardState; initialRecommendation: HomeRecommendation; challenges?: ReactNode }) {
+export function StandardQuests({ initial, initialRecommendation, initialChallenges }: { initial: StandardState; initialRecommendation: HomeRecommendation; initialChallenges?: ChallengeState }) {
   const [state, setState] = useState(initial); const [recommendation, setRecommendation] = useState(initialRecommendation); const [busy, setBusy] = useState<string | null>(null); const [message, setMessage] = useState(""); const [error, setError] = useState(""); const [feedback, setFeedback] = useState<Record<string, string>>({});
-  const [openSkills, setOpenSkills] = useState(() => new Set([initialRecommendation.skillCode]));
+  const [openSkills, setOpenSkills] = useState(() => new Set<string>());
   const [abandonQuest, setAbandonQuest] = useState<{ id: string; title: string; penalty: number } | null>(null);
   const [recommendationBusy, setRecommendationBusy] = useState<"accept" | "different" | null>(null);
   const recommendationLock = useRef(false);
-  const active = state.skills.flatMap((skill) => skill.slots.filter((slot) => ["ACCEPTED", "EXPIRED"].includes(slot.quest.status)).map((slot) => ({ skill, slot })));
+  const [challengeState, setChallengeState] = useState(initialChallenges);
+  const [challengeBusy, setChallengeBusy] = useState<string | null>(null); const [challengeMessage, setChallengeMessage] = useState(""); const [challengeError, setChallengeError] = useState("");
+  const standardActive = state.skills.flatMap((skill) => skill.slots.filter((slot) => slot.quest.status === "ACCEPTED").map((slot) => ({ skill, slot })));
+  const challengeActive = challengeState ? [challengeState.daily, challengeState.weekly].flatMap((set) => set.quests.filter((quest) => quest.status === "ACCEPTED")) : [];
+  const activeCount = standardActive.length + challengeActive.length;
   async function act(id: string, action: StandardAction | ResolutionAction) {
     if (busy) return false; setBusy(id); setError(""); setMessage("");
     try { const response = await fetch(`/api/quests/standard/${id}/${action}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(action === "reroll" ? { feedbackReason: feedback[id] || null } : {}) }); const result = await response.json(); if (!response.ok) throw new Error(result.error?.message ?? "The quest could not be updated."); setState(result); const next = await fetch("/api/recommendations/next"); if (next.ok) setRecommendation(await next.json()); setMessage(action === "accept" ? "Quest accepted. Your deadline has started." : action === "complete" ? "Quest complete. XP, levels, and streaks are updated." : action === "abandon" ? "Quest abandoned. The Skill XP penalty was applied and a replacement is ready." : action === "clear" ? "Failure acknowledged. The stored penalty was applied and a replacement is ready." : action === "bump" ? "A harder family quest is ready to accept." : "Your replacement quest is ready."); }
-    catch (e) { setError(e instanceof Error ? e.message : "Please try again."); return false; } finally { setBusy(null); }
+    catch (e) { setError(e instanceof Error ? e.message : "Please try again."); try { await reconcileHome(); } catch { /* Keep the mutation error visible. */ } return false; } finally { setBusy(null); }
     return true;
   }
   async function confirmAbandon() { if (!abandonQuest || busy) return; const id = abandonQuest.id; await act(id, "abandon"); setAbandonQuest((current) => current?.id === id ? null : current); }
@@ -37,6 +43,12 @@ export function StandardQuests({ initial, initialRecommendation, challenges }: {
     try { const response = await fetch("/api/recommendations/next", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ playerQuestId: recommendation.playerQuestId }) }); const result = await response.json(); if (!response.ok) throw new Error(result.error?.message ?? "A different quest could not be suggested."); setRecommendation(result); setMessage(result.differentAvailable === false ? "No different available quest can currently be suggested." : "Here is another available quest."); }
     catch (e) { setError(e instanceof Error ? e.message : "Please try again."); try { await reconcileHome(); } catch { /* Keep the original request error visible. */ } }
     finally { recommendationLock.current = false; setRecommendationBusy(null); }
+  }
+  async function challengeAct(id: string, action: ChallengeAction) {
+    if (challengeBusy) return; setChallengeBusy(id); setChallengeError(""); setChallengeMessage("");
+    try { const response = await fetch(`/api/challenges/${id}/${action}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }); const result = await response.json(); if (!response.ok) throw new Error(result.error?.message ?? "Challenge could not be updated."); setChallengeState(result); setChallengeMessage(action === "accept" ? "Challenge accepted." : action === "decrement" ? "Challenge progress corrected." : action === "increment" ? "Challenge progress updated. No XP is awarded until the target is reached." : "Challenge completed and rewards applied."); }
+    catch (e) { setChallengeError(e instanceof Error ? e.message : "Please try again."); try { const refreshed = await fetch("/api/challenges"); if (refreshed.ok) setChallengeState(await refreshed.json()); } catch { /* Keep the mutation error visible. */ } }
+    finally { setChallengeBusy(null); }
   }
   return <>
     <header className="progress-hero">
@@ -69,14 +81,15 @@ export function StandardQuests({ initial, initialRecommendation, challenges }: {
 <p className="eyebrow">In progress</p>
 <h2 id="active-heading">Active Quests</h2>
 </div>
-<span className="section-count">{active.length} active</span>
-</div>{active.length === 0 ? <div className="empty-state compact">
+<span className="section-count">{activeCount} active</span>
+</div>{activeCount === 0 ? <div className="empty-state compact">
 <strong>No active quests yet</strong>
 <p>Accept a Standard quest when you are ready to start its deadline.</p>
-</div> : <div className="active-list">{active.map(({ slot }) => { const q = slot.quest; return <article className={`active-quest ${q.status === "EXPIRED" ? "is-expired" : ""}`} key={q.id} data-active-quest-id={q.id}>
+</div> : <div className="active-list">{standardActive.map(({ slot }) => { const q = slot.quest; return <article className="active-quest state-accepted" key={q.id} data-active-quest-id={q.id}>
 <div className="active-skill">{q.skills.map((reward) => { const rewarded = state.skills.find((item) => item.code === reward.skillCode); return <SkillBadge key={reward.skillCode} code={reward.skillCode} name={rewarded?.name ?? reward.skillCode} />; })}</div>
 <div className="active-main">
 <div className="card-badges">
+<span className="badge pool-badge">Standard</span>
 <StatusBadge status={q.status} />
 </div>
 <h3>{q.title}</h3>
@@ -85,13 +98,16 @@ export function StandardQuests({ initial, initialRecommendation, challenges }: {
 <div><dt>Deadline</dt><dd>{q.deadlineAt ? <time dateTime={q.deadlineAt}>{formatDue(q.deadlineAt, state.timezone)}</time> : "No deadline"}</dd></div>
 <div><dt>XP</dt><dd>{q.baseXp} Base XP</dd></div>
 {q.completionType === "COUNT" && <div><dt>Progress</dt><dd>{q.currentProgress}/{q.completionTarget}</dd></div>}
-</dl>{q.status === "EXPIRED" && <p>
-<strong>Penalty not yet applied:</strong> clearing acknowledges failure and applies {q.failurePenaltyXp} Skill XP.</p>}</div>
-<div className="active-actions">{q.status === "ACCEPTED" ? <>
+</dl></div>
+<div className="active-actions"><>
 <button className="button" disabled={busy !== null} onClick={() => act(q.id, "complete")}>{busy === q.id ? "Completing..." : "Complete quest"}</button>
 <button className="button danger-quiet" disabled={busy !== null} onClick={() => setAbandonQuest({ id: q.id, title: q.title, penalty: Math.floor((q.baseXp! * gameConfig.quests.failurePenaltyPercent + 50) / 100) })}>Abandon</button>
-</> : <button className="button danger" disabled={busy !== null} onClick={() => act(q.id, "clear")}>Clear / acknowledge failure</button>}</div>
-</article>; })}</div>}</section>
+</></div>
+</article>; })}{challengeActive.map((quest) => <article className={`active-quest state-accepted active-${quest.poolType.toLowerCase()}`} key={quest.id} data-active-quest-id={quest.id}>
+<div className="active-skill">{quest.skills.map((reward) => { const rewarded = state.skills.find((item) => item.code === reward.skillCode); return <SkillBadge key={reward.skillCode} code={reward.skillCode} name={rewarded?.name ?? reward.skillCode} />; })}</div>
+<div className="active-main"><div className="card-badges"><span className="badge pool-badge">{quest.poolType === "DAILY" ? "Daily Challenge" : "Weekly Challenge"}</span><StatusBadge status={quest.status} /></div><h3>{quest.title}</h3><dl className="active-meta"><div><dt>Difficulty</dt><dd>{label(quest.difficulty!)}</dd></div><div><dt>Challenge type</dt><dd>{label(quest.completionType!)}</dd></div><div><dt>Deadline</dt><dd><time dateTime={quest.windowEndAt}>{formatDue(quest.windowEndAt, challengeState!.timezone)}</time></dd></div>{quest.completionType === "COUNT" && <div><dt>Progress</dt><dd>{quest.currentProgress}/{quest.target}</dd></div>}<div><dt>XP</dt><dd>{quest.baseXp} Base XP + {quest.challengeBonusPercent}% bonus</dd></div></dl></div>
+<div className="active-actions"><ChallengeControls quest={quest} busy={challengeBusy} onAction={(id, action) => void challengeAct(id, action)} /></div>
+</article>)}</div>}</section>
     <section className="recommendation-card" aria-labelledby="next-quest-heading" data-recommended-quest-id={recommendation.playerQuestId}>
 <div className="recommendation-kicker">
 <span aria-hidden="true">→</span>
@@ -113,7 +129,7 @@ export function StandardQuests({ initial, initialRecommendation, challenges }: {
 <div className="recommendation-actions"><button className="button" type="button" disabled={busy !== null || recommendationBusy !== null} onClick={() => void acceptRecommendation()}>{recommendationBusy === "accept" ? "Accepting…" : "Accept quest"}</button><button className="button secondary" type="button" disabled={busy !== null || recommendationBusy !== null} onClick={() => void requestDifferent()}>{recommendationBusy === "different" ? "Finding another…" : "Something different"}</button></div>
 </div>
 </section>
-    {challenges}
+    {challengeState && <Challenges state={challengeState} busy={challengeBusy} message={challengeMessage} error={challengeError} onAction={(id, action) => void challengeAct(id, action)} />}
     <section className="home-section" id="skill-overview" aria-labelledby="skills-heading">
 <div className="section-heading">
 <div>
@@ -125,16 +141,13 @@ export function StandardQuests({ initial, initialRecommendation, challenges }: {
 <nav className="skill-links" aria-label="Jump to Skill">{state.skills.map((s) => <a key={s.code} href={`#quests-${s.code}`}>
 <SkillBadge code={s.code} name={s.name} />
 </a>)}</nav>
-<div className="skill-sections">{state.skills.map((skill) => <section key={skill.code} id={`quests-${skill.code}`} className="quest-skill">
+<div className="skill-sections">{state.skills.map((skill) => { const acceptedCount = skill.slots.filter((slot) => slot.quest.status === "ACCEPTED").length; return <section key={skill.code} id={`quests-${skill.code}`} className="quest-skill">
 <button type="button" className="skill-trigger" aria-expanded={openSkills.has(skill.code)} aria-controls={`skill-panel-${skill.code}`} onClick={() => setOpenSkills((current) => { const next = new Set(current); if (next.has(skill.code)) next.delete(skill.code); else next.add(skill.code); return next; })}>
-<div className="skill-summary-title">
-<SkillBadge code={skill.code} name={skill.name} />
-<span>Level {skill.currentLevel}</span>
-</div>
-<div className="skill-summary-stats">
-<span>{skill.currentStreakDays}-day streak ({skill.streakActive ? "active" : "inactive"})</span>
-<span>{skill.levelProgress.nextLevelXp === null ? "Max level" : `${skill.levelProgress.xpToNextLevel} XP to next level`}</span>
-</div>
+<span className="skill-summary-name"><SkillBadge code={skill.code} name={skill.name} /></span>
+<span className="skill-summary-level">Level {skill.currentLevel}</span>
+<span className="skill-active-count" aria-label={`${acceptedCount} active Standard ${acceptedCount === 1 ? "quest" : "quests"}`}>{acceptedCount} active</span>
+<span className="skill-summary-streak">{skill.currentStreakDays}-day streak ({skill.streakActive ? "active" : "inactive"})</span>
+<span className="skill-summary-xp">{skill.levelProgress.nextLevelXp === null ? "Max level" : `${skill.levelProgress.xpToNextLevel} XP to next level`}</span>
 </button>
 <div id={`skill-panel-${skill.code}`} className="skill-panel" hidden={!openSkills.has(skill.code)}>
 <div className="skill-progress">
@@ -175,7 +188,7 @@ export function StandardQuests({ initial, initialRecommendation, challenges }: {
 <button className="button danger-quiet" disabled={busy !== null} onClick={() => setAbandonQuest({ id: q.id, title: q.title, penalty: Math.floor((q.baseXp! * gameConfig.quests.failurePenaltyPercent + 50) / 100) })}>Abandon</button>
 </div>}{q.status === "EXPIRED" && <button className="button danger" disabled={busy !== null} onClick={() => act(q.id, "clear")}>Clear / acknowledge failure</button>}</article>; })}</div>
 </div>
-</section>)}</div>
+</section>; })}</div>
 </section>
     <ConfirmationDialog open={abandonQuest !== null} title="Abandon quest?" confirmLabel="Abandon quest" pending={busy === abandonQuest?.id} onCancel={() => setAbandonQuest(null)} onConfirm={() => void confirmAbandon()}>
       <p><strong>{abandonQuest?.title}</strong> will be abandoned immediately.</p>

@@ -18,3 +18,11 @@ Acceptance includes unit/component coverage for initial Focus state, validation,
 - **Something different** immediately re-runs established recommendation scoring over existing eligible `AVAILABLE` Standard slots while excluding the displayed recommendation when an alternative exists. It persists the selected recommendation but never rerolls, replaces, accepts, penalizes, or creates a Standard quest.
 - If no alternative exists, the current recommendation remains visible and the player receives a clear in-app explanation. Stale recommendations are rejected rather than silently acting on another quest, after which the client reconciles authoritative quest and recommendation state.
 - Both actions prevent duplicate submissions, expose accessible pending labels and in-app errors, and remain responsive at desktop and Pixel 7 widths.
+
+## Prompt 2 — Quest-State Visibility and Challenge Organization
+
+- Every Skill accordion trigger shows its count of `ACCEPTED` Standard quests, including a visible zero. Available, expired, terminal, and Challenge quests are excluded; the count is derived from structured slot state and uses singular/plural assistive text.
+- Current Standard cards retain a neutral Available treatment, use a labeled green Active treatment for accepted quests, and a labeled red Expired treatment while acknowledgement is pending. Expired cards continue to explain that their penalty has not been applied.
+- Daily and Weekly Challenge sets are independent, keyboard-operable accordions keyed by stable pool identity. Their collapsed headers retain set progress and window-end information, and player-chosen expansion state survives in-page Challenge refreshes.
+- Active Quests includes only accepted Standard, Daily, and Weekly PlayerQuests. Each card visibly identifies `Standard`, `Daily Challenge`, or `Weekly Challenge`; Challenge cards reuse the same SINGLE completion and COUNT progress actions as their pool cards.
+- Status and pool meaning never depend on color alone. After mutations or stale-request failures, shared authoritative state updates the Active list, Skill counts, Standard slots, and Challenge panels without action clicks toggling their surrounding accordion.
