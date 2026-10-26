@@ -9,6 +9,31 @@ const state = { timezone: "UTC", daily: { id: "daily-a", poolType: "DAILY", wind
 afterEach(cleanup);
 
 describe("Challenge accordions", () => {
+  it("shows the next Daily start during a gap while Weekly actions remain available", () => {
+    const action = vi.fn();
+    render(<Challenges state={{ ...state, daily: null, nextDailyStartsAt: "2026-10-27T06:00:00.000Z" }} busy={null} message="" error="" onAction={action} />);
+    const daily = screen.getByRole("region", { name: "Daily Challenges" });
+    expect(within(daily).getByText("No active daily period.")).toBeVisible();
+    expect(daily.querySelector("time")).toHaveAttribute("dateTime", "2026-10-27T06:00:00.000Z");
+    expect(within(daily).queryByRole("button")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Weekly Challenges/ }));
+    fireEvent.click(within(screen.getByRole("region", { name: "Weekly Challenges" })).getByRole("button", { name: "Accept" }));
+    expect(action).toHaveBeenCalledWith("weekly", "accept");
+  });
+
+  it("renders both scheduling gaps and recovers when an active period arrives", () => {
+    const action = vi.fn();
+    const { rerender } = render(<Challenges state={{ ...state, daily: null, weekly: null, nextDailyStartsAt: "2026-10-27T06:00:00.000Z", nextWeeklyStartsAt: "2026-11-02T07:00:00.000Z" }} busy={null} message="" error="" onAction={action} />);
+    expect(screen.getByText("No active daily period.")).toBeVisible();
+    expect(screen.getByText("No active weekly period.")).toBeVisible();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    rerender(<Challenges state={state} busy={null} message="" error="" onAction={action} />);
+    expect(screen.queryByText("No active daily period.")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Daily Challenges/ }));
+    fireEvent.click(within(screen.getByRole("region", { name: "Daily Challenges" })).getByRole("button", { name: "Accept" }));
+    expect(action).toHaveBeenCalledWith("daily", "accept");
+  });
+
   it("expands independently, exposes state, and keeps action clicks outside triggers", () => {
     const action = vi.fn(); const { rerender } = render(<Challenges state={state} busy={null} message="" error="" onAction={action} />);
     const daily = screen.getByRole("region", { name: "Daily Challenges" }); const weekly = screen.getByRole("region", { name: "Weekly Challenges" });

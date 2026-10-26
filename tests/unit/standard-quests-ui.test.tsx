@@ -10,11 +10,21 @@ const state = { overallLevel: 1, overallXp: 0, overallProgress: { levelStartXp: 
 const recommendation = { playerQuestId: "available", slotId: "slot-1", skillCode: "F", skillName: "Fitness", title: "Available quest", description: "Useful description", difficulty: "EASY", estimatedMinutes: 10, reasonCodes: [], calculatedAt: "2026-09-09T12:00:00.000Z" } satisfies HomeRecommendation;
 const alternative = { ...recommendation, playerQuestId: "different", slotId: "slot-3", title: "Different quest", differentAvailable: true };
 const challengeQuest = (id: string, poolType: "DAILY" | "WEEKLY", status: "AVAILABLE" | "ACCEPTED" | "COMPLETED" | "EXPIRED", completionType: "SINGLE" | "COUNT" = "SINGLE") => ({ id, title: `${id} title`, description: "Challenge description", difficulty: "MEDIUM", baseXp: 120, estimatedMinutes: 15, completionType, target: completionType === "COUNT" ? 3 : 1, currentProgress: completionType === "COUNT" ? 1 : 0, status, poolType, windowEndAt: "2026-09-11T12:00:00.000Z", skills: [{ skillCode: "F", rewardPercent: 100, isPrimary: true }], primarySkill: "F", challengeBonusPercent: poolType === "DAILY" ? 10 : 15 });
-const challenges = { timezone: "UTC", daily: { id: "daily-set", poolType: "DAILY", windowStartAt: "2026-09-09T00:00:00.000Z", windowEndAt: "2026-09-10T00:00:00.000Z", completedCount: 1, totalCount: 4, setBonusXp: 100, setBonusAwarded: false, quests: [challengeQuest("daily-active", "DAILY", "ACCEPTED"), challengeQuest("daily-available", "DAILY", "AVAILABLE"), challengeQuest("daily-complete", "DAILY", "COMPLETED"), challengeQuest("daily-expired", "DAILY", "EXPIRED")] }, weekly: { id: "weekly-set", poolType: "WEEKLY", windowStartAt: "2026-09-07T00:00:00.000Z", windowEndAt: "2026-09-14T00:00:00.000Z", completedCount: 0, totalCount: 1, setBonusXp: 300, setBonusAwarded: false, quests: [challengeQuest("weekly-active", "WEEKLY", "ACCEPTED", "COUNT")] } } as unknown as ChallengeState;
+const challenges = { timezone: "UTC", daily: { id: "daily-set", poolType: "DAILY", windowStartAt: "2026-09-09T00:00:00.000Z", windowEndAt: "2026-09-10T00:00:00.000Z", completedCount: 1, totalCount: 4, setBonusXp: 100, setBonusAwarded: false, quests: [challengeQuest("daily-active", "DAILY", "ACCEPTED"), challengeQuest("daily-available", "DAILY", "AVAILABLE"), challengeQuest("daily-complete", "DAILY", "COMPLETED"), challengeQuest("daily-expired", "DAILY", "EXPIRED")] }, weekly: { id: "weekly-set", poolType: "WEEKLY", windowStartAt: "2026-09-07T00:00:00.000Z", windowEndAt: "2026-09-14T00:00:00.000Z", completedCount: 0, totalCount: 1, setBonusXp: 300, setBonusAwarded: false, quests: [challengeQuest("weekly-active", "WEEKLY", "ACCEPTED", "COUNT")] } } as unknown as ChallengeState & { daily: NonNullable<ChallengeState["daily"]>; weekly: NonNullable<ChallengeState["weekly"]> };
 
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 describe("Standard quest interaction stability", () => {
+  it("keeps Home progression and active Weekly actions visible during a Daily scheduling gap", () => {
+    render(<StandardQuests initial={state} initialRecommendation={null} initialChallenges={{ ...challenges, daily: null, nextDailyStartsAt: "2026-10-27T06:00:00.000Z" }} />);
+    expect(screen.getByRole("heading", { name: "Overall Level 1" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Skill progression & Standard quests" })).toBeVisible();
+    expect(screen.getByText("No active daily period.")).toBeVisible();
+    expect(screen.getByRole("heading", { name: "weekly-active title", level: 3 })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Increase weekly-active title progress" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Complete quest" })).toBeVisible();
+  });
+
   it.each(["ACCEPTED", "EXPIRED"] as const)("keeps all Home sections usable without a recommendation (%s slots)", (status) => {
     const occupied = { ...state, skills: [{ ...state.skills[0], slots: state.skills[0].slots.map((slot) => ({ ...slot, quest: quest(slot.quest.id, status, slot.quest.title) })) }] } as StandardState;
     render(<StandardQuests initial={occupied} initialRecommendation={null} initialChallenges={challenges} />);

@@ -17,7 +17,8 @@ import type { StandardState } from "../../src/modules/quests/standard/view";
 import { getHomeRecommendation } from "../../src/modules/recommendations/service";
 import { createRecommendationApi } from "../../src/modules/recommendations/api";
 import { percentRoundHalfUp } from "../../src/modules/progression/math";
-import { getChallengeState, mutateChallenge } from "../../src/modules/challenges/service";
+import { getChallengeState, mutateChallenge, reconcilePlayerChallenges } from "../../src/modules/challenges/service";
+import { challengeWindow } from "../../src/modules/challenges/windows";
 import { createChallengeApi } from "../../src/modules/challenges/api";
 import { transitionQuest } from "../../src/modules/admin/service";
 import { runGameStateReconciliation } from "../../src/modules/jobs/reconciliation";
@@ -29,6 +30,14 @@ async function requireRecommendation(...args: Parameters<typeof getHomeRecommend
   if (!result) throw new Error("Expected an eligible recommendation");
   return result;
 }
+
+function requireActivePools(state: Awaited<ReturnType<typeof getChallengeState>>) {
+  expect(state.daily).not.toBeNull(); expect(state.weekly).not.toBeNull();
+  if (!state.daily || !state.weekly) throw new Error("Expected both Challenge pools active");
+  return { ...state, daily: state.daily, weekly: state.weekly };
+}
+async function getActiveChallengeState(...args: Parameters<typeof getChallengeState>) { return requireActivePools(await getChallengeState(...args)); }
+async function mutateActiveChallenge(...args: Parameters<typeof mutateChallenge>) { return requireActivePools(await mutateChallenge(...args)); }
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL must point to a disposable test database.");
@@ -55,15 +64,208 @@ beforeEach(async () => {
 });
 afterAll(async () => { await db.$disconnect(); await pool.end(); await admin.query(`DROP SCHEMA "${schema}" CASCADE`); await admin.end(); });
 
+describe("Challenge timezone transitions A05", () => {
+  const start = new Date("2026-10-26T12:00:00Z");
+  const readAt = (at: Date) => getChallengeState(db, playerId, { now: () => at, random: () => 0.5 });
+  async function initialize(timezone = "UTC", at = start) {
+    await updateTimezone(db, userId, { timezone });
+    return requireActivePools(await readAt(at));
+  }
+  async function noOverlap() {
+    for (const poolType of ["DAILY", "WEEKLY"] as const) {
+      const sets = await db.challengeSet.findMany({ where: { playerId, poolType }, orderBy: { windowStartAt: "asc" } });
+      for (let i = 1; i < sets.length; i++) expect(sets[i].windowStartAt.getTime()).toBeGreaterThanOrEqual(sets[i - 1].windowEndAt.getTime());
+    }
+  }
+  async function finish(q: { id: string; completionType: string; target: number }, at: Date) {
+    await mutateChallenge(db, playerId, q.id, "accept", { now: () => at });
+    if (q.completionType === "SINGLE") await mutateChallenge(db, playerId, q.id, "complete", { now: () => at });
+    else for (let i = 0; i < q.target; i++) await mutateChallenge(db, playerId, q.id, "increment", { now: () => at });
+  }
+  it.each([
+    ["UTC", "America/Denver"], ["America/Denver", "UTC"],
+    ["Pacific/Honolulu", "Pacific/Kiritimati"],
+  ])("preserves assignments and windows across %s to %s, including local-midnight crossings", async (from, to) => {
+    const original = await initialize(from);
+    const rows = await db.playerQuest.findMany({ where: { playerId }, orderBy: { id: "asc" } });
+    await updateTimezone(db, userId, { timezone: to });
+    const state = await readAt(start);
+    expect(state).toEqual({ ...original, timezone: to });
+    expect(await db.playerQuest.findMany({ where: { playerId }, orderBy: { id: "asc" } })).toEqual(rows);
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
+    await noOverlap();
+  });
+  it.each([["UTC", "America/Denver"], ["America/Denver", "UTC"]])("rolls Daily and Weekly independently from %s to %s with full-period gaps", async (from, to) => {
+    const original = await initialize(from);
+    await updateTimezone(db, userId, { timezone: to });
+    const dailyEnd = new Date(original.daily.windowEndAt);
+    const gap = await readAt(dailyEnd);
+    const nextDaily = challengeWindow("DAILY", dailyEnd, to).end;
+    expect(gap.daily).toBeNull(); expect(gap.nextDailyStartsAt).toBe(nextDaily.toISOString());
+    expect(gap.weekly).toEqual(original.weekly);
+    expect(await db.playerQuest.count({ where: { playerId } })).toBe(8);
+    expect(await db.playerQuest.count({ where: { challengeSetId: original.daily.id, status: "EXPIRED" } })).toBe(3);
+    expect((await readAt(new Date(nextDaily.getTime() - 1))).daily).toBeNull();
+    const daily = requireActivePools(await readAt(nextDaily));
+    expect(daily.daily.windowStartAt).toBe(nextDaily.toISOString());
+    expect(daily.daily.windowEndAt).toBe(challengeWindow("DAILY", nextDaily, to).end.toISOString());
+    expect(daily.weekly).toEqual(original.weekly);
+    const weeklyEnd = new Date(original.weekly.windowEndAt);
+    const weeklyGap = await readAt(weeklyEnd);
+    const nextWeekly = challengeWindow("WEEKLY", weeklyEnd, to).end;
+    expect(weeklyGap.weekly).toBeNull(); expect(weeklyGap.nextWeeklyStartsAt).toBe(nextWeekly.toISOString());
+    expect((await readAt(new Date(nextWeekly.getTime() - 1))).weekly).toBeNull();
+    const weekly = requireActivePools(await readAt(nextWeekly));
+    expect(weekly.weekly.windowStartAt).toBe(nextWeekly.toISOString());
+    expect(weekly.weekly.windowEndAt).toBe(challengeWindow("WEEKLY", nextWeekly, to).end.toISOString());
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
+    await noOverlap();
+  });
+  it("keeps accepted Challenges visible and completes them once from snapshots after repeated timezone changes", async () => {
+    const original = await initialize();
+    const quests = [original.daily.quests[0], original.weekly.quests[0]];
+    for (const q of quests) await mutateChallenge(db, playerId, q.id, "accept", { now: () => start });
+    const before = await db.playerQuest.findMany({ where: { id: { in: quests.map((q) => q.id) } }, include: { skillSnapshots: true }, orderBy: { id: "asc" } });
+    for (const timezone of ["America/Denver", "Asia/Tokyo", "UTC", "Pacific/Honolulu"]) {
+      await updateTimezone(db, userId, { timezone });
+      const state = requireActivePools(await readAt(start));
+      expect([state.daily.quests[0].id, state.weekly.quests[0].id]).toEqual(quests.map((q) => q.id));
+      expect(state.daily.quests[0].status).toBe("ACCEPTED"); expect(state.weekly.quests[0].status).toBe("ACCEPTED");
+      expect(await db.playerQuest.findMany({ where: { id: { in: quests.map((q) => q.id) } }, include: { skillSnapshots: true }, orderBy: { id: "asc" } })).toEqual(before);
+    }
+    for (const q of quests) {
+      await finish(q, start);
+      await expect(mutateChallenge(db, playerId, q.id, q.completionType === "SINGLE" ? "complete" : "increment", { now: () => start })).rejects.toMatchObject({ code: "INVALID_STATUS" });
+    }
+    const completed = requireActivePools(await readAt(start));
+    expect(completed.daily.quests[0].status).toBe("COMPLETED"); expect(completed.weekly.quests[0].status).toBe("COMPLETED");
+    const rewards = await db.questReward.findMany({ where: { playerQuestId: { in: quests.map((q) => q.id) } } });
+    expect(rewards).toHaveLength(2);
+    expect(await db.playerProgress.findUniqueOrThrow({ where: { playerId } })).toMatchObject({ overallXp: rewards.reduce((sum, r) => sum + r.finalOverallXp, 0) });
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
+    await noOverlap();
+  });
+  it("does not regenerate completed pools or repeat set bonuses when timezone switching", async () => {
+    const original = await initialize();
+    for (const q of [...original.daily.quests, ...original.weekly.quests]) await finish(q, start);
+    const ledgerCount = await db.xpTransaction.count({ where: { playerId } });
+    for (const timezone of ["America/Denver", "Asia/Tokyo", "UTC"]) {
+      await updateTimezone(db, userId, { timezone });
+      const state = requireActivePools(await readAt(start));
+      expect(state.daily.id).toBe(original.daily.id); expect(state.weekly.id).toBe(original.weekly.id);
+      expect(state.daily.setBonusAwarded).toBe(true); expect(state.weekly.setBonusAwarded).toBe(true);
+    }
+    expect(await db.questReward.count()).toBe(8);
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(ledgerCount);
+    expect(await db.xpTransaction.count({ where: { playerId, transactionType: { in: ["DAILY_SET_BONUS", "WEEKLY_SET_BONUS"] } } })).toBe(2);
+    expect(await db.playerQuest.count({ where: { playerId } })).toBe(8);
+  });
+  it("serializes reads, timezone updates and scheduled reconciliation without extra pools", async () => {
+    const original = await initialize();
+    for (const timezone of ["America/Denver", "Asia/Tokyo", "Pacific/Honolulu", "UTC"]) {
+      const [, a, b] = await Promise.all([updateTimezone(db, userId, { timezone }), readAt(start), readAt(start), reconcilePlayerChallenges(db, playerId, { now: start, random: () => 0.5 })]);
+      expect(a.daily?.id).toBe(original.daily.id); expect(b.weekly?.id).toBe(original.weekly.id);
+    }
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
+    expect(await db.playerQuest.count({ where: { playerId } })).toBe(8);
+    await noOverlap();
+  });
+  it("keeps gap reads and jobs idempotent, then serializes generation at the new midnight", async () => {
+    const original = await initialize();
+    await updateTimezone(db, userId, { timezone: "America/Denver" });
+    const end = new Date(original.daily.windowEndAt);
+    const gap = await readAt(end);
+    for (let i = 0; i < 2; i++) {
+      expect(await readAt(end)).toEqual(gap);
+      expect(await reconcilePlayerChallenges(db, playerId, { now: end, random: () => 0.5 })).toMatchObject({ challengeSetsCreated: 0 });
+    }
+    expect(await db.playerQuest.count({ where: { playerId } })).toBe(8);
+    const boundary = new Date(gap.nextDailyStartsAt!);
+    const [a, b] = await Promise.all([readAt(boundary), readAt(boundary), reconcilePlayerChallenges(db, playerId, { now: boundary, random: () => 0.5 })]);
+    expect(a).toEqual(b);
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(3);
+    expect(await db.playerQuest.count({ where: { playerId } })).toBe(11);
+    await noOverlap();
+  });
+  it.each([-1, 1])("handles a timezone update %s ms from Daily expiry without backdating a pool", async (offset) => {
+    const original = await initialize();
+    const end = new Date(original.daily.windowEndAt);
+    const at = new Date(end.getTime() + offset);
+    await updateTimezone(db, userId, { timezone: "America/Denver" });
+    const state = await readAt(at);
+    if (offset < 0) expect(state.daily?.id).toBe(original.daily.id);
+    else { expect(state.daily).toBeNull(); expect(state.nextDailyStartsAt).toBe("2026-10-27T06:00:00.000Z"); }
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
+  });
+  it("preserves a period already generated just after rollover when the timezone then changes", async () => {
+    const original = await initialize();
+    const at = new Date(new Date(original.daily.windowEndAt).getTime() + 1);
+    const rolled = requireActivePools(await readAt(at));
+    await updateTimezone(db, userId, { timezone: "America/Denver" });
+    expect((await readAt(at)).daily).toEqual(rolled.daily);
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(3);
+  });
+  it.each([
+    { at: "2026-03-07T12:00:00Z", boundary: "2026-03-08T07:00:00Z", hours: 23 },
+    { at: "2026-10-31T12:00:00Z", boundary: "2026-11-01T06:00:00Z", hours: 25 },
+  ])("adopts full Denver calendar days through DST ($hours hours)", async ({ at, boundary, hours }) => {
+    const original = await initialize("UTC", new Date(at));
+    await updateTimezone(db, userId, { timezone: "America/Denver" });
+    const gap = await readAt(new Date(original.daily.windowEndAt));
+    expect(gap.daily).toBeNull(); expect(gap.nextDailyStartsAt).toBe(new Date(boundary).toISOString());
+    const state = requireActivePools(await readAt(new Date(boundary)));
+    expect(new Date(state.daily.windowEndAt).getTime() - new Date(state.daily.windowStartAt).getTime()).toBe(hours * 3_600_000);
+    expect(state.weekly.id).toBe(original.weekly.id);
+    await noOverlap();
+  });
+  it("allows Weekly completion directly through REST during the Daily gap and preserves the expiry error", async () => {
+    const original = await initialize();
+    const q = original.weekly.quests.find((q) => q.completionType === "SINGLE")!;
+    await mutateChallenge(db, playerId, q.id, "accept", { now: () => start });
+    await updateTimezone(db, userId, { timezone: "America/Denver" });
+    const api = createChallengeApi({ getDb: () => db, resolveUser: async () => ({ id: userId, email: "standard@example.test", role: "PLAYER", playerId, onboardingCompletedAt: start.toISOString() }) });
+    const request = () => new Request("http://localhost:3000/api/challenges/action", { method: "POST", headers: { Origin: "http://localhost:3000", "Content-Type": "application/json" }, body: "{}" });
+    vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(new Date(original.daily.windowEndAt));
+    try {
+      const response = await api.mutate(request(), q.id, "complete");
+      expect(response.status).toBe(200);
+      expect(await response.json()).toMatchObject({ daily: null, nextDailyStartsAt: "2026-10-27T06:00:00.000Z", weekly: { id: original.weekly.id } });
+      const expired = await api.mutate(request(), original.daily.quests[0].id, "accept");
+      expect(expired.status).toBe(409); expect(await expired.json()).toMatchObject({ error: { code: "CHALLENGE_EXPIRED" } });
+    } finally { vi.useRealTimers(); }
+    expect(await db.questReward.count()).toBe(1);
+    expect(await db.playerQuest.count({ where: { playerId, status: "EXPIRED" } })).toBe(3);
+  });
+  it.each(["retired", "unapproved"])("keeps A03 rejection for %s assignments after a timezone change", async (reason) => {
+    const original = await initialize(); const q = original.daily.quests[0];
+    const stored = await db.playerQuest.findUniqueOrThrow({ where: { id: q.id } });
+    await updateTimezone(db, userId, { timezone: "America/Denver" });
+    await db.questDefinition.update({ where: { id: stored.questDefinitionId }, data: reason === "retired" ? { active: false } : { reviewStatus: "PENDING_REVIEW" } });
+    await expect(mutateChallenge(db, playerId, q.id, "accept", { now: () => start })).rejects.toMatchObject({ code: "OFFER_CHANGED" });
+    expect(await db.questReward.count()).toBe(0); expect(await db.xpTransaction.count()).toBe(0);
+    expect(await db.playerQuest.findUniqueOrThrow({ where: { id: q.id } })).toMatchObject({ status: "AVAILABLE", acceptedAt: null });
+  });
+  it("skips missed periods on a late return instead of backfilling assignments", async () => {
+    await initialize();
+    await updateTimezone(db, userId, { timezone: "America/Denver" });
+    const at = new Date("2026-12-16T18:00:00Z");
+    const state = requireActivePools(await readAt(at));
+    expect(state.daily.windowStartAt).toBe(challengeWindow("DAILY", at, "America/Denver").start.toISOString());
+    expect(state.weekly.windowStartAt).toBe(challengeWindow("WEEKLY", at, "America/Denver").start.toISOString());
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(4);
+    await noOverlap();
+  });
+});
+
 describe("Challenge mutation rollover", () => {
   const monday = new Date("2026-10-26T12:00:00Z");
   async function fixture(type: "SINGLE" | "COUNT", start = monday, poolType: "DAILY" | "WEEKLY" = "WEEKLY") {
-    const state = await getChallengeState(db, playerId, { now: () => start, random: () => 0.5 });
+    const state = await getActiveChallengeState(db, playerId, { now: () => start, random: () => 0.5 });
     const quest = (poolType === "DAILY" ? state.daily : state.weekly).quests[0];
     const stored = await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id } });
     // Keep the selected definition and allocations; make the completion mode explicit.
     await db.questDefinition.update({ where: { id: stored.questDefinitionId }, data: { completionType: type, completionTarget: type === "SINGLE" ? 1 : 3 } });
-    await mutateChallenge(db, playerId, quest.id, "accept", { now: () => start });
+    await mutateActiveChallenge(db, playerId, quest.id, "accept", { now: () => start });
     return { state, id: quest.id, rollover: new Date(state.daily.windowEndAt) };
   }
   async function assertSettlement(id: string) {
@@ -87,8 +289,8 @@ describe("Challenge mutation rollover", () => {
     const { state, id, rollover } = await fixture("SINGLE", start);
     expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
     const [completed, duplicate] = await Promise.allSettled([
-      mutateChallenge(db, playerId, id, "complete", { now: () => rollover }),
-      mutateChallenge(db, playerId, id, "complete", { now: () => rollover }),
+      mutateActiveChallenge(db, playerId, id, "complete", { now: () => rollover }),
+      mutateActiveChallenge(db, playerId, id, "complete", { now: () => rollover }),
     ]);
     const results = [completed, duplicate];
     expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
@@ -103,22 +305,22 @@ describe("Challenge mutation rollover", () => {
     expect(await db.challengeSet.count({ where: { playerId } })).toBe(3);
     expect(await db.playerQuest.count({ where: { challengeSetId: state.daily.id, status: "EXPIRED" } })).toBe(3);
     await assertSettlement(id);
-    await expect(mutateChallenge(db, playerId, id, "complete", { now: () => rollover })).rejects.toMatchObject({ code: "INVALID_STATUS" });
+    await expect(mutateActiveChallenge(db, playerId, id, "complete", { now: () => rollover })).rejects.toMatchObject({ code: "INVALID_STATUS" });
     await assertSettlement(id);
   });
   it("increments and decrements Weekly COUNT across successive Daily rollovers, then settles once", async () => {
     const { state, id, rollover } = await fixture("COUNT");
-    const first = await mutateChallenge(db, playerId, id, "increment", { now: () => rollover });
+    const first = await mutateActiveChallenge(db, playerId, id, "increment", { now: () => rollover });
     expect(first.daily.id).not.toBe(state.daily.id);
     expect(first.weekly.quests.find((q) => q.id === id)).toMatchObject({ currentProgress: 1, status: "ACCEPTED" });
     expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
     const nextDay = new Date(first.daily.windowEndAt);
-    const decreased = await mutateChallenge(db, playerId, id, "decrement", { now: () => nextDay });
+    const decreased = await mutateActiveChallenge(db, playerId, id, "decrement", { now: () => nextDay });
     expect(decreased.daily.id).not.toBe(first.daily.id);
     expect(decreased.weekly.quests.find((q) => q.id === id)?.currentProgress).toBe(0);
-    for (let i = 0; i < 3; i++) await mutateChallenge(db, playerId, id, "increment", { now: () => nextDay });
+    for (let i = 0; i < 3; i++) await mutateActiveChallenge(db, playerId, id, "increment", { now: () => nextDay });
     await assertSettlement(id);
-    await expect(mutateChallenge(db, playerId, id, "increment", { now: () => nextDay })).rejects.toMatchObject({ code: "INVALID_STATUS" });
+    await expect(mutateActiveChallenge(db, playerId, id, "increment", { now: () => nextDay })).rejects.toMatchObject({ code: "INVALID_STATUS" });
     await assertSettlement(id);
   });
   it("supports direct REST completion with no current Daily preload", async () => {
@@ -139,29 +341,29 @@ describe("Challenge mutation rollover", () => {
     const { id, rollover } = await fixture(action === "increment" ? "COUNT" : "SINGLE", monday, "DAILY");
     // Even unavailable generation content must not prevent expiration from committing.
     await db.questDefinition.updateMany({ data: { active: false } });
-    await expect(mutateChallenge(db, playerId, id, action, { now: () => rollover })).rejects.toMatchObject({ status: 409, code: "CHALLENGE_EXPIRED" });
+    await expect(mutateActiveChallenge(db, playerId, id, action, { now: () => rollover })).rejects.toMatchObject({ status: 409, code: "CHALLENGE_EXPIRED" });
     expect(await db.playerQuest.findUniqueOrThrow({ where: { id } })).toMatchObject({ status: "EXPIRED", expiredAt: rollover, acceptedAt: monday, currentProgress: 0 });
     expect(await db.questReward.count()).toBe(0);
     expect(await db.xpTransaction.count()).toBe(0);
     expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
   });
-  it("initializes both response pools after a timezone change while preserving stored Weekly windows", async () => {
+  it("preserves both response pools after a timezone change while preserving stored Weekly windows", async () => {
     const { id } = await fixture("COUNT");
     const before = await db.playerQuest.findUniqueOrThrow({ where: { id } });
     await updateTimezone(db, userId, { timezone: "Asia/Tokyo" });
-    const result = await mutateChallenge(db, playerId, id, "increment", { now: () => monday });
+    const result = await mutateActiveChallenge(db, playerId, id, "increment", { now: () => monday });
     expect(result.timezone).toBe("Asia/Tokyo");
     expect(result.daily.quests).toHaveLength(3);
     expect(result.weekly.quests).toHaveLength(5);
-    expect(await db.challengeSet.count({ where: { playerId } })).toBe(4);
+    expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
     expect(await db.playerQuest.findUniqueOrThrow({ where: { id } })).toMatchObject({ status: "ACCEPTED", currentProgress: 1, windowStartAt: before.windowStartAt, windowEndAt: before.windowEndAt, acceptedAt: before.acceptedAt, baseXpSnapshot: before.baseXpSnapshot });
   });
   it("initializes the missing Daily response on new acceptance and on an accepted retry", async () => {
     const { state, id, rollover } = await fixture("SINGLE");
     const next = state.weekly.quests.find((q) => q.id !== id)!;
-    const accepted = await mutateChallenge(db, playerId, next.id, "accept", { now: () => rollover });
+    const accepted = await mutateActiveChallenge(db, playerId, next.id, "accept", { now: () => rollover });
     expect(accepted.daily.id).not.toBe(state.daily.id);
-    const retry = await mutateChallenge(db, playerId, id, "accept", { now: () => new Date(accepted.daily.windowEndAt) });
+    const retry = await mutateActiveChallenge(db, playerId, id, "accept", { now: () => new Date(accepted.daily.windowEndAt) });
     expect(retry.daily.id).not.toBe(accepted.daily.id);
     expect(await db.questInteraction.count({ where: { playerQuestId: id, interactionType: "ACCEPTED" } })).toBe(1);
   });
@@ -171,7 +373,7 @@ describe("Challenge mutation rollover", () => {
     const streaks = await db.playerSkillStreak.findMany({ where: { playerId }, orderBy: { skillId: "asc" } });
     const eligible = await db.questDefinition.findMany({ where: { dailyEligible: true }, select: { id: true } });
     await db.questDefinition.updateMany({ where: { dailyEligible: true }, data: { dailyEligible: false } });
-    await expect(mutateChallenge(db, playerId, id, "complete", { now: () => rollover })).rejects.toMatchObject({ status: 503, code: "NO_CHALLENGE_SET" });
+    await expect(mutateActiveChallenge(db, playerId, id, "complete", { now: () => rollover })).rejects.toMatchObject({ status: 503, code: "NO_CHALLENGE_SET" });
     expect(await db.playerQuest.findUniqueOrThrow({ where: { id } })).toMatchObject({ status: "ACCEPTED", completedAt: null });
     expect(await db.questReward.count()).toBe(0);
     expect(await db.xpTransaction.count()).toBe(0);
@@ -182,7 +384,7 @@ describe("Challenge mutation rollover", () => {
     expect(await db.challengeSet.count({ where: { playerId } })).toBe(2);
     expect(await db.playerQuest.count({ where: { challengeSetId: state.daily.id, status: "EXPIRED" } })).toBe(0);
     await db.questDefinition.updateMany({ where: { id: { in: eligible.map((d) => d.id) } }, data: { dailyEligible: true } });
-    await mutateChallenge(db, playerId, id, "complete", { now: () => rollover });
+    await mutateActiveChallenge(db, playerId, id, "complete", { now: () => rollover });
     await assertSettlement(id);
   });
 });
@@ -191,7 +393,7 @@ describe("Challenge acceptance eligibility", () => {
   const request = () => new Request("http://localhost:3000/api/challenges/accept", { method: "POST", headers: { Origin: "http://localhost:3000", "Content-Type": "application/json" }, body: "{}" });
   const api = () => createChallengeApi({ getDb: () => db, resolveUser: async () => ({ id: userId, email: "standard@example.test", role: "PLAYER", playerId, onboardingCompletedAt: new Date().toISOString() }) });
   async function offer(poolType: "DAILY" | "WEEKLY") {
-    const state = await getChallengeState(db, playerId, { random: () => 0.5 });
+    const state = await getActiveChallengeState(db, playerId, { random: () => 0.5 });
     const quest = (poolType === "DAILY" ? state.daily : state.weekly).quests[0];
     const stored = await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id }, include: { questDefinition: true } });
     return { quest, definition: stored.questDefinition };
@@ -232,13 +434,13 @@ describe("Challenge acceptance eligibility", () => {
   });
   it.each(["DAILY", "WEEKLY"] as const)("preserves %s accepted snapshots, retries and completion after retirement and edits", async (poolType) => {
     const { quest, definition } = await offer(poolType);
-    await mutateChallenge(db, playerId, quest.id, "accept");
+    await mutateActiveChallenge(db, playerId, quest.id, "accept");
     const before = await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id }, include: { skillSnapshots: true } });
     await db.questDefinition.update({ where: { id: definition.id }, data: { active: false, reviewStatus: "PENDING_REVIEW", baseXp: 999, title: "Edited after acceptance", dailyEligible: false, weeklyEligible: false } });
-    await mutateChallenge(db, playerId, quest.id, "accept");
+    await mutateActiveChallenge(db, playerId, quest.id, "accept");
     expect(await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id }, include: { skillSnapshots: true } })).toEqual(before);
-    if (before.completionTypeSnapshot === "SINGLE") await mutateChallenge(db, playerId, quest.id, "complete");
-    else for (let i = 0; i < before.completionTargetSnapshot; i++) await mutateChallenge(db, playerId, quest.id, "increment");
+    if (before.completionTypeSnapshot === "SINGLE") await mutateActiveChallenge(db, playerId, quest.id, "complete");
+    else for (let i = 0; i < before.completionTargetSnapshot; i++) await mutateActiveChallenge(db, playerId, quest.id, "increment");
     expect(await db.questReward.findUniqueOrThrow({ where: { playerQuestId: quest.id } })).toMatchObject({ baseXp: before.baseXpSnapshot });
     expect(await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id } })).toMatchObject({ status: "COMPLETED", titleSnapshot: before.titleSnapshot });
   });
@@ -250,7 +452,7 @@ describe("Challenge acceptance eligibility", () => {
     const otherUser = await db.user.create({ data: { email: "a03-other@example.test" } });
     const other = await ensurePlayerForUser(db, otherUser.id);
     await completeOnboarding(db, otherUser.id, { timezone: "UTC", focus: focus() });
-    await expect(mutateChallenge(db, other.id, quest.id, "accept")).rejects.toMatchObject({ status: 404, code: "CHALLENGE_NOT_FOUND" });
+    await expect(mutateActiveChallenge(db, other.id, quest.id, "accept")).rejects.toMatchObject({ status: 404, code: "CHALLENGE_NOT_FOUND" });
     await unchanged(quest.id);
   });
   it("waits for an in-flight retirement and rejects acceptance after its commit", async () => {
@@ -260,7 +462,7 @@ describe("Challenge acceptance eligibility", () => {
     try {
       await writer.query("BEGIN");
       await writer.query("UPDATE quest_definitions SET active = false WHERE id = $1", [definition.id]);
-      pending = Promise.allSettled([mutateChallenge(db, playerId, quest.id, "accept")]);
+      pending = Promise.allSettled([mutateActiveChallenge(db, playerId, quest.id, "accept")]);
       await vi.waitFor(async () => {
         const locks = await pool.query("SELECT 1 FROM pg_locks WHERE relation = 'quest_definitions'::regclass AND mode = 'ShareLock' AND NOT granted");
         expect(locks.rowCount).toBeGreaterThan(0);
@@ -274,7 +476,7 @@ describe("Challenge acceptance eligibility", () => {
     const { quest, definition } = await offer("WEEKLY");
     const actor = await db.user.create({ data: { email: "a03-race-admin@example.test", role: "ADMIN" } });
     const [acceptance, retirement] = await Promise.allSettled([
-      mutateChallenge(db, playerId, quest.id, "accept"),
+      mutateActiveChallenge(db, playerId, quest.id, "accept"),
       transitionQuest(db, actor.id, definition.id, { action: "DEACTIVATE", expectedUpdatedAt: definition.updatedAt.toISOString() }),
     ]);
     expect(retirement.status).toBe("fulfilled");
@@ -289,13 +491,13 @@ describe("Challenge acceptance eligibility", () => {
 
 describe("Phase 08 Challenge engine",()=>{
   const now=()=>new Date("2026-09-09T18:00:00Z");
-  const finish=async(q:{id:string;completionType:string;target:number})=>{await mutateChallenge(db,playerId,q.id,"accept",{now});if(q.completionType==="SINGLE")await mutateChallenge(db,playerId,q.id,"complete",{now});else for(let i=0;i<q.target;i++)await mutateChallenge(db,playerId,q.id,"increment",{now});};
-  it("generates stable Daily/Weekly sets with unique Skills and no overlap under concurrency",async()=>{const states=await Promise.all([getChallengeState(db,playerId,{now,random:()=>0.5}),getChallengeState(db,playerId,{now,random:()=>0.1})]);expect(states[0]).toEqual(states[1]);expect(states[0].daily.quests).toHaveLength(3);expect(states[0].weekly.quests).toHaveLength(5);for(const set of [states[0].daily,states[0].weekly]){expect(new Set(set.quests.map(q=>q.primarySkill)).size).toBe(set.quests.length);expect(set.quests.every(q=>q.difficulty!=="LEGENDARY")).toBe(true);}const dailyIds=await db.playerQuest.findMany({where:{challengeSetId:states[0].daily.id},select:{questDefinitionId:true}});const weeklyIds=await db.playerQuest.findMany({where:{challengeSetId:states[0].weekly.id},select:{questDefinitionId:true}});expect(weeklyIds.some(w=>dailyIds.some(d=>d.questDefinitionId===w.questDefinitionId))).toBe(false);expect(await db.challengeSet.count({where:{playerId}})).toBe(2);});
-  it("accepts immutably and completes SINGLE with Daily bonus, ledger, and Skill streak",async()=>{const state=await getChallengeState(db,playerId,{now,random:()=>0.5});const q=state.daily.quests.find(x=>x.completionType==="SINGLE")!;await mutateChallenge(db,playerId,q.id,"accept",{now});const accepted=await db.playerQuest.findUniqueOrThrow({where:{id:q.id},include:{skillSnapshots:true}});await db.questDefinition.update({where:{id:accepted.questDefinitionId},data:{baseXp:999,title:"edited"}});await mutateChallenge(db,playerId,q.id,"complete",{now});const reward=await db.questReward.findUniqueOrThrow({where:{playerQuestId:q.id},include:{skillRewards:true}});expect(reward.baseXp).toBe(q.baseXp);expect(reward.challengeBonusXp).toBe(reward.skillRewards.reduce((n,r)=>n+percentRoundHalfUp(r.baseSkillXp,10),0));expect(await db.xpTransaction.count({where:{playerQuestId:q.id}})).toBe(1+reward.skillRewards.length*2);expect(await db.playerSkillStreak.count({where:{playerId,currentStreakDays:1}})).toBe(reward.skillRewards.length);});
-  it("supports COUNT correction, no partial XP, atomic target completion, and immutability",async()=>{const state=await getChallengeState(db,playerId,{now,random:()=>0.5});let q=[...state.daily.quests,...state.weekly.quests].find(x=>x.completionType==="COUNT");if(!q){const definition=await db.questDefinition.findFirstOrThrow({where:{completionType:"COUNT",weeklyEligible:true,active:true,reviewStatus:"APPROVED"}});const target=state.weekly.quests[0];await db.playerQuest.update({where:{id:target.id},data:{questDefinitionId:definition.id,difficultySnapshot:definition.difficulty,baseXpSnapshot:definition.baseXp,completionTypeSnapshot:"COUNT",completionTargetSnapshot:definition.completionTarget}});q={...target,completionType:"COUNT",target:definition.completionTarget,currentProgress:0};}await mutateChallenge(db,playerId,q.id,"accept",{now});await mutateChallenge(db,playerId,q.id,"decrement",{now});await mutateChallenge(db,playerId,q.id,"increment",{now});expect(await db.questReward.count({where:{playerQuestId:q.id}})).toBe(0);await mutateChallenge(db,playerId,q.id,"decrement",{now});const results=await Promise.allSettled(Array.from({length:q.target+1},()=>mutateChallenge(db,playerId,q.id,"increment",{now})));expect(results.some(r=>r.status==="fulfilled")).toBe(true);expect(await db.questReward.count({where:{playerQuestId:q.id}})).toBe(1);expect((await db.playerQuest.findUniqueOrThrow({where:{id:q.id}})).currentProgress).toBe(q.target);await expect(mutateChallenge(db,playerId,q.id,"decrement",{now})).rejects.toMatchObject({status:409});});
-  it("expires unfinished challenges without penalty and generates rollover sets",async()=>{const old=await getChallengeState(db,playerId,{now,random:()=>0.5});const later=()=>new Date("2026-09-10T18:00:00Z");const next=await getChallengeState(db,playerId,{now:later,random:()=>0.5});expect(next.daily.id).not.toBe(old.daily.id);expect(await db.playerQuest.count({where:{challengeSetId:old.daily.id,status:"EXPIRED"}})).toBe(3);expect(await db.xpTransaction.count()).toBe(0);expect(await db.playerQuestFailurePenaltySkill.count()).toBe(0);});
-  it("commits lazy expiration before rejecting late progress and enforces ownership",async()=>{const state=await getChallengeState(db,playerId,{now,random:()=>0.5});const q=state.daily.quests[0];await mutateChallenge(db,playerId,q.id,"accept",{now});await expect(mutateChallenge(db,playerId,q.id,q.completionType==="SINGLE"?"complete":"increment",{now:()=>new Date("2026-09-10T18:00:00Z")})).rejects.toMatchObject({code:"CHALLENGE_EXPIRED"});expect(await db.playerQuest.findUniqueOrThrow({where:{id:q.id}})).toMatchObject({status:"EXPIRED",failurePenaltyXp:null});const otherUser=await db.user.create({data:{email:"challenge-other@example.test"}});const other=await ensurePlayerForUser(db,otherUser.id);await completeOnboarding(db,otherUser.id,{timezone:"UTC",focus:focus()});await expect(mutateChallenge(db,other.id,q.id,"accept",{now})).rejects.toMatchObject({status:404});});
-  it("awards Daily and Weekly set bonuses once and Overall-only",async()=>{const state=await getChallengeState(db,playerId,{now,random:()=>0.5});for(const q of state.daily.quests)await finish(q);for(const q of state.weekly.quests)await finish(q);const sets=await db.challengeSet.findMany({where:{playerId}});expect(sets.every(s=>s.setBonusAwardedAt)).toBe(true);expect(await db.xpTransaction.count({where:{transactionType:"DAILY_SET_BONUS",xpScope:"OVERALL",skillId:null,amount:100}})).toBe(1);expect(await db.xpTransaction.count({where:{transactionType:"WEEKLY_SET_BONUS",xpScope:"OVERALL",skillId:null,amount:300}})).toBe(1);expect(await db.xpTransaction.count({where:{transactionType:{in:["DAILY_SET_BONUS","WEEKLY_SET_BONUS"]},skillId:{not:null}}})).toBe(0);});
+  const finish=async(q:{id:string;completionType:string;target:number})=>{await mutateActiveChallenge(db,playerId,q.id,"accept",{now});if(q.completionType==="SINGLE")await mutateActiveChallenge(db,playerId,q.id,"complete",{now});else for(let i=0;i<q.target;i++)await mutateActiveChallenge(db,playerId,q.id,"increment",{now});};
+  it("generates stable Daily/Weekly sets with unique Skills and no overlap under concurrency",async()=>{const states=await Promise.all([getActiveChallengeState(db,playerId,{now,random:()=>0.5}),getActiveChallengeState(db,playerId,{now,random:()=>0.1})]);expect(states[0]).toEqual(states[1]);expect(states[0].daily.quests).toHaveLength(3);expect(states[0].weekly.quests).toHaveLength(5);for(const set of [states[0].daily,states[0].weekly]){expect(new Set(set.quests.map(q=>q.primarySkill)).size).toBe(set.quests.length);expect(set.quests.every(q=>q.difficulty!=="LEGENDARY")).toBe(true);}const dailyIds=await db.playerQuest.findMany({where:{challengeSetId:states[0].daily.id},select:{questDefinitionId:true}});const weeklyIds=await db.playerQuest.findMany({where:{challengeSetId:states[0].weekly.id},select:{questDefinitionId:true}});expect(weeklyIds.some(w=>dailyIds.some(d=>d.questDefinitionId===w.questDefinitionId))).toBe(false);expect(await db.challengeSet.count({where:{playerId}})).toBe(2);});
+  it("accepts immutably and completes SINGLE with Daily bonus, ledger, and Skill streak",async()=>{const state=await getActiveChallengeState(db,playerId,{now,random:()=>0.5});const q=state.daily.quests.find(x=>x.completionType==="SINGLE")!;await mutateActiveChallenge(db,playerId,q.id,"accept",{now});const accepted=await db.playerQuest.findUniqueOrThrow({where:{id:q.id},include:{skillSnapshots:true}});await db.questDefinition.update({where:{id:accepted.questDefinitionId},data:{baseXp:999,title:"edited"}});await mutateActiveChallenge(db,playerId,q.id,"complete",{now});const reward=await db.questReward.findUniqueOrThrow({where:{playerQuestId:q.id},include:{skillRewards:true}});expect(reward.baseXp).toBe(q.baseXp);expect(reward.challengeBonusXp).toBe(reward.skillRewards.reduce((n,r)=>n+percentRoundHalfUp(r.baseSkillXp,10),0));expect(await db.xpTransaction.count({where:{playerQuestId:q.id}})).toBe(1+reward.skillRewards.length*2);expect(await db.playerSkillStreak.count({where:{playerId,currentStreakDays:1}})).toBe(reward.skillRewards.length);});
+  it("supports COUNT correction, no partial XP, atomic target completion, and immutability",async()=>{const state=await getActiveChallengeState(db,playerId,{now,random:()=>0.5});let q=[...state.daily.quests,...state.weekly.quests].find(x=>x.completionType==="COUNT");if(!q){const definition=await db.questDefinition.findFirstOrThrow({where:{completionType:"COUNT",weeklyEligible:true,active:true,reviewStatus:"APPROVED"}});const target=state.weekly.quests[0];await db.playerQuest.update({where:{id:target.id},data:{questDefinitionId:definition.id,difficultySnapshot:definition.difficulty,baseXpSnapshot:definition.baseXp,completionTypeSnapshot:"COUNT",completionTargetSnapshot:definition.completionTarget}});q={...target,completionType:"COUNT",target:definition.completionTarget,currentProgress:0};}await mutateActiveChallenge(db,playerId,q.id,"accept",{now});await mutateActiveChallenge(db,playerId,q.id,"decrement",{now});await mutateActiveChallenge(db,playerId,q.id,"increment",{now});expect(await db.questReward.count({where:{playerQuestId:q.id}})).toBe(0);await mutateActiveChallenge(db,playerId,q.id,"decrement",{now});const results=await Promise.allSettled(Array.from({length:q.target+1},()=>mutateActiveChallenge(db,playerId,q.id,"increment",{now})));expect(results.some(r=>r.status==="fulfilled")).toBe(true);expect(await db.questReward.count({where:{playerQuestId:q.id}})).toBe(1);expect((await db.playerQuest.findUniqueOrThrow({where:{id:q.id}})).currentProgress).toBe(q.target);await expect(mutateActiveChallenge(db,playerId,q.id,"decrement",{now})).rejects.toMatchObject({status:409});});
+  it("expires unfinished challenges without penalty and generates rollover sets",async()=>{const old=await getActiveChallengeState(db,playerId,{now,random:()=>0.5});const later=()=>new Date("2026-09-10T18:00:00Z");const next=await getActiveChallengeState(db,playerId,{now:later,random:()=>0.5});expect(next.daily.id).not.toBe(old.daily.id);expect(await db.playerQuest.count({where:{challengeSetId:old.daily.id,status:"EXPIRED"}})).toBe(3);expect(await db.xpTransaction.count()).toBe(0);expect(await db.playerQuestFailurePenaltySkill.count()).toBe(0);});
+  it("commits lazy expiration before rejecting late progress and enforces ownership",async()=>{const state=await getActiveChallengeState(db,playerId,{now,random:()=>0.5});const q=state.daily.quests[0];await mutateActiveChallenge(db,playerId,q.id,"accept",{now});await expect(mutateActiveChallenge(db,playerId,q.id,q.completionType==="SINGLE"?"complete":"increment",{now:()=>new Date("2026-09-10T18:00:00Z")})).rejects.toMatchObject({code:"CHALLENGE_EXPIRED"});expect(await db.playerQuest.findUniqueOrThrow({where:{id:q.id}})).toMatchObject({status:"EXPIRED",failurePenaltyXp:null});const otherUser=await db.user.create({data:{email:"challenge-other@example.test"}});const other=await ensurePlayerForUser(db,otherUser.id);await completeOnboarding(db,otherUser.id,{timezone:"UTC",focus:focus()});await expect(mutateActiveChallenge(db,other.id,q.id,"accept",{now})).rejects.toMatchObject({status:404});});
+  it("awards Daily and Weekly set bonuses once and Overall-only",async()=>{const state=await getActiveChallengeState(db,playerId,{now,random:()=>0.5});for(const q of state.daily.quests)await finish(q);for(const q of state.weekly.quests)await finish(q);const sets=await db.challengeSet.findMany({where:{playerId}});expect(sets.every(s=>s.setBonusAwardedAt)).toBe(true);expect(await db.xpTransaction.count({where:{transactionType:"DAILY_SET_BONUS",xpScope:"OVERALL",skillId:null,amount:100}})).toBe(1);expect(await db.xpTransaction.count({where:{transactionType:"WEEKLY_SET_BONUS",xpScope:"OVERALL",skillId:null,amount:300}})).toBe(1);expect(await db.xpTransaction.count({where:{transactionType:{in:["DAILY_SET_BONUS","WEEKLY_SET_BONUS"]},skillId:{not:null}}})).toBe(0);});
 });
 
 describe("Phase 11 scheduled reconciliation", () => {
@@ -307,7 +509,7 @@ describe("Phase 11 scheduled reconciliation", () => {
     // Recommendation reads also reconcile expiration: keep all setup calls on
     // the same clock so the scheduled job performs the first expiration.
     await requireRecommendation(db, playerId, () => 0.5, now);
-    await getChallengeState(db, playerId, { now, random: () => 0.5 });
+    await getActiveChallengeState(db, playerId, { now, random: () => 0.5 });
     expect(await db.playerQuest.findUniqueOrThrow({ where: { id: standard.q.id } })).toMatchObject({ status: "ACCEPTED", deadlineAt: new Date("2026-09-10T18:00:00Z"), expiredAt: null });
     const progressBefore = await db.playerSkillProgress.findMany({ where: { playerId }, orderBy: { skillId: "asc" } });
     const streaksBefore = await db.playerSkillStreak.findMany({ where: { playerId }, orderBy: { skillId: "asc" } });
@@ -323,7 +525,7 @@ describe("Phase 11 scheduled reconciliation", () => {
   });
 
   it("converges safely when two workers overlap", async () => {
-    await getChallengeState(db, playerId, { now: () => new Date("2026-09-09T18:00:00Z"), random: () => 0.5 });
+    await getActiveChallengeState(db, playerId, { now: () => new Date("2026-09-09T18:00:00Z"), random: () => 0.5 });
     const results = await Promise.all([runGameStateReconciliation(db, { now: new Date("2026-09-10T18:00:00Z"), random: () => 0.5 }), runGameStateReconciliation(db, { now: new Date("2026-09-10T18:00:00Z"), random: () => 0.5 })]);
     expect(results.reduce((sum, result) => sum + result.challengeQuestsExpired, 0)).toBe(3);
     expect(await db.challengeSet.count({ where: { playerId, poolType: "DAILY" } })).toBe(2);

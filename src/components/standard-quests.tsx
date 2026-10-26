@@ -22,7 +22,7 @@ export function StandardQuests({ initial, initialRecommendation, initialChalleng
   const [challengeState, setChallengeState] = useState(initialChallenges);
   const [challengeBusy, setChallengeBusy] = useState<string | null>(null); const [challengeMessage, setChallengeMessage] = useState(""); const [challengeError, setChallengeError] = useState("");
   const standardActive = state.skills.flatMap((skill) => skill.slots.filter((slot) => slot.quest.status === "ACCEPTED").map((slot) => ({ skill, slot })));
-  const challengeActive = challengeState ? [challengeState.daily, challengeState.weekly].flatMap((set) => set.quests.filter((quest) => quest.status === "ACCEPTED")) : [];
+  const challengeActive = challengeState ? [challengeState.daily, challengeState.weekly].flatMap((set) => (set?.quests ?? []).filter((quest) => quest.status === "ACCEPTED")) : [];
   const activeCount = standardActive.length + challengeActive.length;
   async function act(id: string, action: StandardAction | ResolutionAction) {
     if (busy) return false; setBusy(id); setError(""); setMessage("");

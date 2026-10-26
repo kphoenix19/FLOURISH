@@ -29,8 +29,16 @@ async function expireSets(c: Context, now: Date) {
   return result.count;
 }
 async function ensureSet(c: Context, poolType: "DAILY" | "WEEKLY", now: Date, random: RandomSource) {
-  const window = challengeWindow(poolType, now, c.state.player.timezone!); const existing = await c.tx.challengeSet.findUnique({ where: { playerId_poolType_windowStartAt: { playerId: c.playerId, poolType, windowStartAt: window.start } }, include: setInclude });
-  if (existing) return existing;
+  // The indexed latest persisted period owns this pool until its UTC deadline,
+  // even when all its quests are completed or the timezone preference changes.
+  const latest = await c.tx.challengeSet.findFirst({ where: { playerId: c.playerId, poolType }, orderBy: { windowStartAt: "desc" }, include: setInclude });
+  if (latest && latest.windowEndAt > now) {
+    return latest.windowStartAt <= now ? latest : { nextStartsAt: latest.windowStartAt };
+  }
+  const window = challengeWindow(poolType, now, c.state.player.timezone!);
+  // A full local-calendar period must not overlap the previous stored period.
+  // Wait without persisting a set or assignments; missed periods are not backfilled.
+  if (latest && window.start < latest.windowEndAt) return { nextStartsAt: window.end };
   const opposite = poolType === "DAILY" ? "WEEKLY" : "DAILY"; const overlapping = await c.tx.playerQuest.findMany({ where: { playerId: c.playerId, poolType: opposite, status: { in: ["AVAILABLE", "ACCEPTED"] }, windowStartAt: { lt: window.end }, windowEndAt: { gt: window.start } }, select: { questDefinitionId: true } });
   const definitions = await c.tx.questDefinition.findMany({ where: { active: true, reviewStatus: "APPROVED", [poolType === "DAILY" ? "dailyEligible" : "weeklyEligible"]: true, difficulty: { not: "LEGENDARY" } }, include: definitionInclude, orderBy: { stableKey: "asc" } });
   const focus = Object.fromEntries(c.state.rows.map((r) => [r.skillId, r.focusPoints])); const catchUp = catchUpModifiers(c.progress.map((p) => ({ ...p, code: c.state.skills.find((s) => s.id === p.skillId)!.code })));
@@ -42,8 +50,18 @@ async function ensureSet(c: Context, poolType: "DAILY" | "WEEKLY", now: Date, ra
   return c.tx.challengeSet.findUniqueOrThrow({ where: { id: set.id }, include: setInclude });
 }
 function mapSet(set: Prisma.ChallengeSetGetPayload<{ include: typeof setInclude }>, codes: Record<string, string>) { return { id: set.id, poolType: set.poolType, windowStartAt: set.windowStartAt.toISOString(), windowEndAt: set.windowEndAt.toISOString(), completedCount: set.quests.filter((q) => q.status === "COMPLETED").length, totalCount: set.quests.length, setBonusXp: set.poolType === "DAILY" ? gameConfig.challenges.dailySetBonusOverallXp : gameConfig.challenges.weeklySetBonusOverallXp, setBonusAwarded: Boolean(set.setBonusAwardedAt), quests: set.quests.map((q) => ({ id: q.id, title: q.status === "AVAILABLE" ? q.questDefinition.title : q.titleSnapshot ?? q.questDefinition.title, description: q.status === "AVAILABLE" ? q.questDefinition.shortDescription : q.descriptionSnapshot ?? q.questDefinition.shortDescription, difficulty: q.difficultySnapshot, baseXp: q.baseXpSnapshot, estimatedMinutes: q.estimatedMinutesSnapshot ?? q.questDefinition.estimatedMinutes, completionType: q.completionTypeSnapshot, target: q.completionTargetSnapshot, currentProgress: q.currentProgress, status: q.status, poolType: q.poolType as "DAILY" | "WEEKLY", windowEndAt: q.windowEndAt!.toISOString(), skills: (q.status === "AVAILABLE" ? q.questDefinition.skills : q.skillSnapshots).map((skill) => ({ skillCode: codes[skill.skillId], rewardPercent: skill.rewardPercent, isPrimary: skill.isPrimary })), primarySkill: codes[q.questDefinition.skills.find((s) => s.isPrimary)!.skillId], challengeBonusPercent: q.poolType === "DAILY" ? gameConfig.challenges.dailyCompletionBonusPercent : gameConfig.challenges.weeklyCompletionBonusPercent })) } }
+function mapPeriods(c: Context, daily: Awaited<ReturnType<typeof ensureSet>>, weekly: Awaited<ReturnType<typeof ensureSet>>) {
+  const codes = skillCodes(c);
+  return {
+    timezone: c.state.player.timezone!,
+    daily: "nextStartsAt" in daily ? null : mapSet(daily, codes),
+    weekly: "nextStartsAt" in weekly ? null : mapSet(weekly, codes),
+    nextDailyStartsAt: "nextStartsAt" in daily ? daily.nextStartsAt.toISOString() : null,
+    nextWeeklyStartsAt: "nextStartsAt" in weekly ? weekly.nextStartsAt.toISOString() : null,
+  };
+}
 const skillCodes = (c: Context) => Object.fromEntries(c.state.skills.map((s) => [s.id, s.code]));
-export function getChallengeState(db: PrismaClient, playerId: string, options: { now?: () => Date; random?: RandomSource } = {}) { return transaction(db, playerId, async (c) => { const now = (options.now ?? (() => new Date()))(); await expireSets(c, now); const daily = await ensureSet(c, "DAILY", now, options.random ?? Math.random); const weekly = await ensureSet(c, "WEEKLY", now, options.random ?? Math.random); const codes=skillCodes(c); return { timezone: c.state.player.timezone!, daily: mapSet(daily,codes), weekly: mapSet(weekly,codes) }; }); }
+export function getChallengeState(db: PrismaClient, playerId: string, options: { now?: () => Date; random?: RandomSource } = {}) { return transaction(db, playerId, async (c) => { const now = (options.now ?? (() => new Date()))(); await expireSets(c, now); const daily = await ensureSet(c, "DAILY", now, options.random ?? Math.random); const weekly = await ensureSet(c, "WEEKLY", now, options.random ?? Math.random); return mapPeriods(c, daily, weekly); }); }
 
 export function reconcilePlayerChallenges(db: PrismaClient, playerId: string, options: { now?: Date; random?: RandomSource } = {}) {
   return transaction(db, playerId, async (c) => {
@@ -86,7 +104,6 @@ async function getStateInTransaction(c: Context, now: Date) {
   // under the existing Player lock, in the same order as ordinary lazy reconciliation.
   const daily = await ensureSet(c, "DAILY", now, Math.random);
   const weekly = await ensureSet(c, "WEEKLY", now, Math.random);
-  const codes = skillCodes(c);
-  return { timezone: c.state.player.timezone!, daily: mapSet(daily, codes), weekly: mapSet(weekly, codes) };
+  return mapPeriods(c, daily, weekly);
 }
 export type ChallengeState=Awaited<ReturnType<typeof getChallengeState>>;
