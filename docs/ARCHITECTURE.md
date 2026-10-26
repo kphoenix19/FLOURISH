@@ -8,19 +8,19 @@ Status: authoritative Build 1 technical direction. Product behavior remains gove
 - Next.js, React, TypeScript
 - Modular monolith
 - REST API as the official application boundary
-- PostgreSQL with Prisma or equivalent open-source ORM
+- PostgreSQL 17 with Prisma 7 and the PostgreSQL driver adapter
 - Auth.js with Google OAuth only for Build 1
 - Docker Compose, local-first development
 - Server-authoritative gameplay
 - Version-controlled configuration and seed data
 
-Likely tools: pnpm, Tailwind CSS, shadcn/ui, Zod, Vitest, React Testing Library, Playwright, and GitHub Actions. These are preferred implementation details, not product contracts. Do not introduce microservices for MVP.
+Implemented tooling: pnpm, Tailwind CSS, Zod, Vitest, React Testing Library, Playwright, and GitHub Actions. UI components live in `src/components/`; shadcn/ui is not an installed dependency. See [package.json](../package.json) and the lockfile for dependency versions.
 
 Future web/mobile clients must be able to reuse the REST boundary. Server Actions may support isolated web-only behavior but must not be the sole authoritative interface for core gameplay.
 
 ## Conceptual modules
 
-`auth`, `player`, `flourish`, `quests`, `progression`, `streaks`, `challenges`, `recommendations`, `admin`.
+Implemented directories under `src/modules/`: `auth`, `player`, `quests`, `progression`, `challenges`, `recommendations`, `admin`, and `jobs`. Streak helpers live inside `progression`; there are no separate `flourish` or `streaks` module directories.
 
 Modules may share one deployable and database while exposing explicit services and ownership. Avoid circular domain ownership. Core transitions should enter through application services invoked by REST handlers, jobs, and lazy reconciliation paths.
 
@@ -36,7 +36,7 @@ Auth.js uses stable `next-auth` 4.24.15 (whose peer range includes Next.js 16), 
 
 Encrypted, HTTP-only JWT sessions contain persisted User identity, not gameplay state or provider credentials. Server session resolution reads current email, role, Player ID, and onboarding timestamp from PostgreSQL; role changes take effect on the next protected request. Sign-out clears the browser session; this phase has no server-side JWT revocation list. `AUTH_SECRET` rotation invalidates existing tokens. Session lifetime is seven days; no production test-auth bypass exists.
 
-`src/modules/auth/` owns configuration, adapter mapping, session resolution, and reusable User/Player/completed-onboarding/admin guards. `src/modules/player/services.ts` owns bootstrap, onboarding, respec, timezone, and integrity services. `src/modules/player/api.ts` supplies thin, dependency-injected REST handlers; the production composition obtains identity only from the verified session. `/api/me`, `/api/onboarding/complete`, `/api/me/focus`, `/api/me/timezone`, and the read-only `/api/admin` guard probe return JSON and `Cache-Control: no-store`. Future admin mutations must call the same server-side guard; no curation mutations exist in this phase.
+`src/modules/auth/` owns configuration, adapter mapping, session resolution, and reusable User/Player/completed-onboarding/admin guards. `src/modules/player/services.ts` owns bootstrap, onboarding, respec, timezone, and integrity services. `src/modules/player/api.ts` supplies thin, dependency-injected REST handlers; the production composition obtains identity only from the verified session. Identity endpoints and the read-only `/api/admin` guard probe return JSON and `Cache-Control: no-store`. Implemented curation endpoints under `/api/admin/quests` and `/api/admin/references` use `requireAdmin` through [createAdminApi](../src/modules/admin/api.ts). The [admin service](../src/modules/admin/service.ts) provides transactional edits/review transitions, stale-edit checks, and audit records; there is no role-management UI.
 
 Cookie-authenticated application mutations require matching Origin, JSON content type, and server-side strict schemas that reject client User/Player/role fields. Auth.js manages OAuth state/PKCE and its own CSRF-protected sign-in/sign-out flow. Public landing/login remain accessible; incomplete players are directed to onboarding, completed players to the minimal Home/Settings pages, and non-admins get a safe not-authorized redirect (API: 403). Secrets remain in server-only configuration. Missing local OAuth configuration disables sign-in with setup guidance; builds need no OAuth secrets or live database.
 
@@ -66,26 +66,24 @@ Phase 07 reuses the Phase 05 completion transaction as the authoritative Skill-s
 
 Use database transactions and row locking where appropriate for completion, abandonment, expired clearing, COUNT progress, slot replacement, and Daily/Weekly set bonuses. Use UUID `operation_id` values for action grouping/idempotency.
 
-Completion transaction:
+Standard completion transaction (implementation order):
 
-1. Lock PlayerQuest and relevant slot/progress rows.
-2. Validate `ACCEPTED`, unresolved status, request idempotency, and deadline reconciliation.
-3. Calculate reward from accepted snapshots and configured rules.
-4. Mark `COMPLETED`.
-5. Create QuestReward and QuestSkillReward rows.
-6. Append XP transactions.
-7. Update PlayerProgress and PlayerSkillProgress; derive levels.
-8. Update qualifying skill streaks.
-9. Clear Standard slot if applicable.
-10. Select and assign its replacement Standard quest.
-11. Invalidate the current Home recommendation.
-12. Commit.
+1. Acquire shared content-library locks and lock the Player row.
+2. Reconcile overdue quests, find the current slot, and invalidate the persisted recommendation.
+3. Validate accepted status and snapshots; calculate reward shares and bonuses.
+4. Create reward records; update Skill progression/streaks and append Skill/Lifetime XP ledger entries.
+5. Update overall progression and append its XP ledger entry.
+6. Mark the quest completed and record the completion interaction.
+7. Select a replacement using updated progression and repoint the same Standard slot.
+8. Return authoritative state and commit all changes together.
+
+A late completion returns an expired marker from the transaction, allowing expiration and penalty snapshots to commit, then throws `QUEST_EXPIRED` outside the transaction. Challenge mutations use the same commit-before-error pattern. This path awards no reward and does not apply the stored Standard penalty; clear remains a separate explicit operation.
 
 Any critical failure rolls the complete operation back. Recommendation recalculation may run post-commit; its failure never reverses gameplay. Equivalent transactional designs apply to failure penalties and set bonuses. Never maintain separate “level transaction” records; XP transactions are the immutable ledger and current-state progression tables optimize reads.
 
 ## Time and reconciliation
 
-Store database instants in UTC and Player timezone as IANA identity. Compute local daily/weekly boundaries with a timezone-aware library. Challenge windows are fixed at creation. Use both scheduled maintenance and defensive lazy reconciliation in relevant requests; cron is an optimization, not the sole correctness mechanism.
+Database instants use PostgreSQL `timestamptz`; Player timezone is an IANA identifier. [Window helpers](../src/modules/challenges/windows.ts) use `Intl.DateTimeFormat` and explicit UTC conversion, not a separate date library. Challenge windows are fixed at creation. Scheduled maintenance and lazy reconciliation share services; the repository supplies a reconciliation command but does not provision an external scheduler.
 
 ### Phase 11 jobs and operations
 
@@ -119,13 +117,15 @@ Version-controlled repository seed files are canonical and validated before pers
 
 ## Testing strategy
 
+The [CI workflow](../.github/workflows/ci.yml) runs on pushes and pull requests with Node 24 and a disposable PostgreSQL 17 service. It installs the frozen pnpm lockfile, runs lint/typechecking/unit tests, applies migrations, runs the PostgreSQL integration suite, and builds the application. Integration tests require a disposable database: most suites own random schemas, but the constraint suite truncates public fixture tables. Playwright is a separate local command and is not included in CI.
+
 Require unit tests for pure XP/level/scoring/time calculations; integration tests against PostgreSQL for constraints, locks, transactions, idempotency, and resets; API contract tests for validation and authorization; and Playwright tests for essential desktop/mobile journeys.
 
 Coverage must include XP distribution, lifecycle transitions, deadlines, completion, abandon, expiration/clear, slot replacement, reroll, 🔥, COUNT atomic completion, streaks, timezone resets, recommendation weighting, Challenge generation/bonuses, duplicate requests, and concurrent operations.
 
 ## Observability
 
-Record structured events/metrics for lifecycle transitions, XP operations, scheduled job failures, state-invariant violations, lazy reconciliation latency, and internal recommendation factors. Do not expose coefficients to players or store unlimited verbose operational logs in PostgreSQL. Avoid sensitive data in logs.
+Implemented evidence includes persisted quest interactions, reward/XP records, admin audit records, and the reconciliation command's JSON summary with counts, elapsed time, and failure stages. Authentication logging omits raw provider metadata. A centralized metrics/tracing pipeline and latency dashboards are not configured in this repository; these remain operational work for a deployment.
 
 ## Security and reliability baseline
 

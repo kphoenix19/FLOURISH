@@ -1,117 +1,199 @@
 # FLOURISH
 
-> Your real life is the game. FLOURISH is the progression system.
+FLOURISH is a gamified personal development progression application. Players complete real-life quests, earn overall and Skill XP, and build streaks across eight areas: Fitness, Learning, Occupation, Us, Reflection, Investing, Stewardship, and Hobbies.
 
-FLOURISH is a browser-based, gamified real-life progression system that rewards constructive actions with overall and life-skill progression. It is not a conventional to-do list. The MVP uses honor-system completion, a curated quest library, and server-authoritative gameplay.
+The application combines a curated quest library with persistent assignments, player-local Daily/Weekly Challenges, and rule-based recommendations. Completion is self-reported; the server owns quest transitions and reward calculations.
 
-The repository contains the complete Build 1 MVP: canonical content, Google-compatible authentication and onboarding, Standard quests, progression and Skill streaks, persisted recommendations, Daily/Weekly Challenges, admin curation, and scheduled/manual reconciliation.
+## Screenshots
 
-## Authoritative specifications
+### Home dashboard
 
-- [Consolidated Build 1 baseline and Build 2 planning handoff](docs/BUILD1_DOCUMENTATION.md)
-- [Product scope and experience](docs/PRODUCT_SPEC.md)
-- [Gameplay rules and lifecycle](docs/GAME_RULES.md)
-- [Domain/data model](docs/DATA_MODEL.md)
-- [Recommendation Engine v1](docs/RECOMMENDATION_ENGINE.md)
-- [Quest content and taxonomy](docs/QUEST_CONTENT_GUIDE.md)
-- [Admin curation](docs/ADMIN_SPEC.md)
-- [Build 1 acceptance criteria](docs/BUILD1_ACCEPTANCE.md)
-- [Architecture and operations](docs/ARCHITECTURE.md)
-- [Explicit non-goals and backlog](docs/BACKLOG.md)
-- [Instructions for implementation agents](AGENTS.md)
+[![FLOURISH Home dashboard showing overall level and XP alongside active Standard quests and Daily/Weekly Challenges](docs/screenshots/home-dashboard.png)](docs/screenshots/home-dashboard.png)
 
-Rules labeled **LOCKED MVP** are authoritative for Build 1. Values labeled **initial configurable value** belong in version-controlled configuration and may be tuned without redefining the underlying rule. Unresolved product behavior is labeled **OPEN DECISION**.
+### Quests and progression gallery
 
-## Prerequisites
+Select an image to view it at full size.
 
-- Windows 10/11 (primary workflow; the application remains cross-platform)
-- Node.js 22 or newer
-- Corepack (included with supported Node distributions)
-- Docker Desktop with Docker Compose for local PostgreSQL
-- Git
+| Standard quests | Daily and Weekly Challenges |
+| --- | --- |
+| [![Expanded Fitness and Us Skill panels showing available and active quest slots with accept, complete, abandon, and reroll controls](docs/screenshots/standard-quests.png)](docs/screenshots/standard-quests.png) | [![Daily and Weekly Challenge completion meters with completed, available, and active quests and a COUNT progress indicator](docs/screenshots/daily-weekly-challenges.png)](docs/screenshots/daily-weekly-challenges.png) |
 
-No WSL installation is required.
+| Skill progression | Profile and Focus Points |
+| --- | --- |
+| [![Overview of all eight Skills with levels, active quest counts, streaks, and XP remaining to the next level](docs/screenshots/skill-progression.png)](docs/screenshots/skill-progression.png) | [![Player profile showing overall level, XP, timezone, Focus Point allocation, and links to settings and Skill progress](docs/screenshots/profile.png)](docs/screenshots/profile.png) |
 
-## Local setup on Windows
+## Key features
 
-Run these commands from the repository root in PowerShell:
+- **Google sign-in and onboarding:** Google OAuth, timezone selection, and allocation of Focus Points across eight Skills. Settings support timezone changes and free Focus reallocation.
+- **Standard Quests:** three persistent slots per Skill; accept, reroll, increase difficulty within a quest family, complete, abandon, or clear an expired quest. Acceptance freezes quest values and starts a deadline.
+- **Progression:** overall and Skill levels, integer XP allocation, Catch-Up bonuses, and Skill streaks. Expiration stores a Current Skill XP penalty; explicit clear applies it. Overall and Lifetime Skill XP are preserved on failure.
+- **Daily/Weekly Challenges:** player-local windows, SINGLE completion, COUNT progress with no partial XP, and individual/set completion bonuses.
+- **Recommendations:** a persisted suggestion from existing available Standard slots, weighted by Focus, difficulty fit, Catch-Up, variety, and interaction history.
+- **Content administration:** protected quest search, creation, editing, review, activation/deactivation, stale-edit checks, and audit records. Only approved, active definitions are runtime-eligible.
+
+These features are implemented. Future scope is tracked separately in the [backlog](docs/BACKLOG.md) and [Build 2 planning](docs/BUILD2_CHANGES.md).
+
+## Engineering highlights
+
+| Decision | Implementation evidence |
+| --- | --- |
+| Serialize gameplay mutations for each player inside PostgreSQL transactions | [`standardContext` and `standardTransaction`](src/modules/quests/standard/context.ts) use a Player row lock and shared content-library locks. |
+| Settle rewards once, including competing requests | [`resolveStandardQuest`](src/modules/quests/standard/resolution.ts) and [`mutateChallenge`](src/modules/challenges/service.ts) combine status checks, transactions, reward records, XP ledger entries, and slot/set updates. |
+| Preserve acceptance-time facts and reward breakdowns | [`mutateStandardQuest`](src/modules/quests/standard/actions.ts) captures gameplay/text snapshots; [`QuestReward` and `QuestSkillReward`](prisma/schema.prisma) retain calculated reward details. |
+| Keep progression arithmetic deterministic | [`allocateLargestRemainder` and `percentRoundHalfUp`](src/modules/progression/math.ts) conserve integer XP; [level calculations](src/modules/progression/levels.ts) use configured curves. |
+| Enforce relational invariants as well as service validation | [Prisma models](prisma/schema.prisma) and [SQL migrations](prisma/migrations/) define foreign keys, composite uniqueness, CHECK constraints, and partial unique indexes. |
+| Resolve identity and authorization on the server | [Session configuration](src/modules/auth/options.ts), [guards](src/modules/auth/guards.ts), and [API helpers](src/lib/api.ts) handle verified identity, role/ownership boundaries, same-origin JSON mutations, and structured errors. |
+| Exercise behavior at multiple boundaries | [Unit tests](tests/unit/), [PostgreSQL integration tests](tests/integration/), [browser tests](tests/e2e/), and [CI](.github/workflows/ci.yml) cover calculations, UI state, transactions, authorization, and workflows. |
+
+See [Portfolio engineering skills](docs/PORTFOLIO_SKILLS.md) for specific functions, test evidence, and tradeoffs.
+
+## Technology stack
+
+| Layer | Repository configuration |
+| --- | --- |
+| Runtime/package manager | Node.js 22+ required; CI uses Node 24. Locally verified: Node 24.22.1 and pnpm 11.25.0. |
+| Application | Next.js 16.3.4, React 19.2.8, TypeScript 5.9.3 |
+| Styling/validation | Tailwind CSS 4.3.3, Zod 4.5.4 |
+| Authentication | NextAuth.js 4.24.15 (Auth.js), Google OAuth |
+| Persistence | PostgreSQL 17, Prisma 7.10.0, PostgreSQL driver adapter |
+| Testing | Vitest, React Testing Library, Playwright |
+| Automation | Docker Compose for local PostgreSQL; GitHub Actions for CI |
+
+Versions reflect the current [manifest](package.json) and [lockfile](pnpm-lock.yaml), not claims about the latest releases. Use the frozen lockfile for reproducible installs.
+
+## Architecture
+
+FLOURISH is a modular monolith: Next.js serves pages and REST routes, domain services implement gameplay, and Prisma persists state in PostgreSQL. Server-rendered pages call the same service layer used by API handlers. Browser mutations go through authenticated REST endpoints; the browser does not calculate authoritative rewards.
+
+```mermaid
+flowchart LR
+  Browser[React browser UI] --> Pages[Next.js server pages]
+  Browser --> API[Next.js REST handlers]
+  Google[Google OAuth] <--> Auth[NextAuth session and guards]
+  Auth --> Pages
+  Auth --> API
+  Pages --> Services[Domain services]
+  API --> Services
+  Job[Reconciliation command] --> Services
+  Services --> Prisma[Prisma and pg adapter]
+  Prisma --> DB[(PostgreSQL)]
+```
+
+[Architecture and operations](docs/ARCHITECTURE.md) documents transaction boundaries, lifecycle rules, authentication, and reconciliation.
+
+## Local setup
+
+### Prerequisites
+
+Install Git, Node.js 24 (the CI runtime), Corepack, and Docker with Docker Compose and Linux-container support. On Windows, start Docker Desktop. The application runs directly on the host; only PostgreSQL runs in Docker.
+
+The commands below use PowerShell and `corepack.cmd pnpm`, avoiding global pnpm shortcuts and PowerShell script-policy changes. On macOS/Linux use `corepack pnpm` and replace `Copy-Item` with `cp`. If Corepack is absent, install it using your Node installation's package manager before continuing. The repository pins pnpm 11.25.0.
+
+### Environment and database
+
+From a fresh checkout:
 
 ```powershell
-corepack enable
-corepack pnpm install
+git clone https://github.com/kphoenix19/FLOURISH.git
+cd FLOURISH
 Copy-Item .env.example .env
-docker compose up -d postgres
-corepack pnpm db:generate
-corepack pnpm exec prisma migrate deploy
-corepack pnpm db:seed
-corepack pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). `GET /api/health` returns a small JSON response when the application is running.
+Skip cloning if already in the repository, and do not overwrite an existing `.env`. The ignored `.env` holds local configuration:
 
-Docker runs PostgreSQL; Next.js runs directly on the Windows host. Use `docker compose ps` to confirm PostgreSQL is healthy and `docker compose stop` to stop services safely. If `docker` is not found after installing Docker Desktop, restart the terminal so its CLI path is refreshed.
+| Variable | Local value/purpose |
+| --- | --- |
+| `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Docker database settings; the template supplies development-only defaults. |
+| `DATABASE_URL` | `postgresql://REPLACE_WITH_USER:REPLACE_WITH_PASSWORD@localhost:5432/REPLACE_WITH_DATABASE?schema=public`; must match Docker settings. The template already matches its defaults. |
+| `AUTH_SECRET` | `REPLACE_WITH_RANDOM_AUTH_SECRET`; generate a unique value below. |
+| `AUTH_GOOGLE_ID` | `REPLACE_WITH_GOOGLE_CLIENT_ID` |
+| `AUTH_GOOGLE_SECRET` | `REPLACE_WITH_GOOGLE_CLIENT_SECRET` |
+| `NEXTAUTH_URL` | `http://localhost:3000` |
 
-The checked-in `.env.example` uses local-only development defaults. Replace `AUTH_SECRET` with a unique local value before authentication work and never commit `.env` files or real OAuth credentials.
-
-## Verification commands
+Generate an authentication secret and paste it into `.env`; never commit real secrets:
 
 ```powershell
-corepack pnpm lint
-corepack pnpm typecheck
-corepack pnpm test
-corepack pnpm test:integration
-corepack pnpm build
-corepack pnpm test:e2e
-corepack pnpm jobs:reconcile
+node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
+docker compose up -d --wait postgres
+corepack.cmd pnpm install --frozen-lockfile
+corepack.cmd pnpm db:generate
+corepack.cmd pnpm exec prisma migrate deploy
+corepack.cmd pnpm db:seed
 ```
 
-The integration suite requires `DATABASE_URL` to target a disposable local test database. The Playwright suite requires `E2E_DATABASE_URL` to target a separate migrated and seeded disposable database; this enables all authenticated desktop and Pixel 7 tests. Install Chromium once with `corepack pnpm exec playwright install chromium` if needed.
+Seeding validates and transactionally imports [canonical content](data/seeds/). Repeat imports preserve IDs, restore seed-managed values, and deactivate removed content without deleting player history. Admin edits do not rewrite seed files; see the [curator workflow](docs/QUEST_CONTENT_GUIDE.md#canonical-phase-02-library).
 
-## Database and seed commands
+### Google OAuth and startup
 
-- `corepack pnpm db:generate` — generate the Prisma client.
-- `corepack pnpm db:migrate` — create/apply a development migration after Phase 01 adds models.
-- `corepack pnpm db:seed` — validate and transactionally import the canonical Phase 02 library.
-- `corepack pnpm seed:validate` — validate canonical files without a database.
-- `corepack pnpm seed:review` — show titles grouped by tag and possible duplicate-content candidates.
-- `corepack pnpm db:studio` — open Prisma Studio.
+In Google Cloud Console, select your project and create a **Web application** OAuth client under **Google Auth Platform → Clients**. Configure Branding/Audience and test users as required. Register:
 
-Canonical Skills, tags, families, and 275 quests live in [`data/seeds/`](data/seeds/). Apply migrations with `corepack pnpm exec prisma migrate deploy` before `corepack pnpm db:seed`. Repeated imports preserve IDs and row counts, restore canonical values, and deactivate removed seed-managed content without deleting definitions or player history. Non-seed-managed key collisions fail for explicit operator resolution. Admin database edits do not rewrite files. See the [curator workflow](docs/QUEST_CONTENT_GUIDE.md#canonical-phase-02-library).
+- Authorized JavaScript origin: `http://localhost:3000`
+- Authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
 
-## Google sign-in and onboarding
+Copy the client ID and secret into `.env`, then start the application:
 
-Phase 03 uses stable Auth.js/NextAuth.js 4.24.15 with Google only. The implementation follows the [v4 server-session interface](https://next-auth.js.org/configuration/nextjs) and [Google provider setup](https://next-auth.js.org/providers/google). Supply these values in an ignored local `.env` file:
-
-```dotenv
-DATABASE_URL=REPLACE_WITH_POSTGRESQL_CONNECTION_URL
-AUTH_SECRET=REPLACE_WITH_RANDOM_AUTH_SECRET
-AUTH_GOOGLE_ID=REPLACE_WITH_GOOGLE_CLIENT_ID
-AUTH_GOOGLE_SECRET=REPLACE_WITH_GOOGLE_CLIENT_SECRET
-NEXTAUTH_URL=http://localhost:3000
+```powershell
+corepack.cmd pnpm dev
 ```
 
-Generate a unique secret with `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` and put it only in the ignored environment file. Do not use the example placeholder as a real secret. Missing/placeholder OAuth configuration shows setup guidance at `/login`; a build does not require credentials.
+Open [localhost:3000](http://localhost:3000), sign in, and complete onboarding. Use the same hostname as `NEXTAUTH_URL`; a different port/hostname needs matching OAuth registrations. Restart after changing credentials. Without valid configuration, `/login` shows setup guidance. Builds and automated database tests do not require live Google credentials.
 
-Create a Google Cloud OAuth client of type Web application, configure its consent screen/test users as needed, set the authorized JavaScript origin to `http://localhost:3000`, and register the exact redirect URI **`http://localhost:3000/api/auth/callback/google`**. Use the same hostname in the browser and `NEXTAUTH_URL`; for another host/port, update both Google registrations and `NEXTAUTH_URL`. Production must use the deployed HTTPS origin and its corresponding callback. No Google credentials are entered in the app UI.
+`GET /api/health` is an application liveness response, not a database readiness check. Use `docker compose ps` to check PostgreSQL and `docker compose stop` to stop it safely. Restart the terminal if newly installed CLIs are not found.
 
-Apply migrations, run `db:seed`, start the app, then open `/login` and choose **Continue with Google**. First sign-in creates/reuses a User, links its Google account, and ensures one Player. The Player starts with an unset timezone and incomplete onboarding. `/onboarding` introduces the database-loaded Skills, asks for an IANA timezone (with an explicit device-timezone shortcut), offers the balanced 6/6/6/6/6/6/5/5 Focus default, and confirms the choices. Completion atomically persists all eight Focus rows/history, initializes missing progression and streak state, and opens `/home`.
+## Testing and CI
 
-Initial history records `old_focus_points = null`. Settings respecs are free/unlimited and record only changed Skills under one change ID; saving the same allocation adds no history. Matching onboarding retries succeed without resets; differing completed-state retries return 409 and direct the player to Settings. `/settings` changes timezone without rewriting existing history. `/profile` summarizes progress and links to Settings. `/admin` provides guarded quest curation but no role-editing UI. Matching emails are not automatically merged across identities; an `OAuthAccountNotLinked` error needs explicit administrator investigation.
+Run baseline checks from the repository root, stopping if a command fails:
 
-Identity endpoints are `GET /api/me`, `POST /api/onboarding/complete`, `PUT /api/me/focus`, and `PUT /api/me/timezone`; gameplay and curation routes live under `/api/quests`, `/api/challenges`, `/api/recommendations`, and `/api/admin`. Onboarding accepts `{ "timezone": "America/Denver", "focus": [{ "skillCode": "F", "points": 6 }, ...] }` with exactly eight unique Skills. Identity and admin role always come from the session. Browser mutations require same-origin JSON and reject client User/Player IDs or roles.
+```powershell
+corepack.cmd pnpm lint
+corepack.cmd pnpm typecheck
+corepack.cmd pnpm test
+corepack.cmd pnpm build
+```
 
-## Authentication tests without Google
+**Integration tests perform destructive fixture cleanup, including truncation of public tables. Never use a valuable development or production database.** In a separate PowerShell terminal, start a disposable instance on a different port. Replace the test-password placeholder consistently in both commands:
 
-`corepack pnpm test` runs domain/component tests. Set `DATABASE_URL` to a disposable migrated database for `corepack pnpm test:integration`. Phase 03 tests migrate an isolated random schema and cover real transactions, rollback, history, adapter collisions, authorization, and REST handlers. Never run the full integration suite against a valuable database: the existing Phase 01 constraint tests truncate public fixture tables.
+```powershell
+docker run --detach --rm --name flourish-tests --publish 127.0.0.1:55433:5432 --env POSTGRES_USER=flourish_test --env POSTGRES_PASSWORD=REPLACE_WITH_TEST_PASSWORD --env POSTGRES_DB=flourish_test postgres:17-alpine
+docker exec flourish-tests pg_isready -U flourish_test -d flourish_test
+```
 
-For browser coverage, set `E2E_DATABASE_URL` to a disposable migrated and seeded database, then run `corepack pnpm test:e2e`. The harness starts a dedicated server at `http://127.0.0.1:3103`, generates a temporary auth secret, and mints normal Auth.js encrypted session cookies for test-owned User fixtures. There is no application login bypass or test endpoint. Desktop Chromium and a phone-sized Chromium viewport cover onboarding through Settings and sign-out. Screenshots/traces are saved in ignored `test-results/`. Without `E2E_DATABASE_URL`, authenticated tests are skipped explicitly and the public smoke tests still run. Live Google consent and callback verification remain a manual configuration check.
+Wait until `pg_isready` reports that connections are accepted, then run:
 
-## Build 1 gameplay and operations
+```powershell
+$env:DATABASE_URL = 'postgresql://flourish_test:REPLACE_WITH_TEST_PASSWORD@127.0.0.1:55433/flourish_test'
+corepack.cmd pnpm exec prisma migrate deploy
+corepack.cmd pnpm test:integration
+docker stop flourish-tests
+```
 
-An onboarded player’s first visit to `/home` or `GET /api/quests/standard` creates and populates three persistent Standard slots for each of the eight Skills. Reloads return the same assignments. The Home cards use `GET /api/quests/standard` and three same-origin JSON mutations: `POST /api/quests/standard/:playerQuestId/accept`, `/reroll`, and `/bump`. Accept and bump bodies are `{}`; reroll accepts optional `{ "feedbackReason": "TOO_HARD" }` using the documented feedback enum.
+URL-encode special characters in the password portion of the connection URL. Close that test terminal afterward so its `DATABASE_URL` does not affect later development commands. Tests create their own fixtures; no canonical seed step is needed for integration tests.
 
-Acceptance starts the definition’s exact 24/48/72-hour elapsed deadline and freezes its gameplay and offer-text snapshots. Reroll and bump retain history and return the replacement assignment. Accepted Standard quests can complete or be abandoned; overdue quests expire lazily and apply their stored penalty only after explicit clear. Resolution atomically updates XP, levels, Skill streaks, immutable reward/ledger history, and the slot replacement. Identity always comes from the Auth.js session.
+| Test layer | Coverage |
+| --- | --- |
+| Unit/component | XP and level boundaries, allocation, streak/date rules, recommendation scoring, validation, and React loading/action/error behavior |
+| PostgreSQL integration | Schema constraints, transactions and rollback, concurrent settlement, seed imports, onboarding, API authorization, admin audits, and reconciliation |
+| Playwright | Public smoke checks and authenticated desktop/Pixel 7 viewport journeys for onboarding, settings, quest lifecycle, Challenges, and administration |
 
-Home recommendations point only to existing eligible Standard slots and remain stable until invalidated. Daily and Weekly Challenges use fixed player-local windows, explicit acceptance, no-penalty expiration, atomic COUNT progress, configured bonuses, and exactly-once set bonuses. Challenge completions advance only ordinary per-Skill streaks.
+For browser tests, provision a separate migrated **and seeded** disposable database, set `E2E_DATABASE_URL` in the shell, install Chromium with `corepack.cmd pnpm exec playwright install chromium`, and run `corepack.cmd pnpm test:e2e`. The [harness](playwright.config.ts) serves port 3103 and uses encrypted test sessions rather than live Google consent. Without `E2E_DATABASE_URL`, authenticated cases are explicitly skipped. Screenshots/traces go to ignored `test-results/`; live OAuth still needs a manual check.
 
-Run `corepack pnpm jobs:reconcile` manually or hourly through an external scheduler. It uses the same Player locks and domain reconciliation as lazy request-time fallback. It never applies penalties, clears failures, awards XP, advances streaks, or generates recommendations.
+[GitHub Actions](.github/workflows/ci.yml) runs on pushes and pull requests: frozen dependency install, lint, TypeScript route generation/checking, unit tests, migrations against a disposable PostgreSQL 17 service, integration tests, and production build. Playwright is not part of that workflow. CI uses inline disposable database credentials and requires no application secrets.
+
+## Operations and limitations
+
+- `corepack.cmd pnpm jobs:reconcile` runs reconciliation manually. A deployed installation would need an external scheduler; the repository does not provision one. The command stores expirations and creates current Challenge sets without awarding XP or applying failure penalties.
+- Completion uses the honor system; there is no external verification of real-world actions.
+- Google is the only implemented login provider. Admin access requires an account with the `ADMIN` role; there is no role-management UI.
+- Local setup and CI are provided; no public hosted demo or production deployment is documented here. Load capacity and production operational readiness have not been established by these tests.
+- `db:migrate` creates development migrations; `db:studio` opens Prisma Studio. `seed:validate` checks content offline, and `seed:review` groups titles and flags possible duplicates. See [package scripts](package.json).
+
+## Further documentation
+
+- [Engineering competencies and evidence](docs/PORTFOLIO_SKILLS.md)
+- [Architecture](docs/ARCHITECTURE.md), [data model](docs/DATA_MODEL.md), and [game rules](docs/GAME_RULES.md)
+- [Product scope](docs/PRODUCT_SPEC.md), [recommendations](docs/RECOMMENDATION_ENGINE.md), and [admin curation](docs/ADMIN_SPEC.md)
+- [Quest content guide](docs/QUEST_CONTENT_GUIDE.md) and [acceptance criteria](docs/BUILD1_ACCEPTANCE.md)
+- [Build 1 handoff](docs/BUILD1_DOCUMENTATION.md), [Build 2 planning](docs/BUILD2_CHANGES.md), and [backlog](docs/BACKLOG.md)
+- [Contributor/agent instructions](AGENTS.md)
+
+Phase documents retain implementation history and planning context. Read them alongside current code; future plans are not claims of delivered functionality.
