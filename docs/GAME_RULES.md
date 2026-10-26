@@ -159,3 +159,5 @@ Determine the applicable tier after counting the current qualifying local calend
 Store an explicit IANA timezone such as `America/Denver`. Daily boundaries are midnight local time; weekly boundaries are Monday midnight local time. Challenge records store fixed UTC `window_start_at`/`window_end_at`. A later timezone change affects future pools and future streak boundaries, never existing Challenge windows or Standard deadlines.
 
 Use scheduled maintenance plus defensive lazy reconciliation. Correctness must not depend on cron alone.
+
+Successful Challenge mutations lazily ensure the current Daily and Weekly sets required by their response, within the same Player-locked transaction as the action and any rewards. No prior pool GET is required after rollover. Expired-action reconciliation commits before returning `CHALLENGE_EXPIRED`; it does not require generating new pools or award rewards. Genuine transaction failures roll back the action and its response prerequisites together.
