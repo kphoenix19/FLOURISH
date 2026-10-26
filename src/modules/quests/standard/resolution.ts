@@ -95,16 +95,16 @@ async function complete(context: StandardContext, slot: Slot, now: Date, random:
   await refill(context, slot, random);
   return { action: "complete", overallXpGained: finalOverallXp, previousOverallLevel: overall.overallLevel, newOverallLevel: overallLevelForXp(overallXp), skills: changes } satisfies ResolutionFeedback;
 }
-export function resolveStandardQuest(db: PrismaClient, playerId: string, questId: string, action: ResolutionAction, options: { now?: () => Date; random?: RandomSource } = {}) {
+export async function resolveStandardQuest(db: PrismaClient, playerId: string, questId: string, action: ResolutionAction, options: { now?: () => Date; random?: RandomSource } = {}) {
   z.string().uuid().parse(questId);
-  return standardTransaction(db, playerId, async (context) => {
+  const result = await standardTransaction(db, playerId, async (context) => {
     const now = (options.now ?? (() => new Date()))(); await reconcileExpiredInTransaction(context, now);
     const slot = (await currentSlots(context)).find((s) => s.currentPlayerQuestId === questId);
     if (!slot) { const owned = await context.tx.playerQuest.findFirst({ where: { id: questId, playerId } }); throw new ServiceError(owned ? 409 : 404, "QUEST_NOT_CURRENT", owned ? "This quest no longer occupies its slot." : "Quest not found."); }
     const q = slot.currentPlayerQuest!; const random = options.random ?? Math.random;
     await context.tx.playerRecommendation.updateMany({ where: { playerId, invalidatedAt: null }, data: { invalidatedAt: now } });
     if (action === "complete") {
-      if (q.status === "EXPIRED") throw new ServiceError(409, "QUEST_EXPIRED", "This quest expired and must be cleared without a reward.");
+      if (q.status === "EXPIRED") return { expired: true as const };
       if (q.status !== "ACCEPTED") throw new ServiceError(409, "INVALID_STATUS", "Only an accepted quest can be completed.");
       const feedback = await complete(context, slot, now, random); return standardState(context, now, feedback);
     } else if (action === "abandon") {
@@ -122,4 +122,7 @@ export function resolveStandardQuest(db: PrismaClient, playerId: string, questId
     }
     return standardState(context, now);
   });
+  // Commit lazy expiration and its penalty snapshot before rejecting completion.
+  if ("expired" in result) throw new ServiceError(409, "QUEST_EXPIRED", "This quest expired and must be cleared without a reward.");
+  return result;
 }
