@@ -34,6 +34,23 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("Player Home loading", () => {
+  it("renders all Home data when recommendation lookup succeeds with null", async () => {
+    mocks.recommendation.mockResolvedValue(null);
+    render(await PlayerHome());
+    expect(screen.getByRole("heading", { name: "Loaded Home" })).toBeVisible();
+    expect(mocks.standardQuests.mock.calls[0][0]).toEqual({
+      initial: progression, initialRecommendation: null, initialChallenges: challenges,
+    });
+  });
+
+  it("preserves the F2 failure guard when Challenges fail after an empty recommendation", async () => {
+    mocks.recommendation.mockResolvedValue(null);
+    mocks.challenges.mockRejectedValue(new ServiceError(503, "HOME_UNAVAILABLE", "Challenges unavailable."));
+    render(await PlayerHome());
+    expect(screen.getByRole("alert")).toHaveTextContent("Challenges unavailable.");
+    expect(mocks.standardQuests).not.toHaveBeenCalled();
+  });
+
   it("renders the full Home with all three authoritative service results", async () => {
     render(await PlayerHome());
     expect(screen.getByRole("heading", { name: "Loaded Home" })).toBeVisible();

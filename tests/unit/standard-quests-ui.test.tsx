@@ -15,6 +15,41 @@ const challenges = { timezone: "UTC", daily: { id: "daily-set", poolType: "DAILY
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 describe("Standard quest interaction stability", () => {
+  it.each(["ACCEPTED", "EXPIRED"] as const)("keeps all Home sections usable without a recommendation (%s slots)", (status) => {
+    const occupied = { ...state, skills: [{ ...state.skills[0], slots: state.skills[0].slots.map((slot) => ({ ...slot, quest: quest(slot.quest.id, status, slot.quest.title) })) }] } as StandardState;
+    render(<StandardQuests initial={occupied} initialRecommendation={null} initialChallenges={challenges} />);
+    for (const name of ["Overall Level 1", "Active Quests", "Skill progression & Standard quests", "No quests to recommend right now"]) expect(screen.getByRole("heading", { name })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "daily-active title", level: 3 })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "weekly-active title", level: 3 })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Something different" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Fitness/ }));
+    expect(screen.getAllByRole("button", { name: status === "EXPIRED" ? "Clear / acknowledge failure" : "Complete quest" })).toHaveLength(2);
+  });
+
+  it.each([null, recommendation])("completes an active Home quest with no recommendation and renders the refreshed result (%j)", async (next) => {
+    const occupied = { ...state, skills: [{ ...state.skills[0], slots: [state.skills[0].slots[1]] }] };
+    const fetcher = vi.fn().mockResolvedValueOnce({ ok: true, json: async () => ({ ...state, overallXp: 100 }) }).mockResolvedValueOnce({ ok: true, json: async () => next });
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={occupied} initialRecommendation={null} />);
+    fireEvent.click(screen.getByRole("button", { name: "Complete quest" }));
+    await screen.findByText("Quest complete. XP, levels, and streaks are updated.");
+    expect(fetcher.mock.calls[0][0]).toBe("/api/quests/standard/accepted/complete");
+    expect(screen.getByText("100 Overall XP")).toBeVisible();
+    expect(screen.getByRole("region", { name: next ? "Available quest" : "No quests to recommend right now" })).toBeVisible();
+  });
+
+  it("clears the recommendation card after accepting the last available quest", async () => {
+    const occupied = { ...state, skills: [{ ...state.skills[0], slots: state.skills[0].slots.map((slot) => ({ ...slot, quest: quest(slot.quest.id, "ACCEPTED", slot.quest.title) })) }] } as StandardState;
+    const fetcher = vi.fn().mockResolvedValueOnce({ ok: true, json: async () => occupied }).mockResolvedValueOnce({ ok: true, json: async () => null }).mockResolvedValueOnce({ ok: true, json: async () => occupied }).mockResolvedValueOnce({ ok: true, json: async () => null });
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} />);
+    fireEvent.click(screen.getByRole("button", { name: "Accept quest" }));
+    await screen.findByRole("heading", { name: "No quests to recommend right now" });
+    await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(4));
+    expect(screen.queryByRole("button", { name: "Accept quest" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Complete quest" })).toHaveLength(2);
+  });
+
   it("shows a structured accepted Standard count including a visible zero state", () => {
     const { unmount } = render(<StandardQuests initial={state} initialRecommendation={recommendation} />);
     expect(screen.getByLabelText("1 active Standard quest")).toHaveTextContent("1 active");

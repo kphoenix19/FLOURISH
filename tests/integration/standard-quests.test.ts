@@ -21,6 +21,13 @@ import { getChallengeState, mutateChallenge } from "../../src/modules/challenges
 import { runGameStateReconciliation } from "../../src/modules/jobs/reconciliation";
 import { gameConfig } from "../../src/config/game";
 
+async function requireRecommendation(...args: Parameters<typeof getHomeRecommendation>) {
+  const result = await getHomeRecommendation(...args);
+  expect(result).not.toBeNull();
+  if (!result) throw new Error("Expected an eligible recommendation");
+  return result;
+}
+
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL must point to a disposable test database.");
 const schema = `standard_test_${randomUUID().replaceAll("-", "")}`;
@@ -65,7 +72,7 @@ describe("Phase 11 scheduled reconciliation", () => {
     await mutateStandardQuest(db, playerId, standard.q.id, "accept", {}, { now });
     // Recommendation reads also reconcile expiration: keep all setup calls on
     // the same clock so the scheduled job performs the first expiration.
-    await getHomeRecommendation(db, playerId, () => 0.5, now);
+    await requireRecommendation(db, playerId, () => 0.5, now);
     await getChallengeState(db, playerId, { now, random: () => 0.5 });
     expect(await db.playerQuest.findUniqueOrThrow({ where: { id: standard.q.id } })).toMatchObject({ status: "ACCEPTED", deadlineAt: new Date("2026-09-10T18:00:00Z"), expiredAt: null });
     const progressBefore = await db.playerSkillProgress.findMany({ where: { playerId }, orderBy: { skillId: "asc" } });
@@ -108,9 +115,35 @@ describe("Phase 11 scheduled reconciliation", () => {
 });
 
 describe("Home recommendations", () => {
+  it.each([false, true])("returns an empty API state with all 24 slots occupied and recovers after resolution (expired: %s)", async (expired) => {
+    const slots = flat(await read());
+    expect(slots).toHaveLength(24);
+    await requireRecommendation(db, playerId);
+    for (const slot of slots) await action(slot.quest.id, "accept");
+    if (expired) await db.playerQuest.updateMany({ where: { playerId, status: "ACCEPTED" }, data: { deadlineAt: new Date(Date.now() - 1000) } });
+    const api = createRecommendationApi({ getDb: () => db, resolveUser: async () => ({ id: userId, email: "standard@example.test", role: "PLAYER", playerId, onboardingCompletedAt: new Date().toISOString() }) });
+    const response = await api.get();
+    expect(response.status).toBe(200);
+    expect(await response.json()).toBeNull();
+    expect(await getHomeRecommendation(db, playerId)).toBeNull();
+    expect(await db.playerQuest.count({ where: { playerId, status: expired ? "EXPIRED" : "ACCEPTED" } })).toBe(24);
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
+    expect((await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } })).invalidatedAt).not.toBeNull();
+    const result = await resolveStandardQuest(db, playerId, slots[0].quest.id, expired ? "clear" : "complete", { random: () => 0.5 });
+    if (!expired) expect(result.overallXp).toBeGreaterThan(0);
+    const recovered = await requireRecommendation(db, playerId);
+    expect(recovered.playerQuestId).not.toBe(slots[0].quest.id);
+    expect(flat(result).find((slot) => slot.id === recovered.slotId)?.quest.status).toBe("AVAILABLE");
+  });
+
+  it("preserves actual library failures instead of treating them as empty recommendations", async () => {
+    await db.questDefinition.updateMany({ data: { active: false } });
+    await expect(getHomeRecommendation(db, playerId)).rejects.toMatchObject({ code: "NO_STANDARD_CANDIDATE" });
+  });
+
   it("persists one recommendation from existing AVAILABLE slots without changing progression", async () => {
     const state = await read(); const existing = new Set(flat(state).map((s) => s.quest.id));
-    const first = await getHomeRecommendation(db, playerId, () => 0.5); const second = await getHomeRecommendation(db, playerId, () => 0.99);
+    const first = await requireRecommendation(db, playerId, () => 0.5); const second = await requireRecommendation(db, playerId, () => 0.99);
     expect(second).toEqual(first); expect(existing.has(first.playerQuestId)).toBe(true);
     expect(await db.playerRecommendation.count({ where: { playerId } })).toBe(1);
     expect(await db.playerQuest.count({ where: { playerId } })).toBe(24);
@@ -118,37 +151,37 @@ describe("Home recommendations", () => {
     expect(await db.playerProgress.findUniqueOrThrow({ where: { playerId } })).toMatchObject({ overallXp: 0, overallLevel: 1 });
   });
   it("serializes concurrent generation and isolates ownership", async () => {
-    await read(); const results = await Promise.all([0, 1, 2].map(() => getHomeRecommendation(db, playerId, () => 0.5)));
+    await read(); const results = await Promise.all([0, 1, 2].map(() => requireRecommendation(db, playerId, () => 0.5)));
     expect(new Set(results.map((r) => r.playerQuestId)).size).toBe(1); expect(await db.playerRecommendation.count({ where: { playerId } })).toBe(1);
     const otherUser = await db.user.create({ data: { email: "recommendation-other@example.test" } }); const other = await ensurePlayerForUser(db, otherUser.id); await completeOnboarding(db, otherUser.id, { timezone: "UTC", focus: focus() });
-    const theirs = await getHomeRecommendation(db, other.id, () => 0.5); expect(theirs.playerQuestId).not.toBe(results[0].playerQuestId);
+    const theirs = await requireRecommendation(db, other.id, () => 0.5); expect(theirs.playerQuestId).not.toBe(results[0].playerQuestId);
     expect((await db.playerQuest.findUniqueOrThrow({ where: { id: theirs.playerQuestId } })).playerId).toBe(other.id);
   });
   it("invalidates on Focus change and target mutation, then recalculates", async () => {
-    await read(); const original = await getHomeRecommendation(db, playerId, () => 0.5); const changed = focus(); changed[0].points--; changed[7].points++;
+    await read(); const original = await requireRecommendation(db, playerId, () => 0.5); const changed = focus(); changed[0].points--; changed[7].points++;
     await respecFocus(db, userId, { focus: changed }); expect((await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } })).invalidatedAt).not.toBeNull();
-    await getHomeRecommendation(db, playerId, () => 0.5); await mutateStandardQuest(db, playerId, original.playerQuestId, "reroll", {}, { random: () => 0.5 });
-    const next = await getHomeRecommendation(db, playerId, () => 0.5); expect(next.playerQuestId).not.toBe(original.playerQuestId);
+    await requireRecommendation(db, playerId, () => 0.5); await mutateStandardQuest(db, playerId, original.playerQuestId, "reroll", {}, { random: () => 0.5 });
+    const next = await requireRecommendation(db, playerId, () => 0.5); expect(next.playerQuestId).not.toBe(original.playerQuestId);
   });
   it("serializes generation racing a target reroll without retaining a stale target", async () => {
-    await read(); const original = await getHomeRecommendation(db, playerId, () => 0.5);
-    await Promise.all([getHomeRecommendation(db, playerId, () => 0.1), mutateStandardQuest(db, playerId, original.playerQuestId, "reroll", {}, { random: () => 0.5 })]);
-    const final = await getHomeRecommendation(db, playerId, () => 0.5); const quest = await db.playerQuest.findUniqueOrThrow({ where: { id: final.playerQuestId } });
+    await read(); const original = await requireRecommendation(db, playerId, () => 0.5);
+    await Promise.all([requireRecommendation(db, playerId, () => 0.1), mutateStandardQuest(db, playerId, original.playerQuestId, "reroll", {}, { random: () => 0.5 })]);
+    const final = await requireRecommendation(db, playerId, () => 0.5); const quest = await db.playerQuest.findUniqueOrThrow({ where: { id: final.playerQuestId } });
     expect(final.playerQuestId).not.toBe(original.playerQuestId); expect(quest).toMatchObject({ playerId, status: "AVAILABLE", poolType: "STANDARD" });
     expect(await db.playerRecommendation.count({ where: { playerId } })).toBe(1);
   });
   it("refreshes to a different persisted existing slot without changing assignments", async () => {
     const state = await read(); const before = flat(state).map((slot) => [slot.id, slot.quest.id]);
-    const original = await getHomeRecommendation(db, playerId, () => 0.5);
-    const different = await getHomeRecommendation(db, playerId, () => 0.5, () => new Date(), original.playerQuestId);
+    const original = await requireRecommendation(db, playerId, () => 0.5);
+    const different = await requireRecommendation(db, playerId, () => 0.5, () => new Date(), original.playerQuestId);
     expect(different.playerQuestId).not.toBe(original.playerQuestId); expect(different.differentAvailable).toBe(true);
     expect((await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } })).playerQuestId).toBe(different.playerQuestId);
     expect(flat(await read()).map((slot) => [slot.id, slot.quest.id])).toEqual(before);
     expect(await db.playerQuest.count({ where: { playerId } })).toBe(24);
   });
   it("serializes repeated refreshes and rejects the stale displayed recommendation", async () => {
-    await read(); const original = await getHomeRecommendation(db, playerId, () => 0.5);
-    const results = await Promise.allSettled([getHomeRecommendation(db, playerId, () => 0.1, () => new Date(), original.playerQuestId), getHomeRecommendation(db, playerId, () => 0.9, () => new Date(), original.playerQuestId)]);
+    await read(); const original = await requireRecommendation(db, playerId, () => 0.5);
+    const results = await Promise.allSettled([requireRecommendation(db, playerId, () => 0.1, () => new Date(), original.playerQuestId), requireRecommendation(db, playerId, () => 0.9, () => new Date(), original.playerQuestId)]);
     expect(results.filter((result) => result.status === "fulfilled")).toHaveLength(1);
     expect(results.find((result) => result.status === "rejected")).toMatchObject({ reason: { code: "STALE_RECOMMENDATION" } });
     const persisted = await db.playerRecommendation.findUniqueOrThrow({ where: { playerId } });
@@ -157,12 +190,12 @@ describe("Home recommendations", () => {
   it("retains the only available recommendation and reports no alternative", async () => {
     const initial = flat(await read());
     for (const slot of initial.slice(0, -1)) await mutateStandardQuest(db, playerId, slot.quest.id, "accept");
-    const only = await getHomeRecommendation(db, playerId, () => 0.5);
-    const result = await getHomeRecommendation(db, playerId, () => 0.5, () => new Date(), only.playerQuestId);
+    const only = await requireRecommendation(db, playerId, () => 0.5);
+    const result = await requireRecommendation(db, playerId, () => 0.5, () => new Date(), only.playerQuestId);
     expect(result).toMatchObject({ playerQuestId: only.playerQuestId, differentAvailable: false });
   });
   it("accepts the exact recommendation through the existing Standard service and invalidates it", async () => {
-    await read(); const recommended = await getHomeRecommendation(db, playerId, () => 0.5); const at = new Date("2026-09-09T12:00:00Z");
+    await read(); const recommended = await requireRecommendation(db, playerId, () => 0.5); const at = new Date("2026-09-09T12:00:00Z");
     const result = await mutateStandardQuest(db, playerId, recommended.playerQuestId, "accept", {}, { now: () => at });
     const accepted = flat(result).find((slot) => slot.quest.id === recommended.playerQuestId)!.quest;
     expect(accepted).toMatchObject({ status: "ACCEPTED", acceptedAt: at.toISOString() }); expect(new Date(accepted.deadlineAt!).getTime()).toBeGreaterThan(at.getTime());
@@ -373,7 +406,7 @@ describe("Standard REST", () => {
   });
   it("exposes authenticated recommendation refresh with strict input and ownership", async () => {
     const recommendationApi = createRecommendationApi({ getDb: () => db, resolveUser: principal });
-    await read(); const current = await getHomeRecommendation(db, playerId, () => 0.5);
+    await read(); const current = await requireRecommendation(db, playerId, () => 0.5);
     expect((await recommendationApi.refresh(req({ playerQuestId: current.playerQuestId }))).status).toBe(200);
     expect((await recommendationApi.refresh(req({ playerQuestId: current.playerQuestId, playerId }))).status).toBe(400);
     expect((await recommendationApi.refresh(req({ playerQuestId: current.playerQuestId }, "https://attacker.example"))).status).toBe(403);

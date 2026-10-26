@@ -26,7 +26,7 @@ Score = DifficultyWeight
 P(Quest_i) = Score_i / sum(all eligible scores)
 ```
 
-Use a seeded/persistently auditable random source where helpful for tests, but do not always select the maximum score. Candidate eligibility filtering occurs before scoring. If no eligible candidate exists, return a visible domain failure rather than invent content.
+Use a seeded/persistently auditable random source where helpful for tests, but do not always select the maximum score. Candidate eligibility filtering occurs before scoring. If no eligible Quest Library candidate exists for slot generation, return a visible domain failure rather than invent content. If Home has no eligible AVAILABLE Standard quest (for example, all slots are accepted or expired), recommendation lookup succeeds with `null`; `GET /api/recommendations/next` returns HTTP 200 with JSON `null`. Home renders progression, active quests, Skills, and Challenges normally with an empty recommendation section. Populated recommendation responses and actual service failures are unchanged.
 
 Home difficulty coefficients and multi-signal History composition are configurable implementation details to finalize with Recommendation Engine implementation and tests; they must preserve light Home difficulty influence and the documented initial signal modifiers.
 

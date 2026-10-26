@@ -10,7 +10,9 @@ import { reasonCodes, scoreRecommendation, type RecommendationCandidate, type Re
 export type HomeRecommendation = { playerQuestId: string; slotId: string; skillCode: string; skillName: string; title: string; description: string; difficulty: string; estimatedMinutes: number; reasonCodes: string[]; calculatedAt: string };
 const mapReason = (code: string) => ({ MATCHES_FOCUS: "Matches your Focus", CATCH_UP: "Skill needs attention", ADDS_VARIETY: "Something different", GOOD_DIFFICULTY_FIT: "Matches your experience" }[code] ?? code);
 
-export function getHomeRecommendation(db: PrismaClient, playerId: string, random: RandomSource = Math.random, now: () => Date = () => new Date(), excludePlayerQuestId?: string) {
+export type HomeRecommendationResult = (HomeRecommendation & { differentAvailable?: boolean }) | null;
+
+export function getHomeRecommendation(db: PrismaClient, playerId: string, random: RandomSource = Math.random, now: () => Date = () => new Date(), excludePlayerQuestId?: string): Promise<HomeRecommendationResult> {
   return standardTransaction(db, playerId, async (context) => {
     const at = now(); await reconcileExpiredInTransaction(context, at); await reconcileInTransaction(context, random);
     const slots = await currentSlots(context); const allEligible = slots.filter((s) => s.currentPlayerQuest?.status === "AVAILABLE" && context.valid(s.currentPlayerQuest.questDefinition, s.skillId));
@@ -23,7 +25,7 @@ export function getHomeRecommendation(db: PrismaClient, playerId: string, random
     let selected = persistedSlot; let reasons = persisted?.reasonCodes ?? []; let calculatedAt = persisted?.calculatedAt ?? at;
     if (excludePlayerQuestId) { selected = undefined; reasons = []; calculatedAt = at; }
     if (!selected) {
-      if (!eligible.length) throw new ServiceError(409, "NO_RECOMMENDATION_CANDIDATE", "No available Standard quest can be recommended right now.");
+      if (!eligible.length) return null;
       const focus = Object.fromEntries(context.state.rows.map((r) => [r.skillId, r.focusPoints]));
       const catchUp = catchUpModifiers(context.progress.map((p) => ({ ...p, code: context.state.skills.find((s) => s.id === p.skillId)!.code })));
       const completed = await context.tx.playerQuest.findMany({ where: { playerId, status: "COMPLETED" }, orderBy: [{ completedAt: "desc" }, { id: "asc" }], include: { skillSnapshots: true, questDefinition: { include: { skills: true, varietyTags: true } } } });

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import type { StandardState } from "@/modules/quests/standard/view";
 import type { StandardAction } from "@/modules/quests/standard/actions";
 import type { ResolutionAction } from "@/modules/quests/standard/resolution";
-import type { HomeRecommendation } from "@/modules/recommendations/service";
+import type { HomeRecommendationResult } from "@/modules/recommendations/service";
 import { gameConfig } from "@/config/game";
 import type { ChallengeAction, ChallengeState } from "@/modules/challenges/service";
 import { ChallengeControls, Challenges } from "./challenges";
@@ -13,7 +13,7 @@ import { ConfirmationDialog, DifficultyBadge, Feedback, ProgressBar, SkillBadge,
 const label = (text: string) => text.charAt(0) + text.slice(1).toLowerCase();
 const formatDue = (date: string, timezone: string) => new Intl.DateTimeFormat("en-US", { timeZone: timezone, month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" }).format(new Date(date));
 
-export function StandardQuests({ initial, initialRecommendation, initialChallenges }: { initial: StandardState; initialRecommendation: HomeRecommendation; initialChallenges?: ChallengeState }) {
+export function StandardQuests({ initial, initialRecommendation, initialChallenges }: { initial: StandardState; initialRecommendation: HomeRecommendationResult; initialChallenges?: ChallengeState }) {
   const [state, setState] = useState(initial); const [recommendation, setRecommendation] = useState(initialRecommendation); const [busy, setBusy] = useState<string | null>(null); const [message, setMessage] = useState(""); const [error, setError] = useState(""); const [feedback, setFeedback] = useState<Record<string, string>>({});
   const [openSkills, setOpenSkills] = useState(() => new Set<string>());
   const [abandonQuest, setAbandonQuest] = useState<{ id: string; title: string; penalty: number } | null>(null);
@@ -33,14 +33,14 @@ export function StandardQuests({ initial, initialRecommendation, initialChalleng
   async function confirmAbandon() { if (!abandonQuest || busy) return; const id = abandonQuest.id; await act(id, "abandon"); setAbandonQuest((current) => current?.id === id ? null : current); }
   async function reconcileHome() { const [quests, next] = await Promise.all([fetch("/api/quests/standard"), fetch("/api/recommendations/next")]); if (quests.ok) setState(await quests.json()); if (next.ok) setRecommendation(await next.json()); }
   async function acceptRecommendation() {
-    if (recommendationLock.current) return; recommendationLock.current = true; setRecommendationBusy("accept");
+    if (!recommendation || recommendationLock.current) return; recommendationLock.current = true; setRecommendationBusy("accept");
     await act(recommendation.playerQuestId, "accept");
     try { await reconcileHome(); } catch { /* Preserve the authoritative action result or error. */ }
     recommendationLock.current = false; setRecommendationBusy(null);
   }
   async function requestDifferent() {
-    if (recommendationLock.current) return; recommendationLock.current = true; setRecommendationBusy("different"); setError(""); setMessage("");
-    try { const response = await fetch("/api/recommendations/next", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ playerQuestId: recommendation.playerQuestId }) }); const result = await response.json(); if (!response.ok) throw new Error(result.error?.message ?? "A different quest could not be suggested."); setRecommendation(result); setMessage(result.differentAvailable === false ? "No different available quest can currently be suggested." : "Here is another available quest."); }
+    if (!recommendation || recommendationLock.current) return; recommendationLock.current = true; setRecommendationBusy("different"); setError(""); setMessage("");
+    try { const response = await fetch("/api/recommendations/next", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ playerQuestId: recommendation.playerQuestId }) }); const result = await response.json(); if (!response.ok) throw new Error(result.error?.message ?? "A different quest could not be suggested."); setRecommendation(result); setMessage(result === null ? "No quests are available to recommend right now." : result.differentAvailable === false ? "No different available quest can currently be suggested." : "Here is another available quest."); }
     catch (e) { setError(e instanceof Error ? e.message : "Please try again."); try { await reconcileHome(); } catch { /* Keep the original request error visible. */ } }
     finally { recommendationLock.current = false; setRecommendationBusy(null); }
   }
@@ -108,12 +108,12 @@ export function StandardQuests({ initial, initialRecommendation, initialChalleng
 <div className="active-main"><div className="card-badges"><span className="badge pool-badge">{quest.poolType === "DAILY" ? "Daily Challenge" : "Weekly Challenge"}</span><StatusBadge status={quest.status} /></div><h3>{quest.title}</h3><dl className="active-meta"><div><dt>Difficulty</dt><dd>{label(quest.difficulty!)}</dd></div><div><dt>Challenge type</dt><dd>{label(quest.completionType!)}</dd></div><div><dt>Deadline</dt><dd><time dateTime={quest.windowEndAt}>{formatDue(quest.windowEndAt, challengeState!.timezone)}</time></dd></div>{quest.completionType === "COUNT" && <div><dt>Progress</dt><dd>{quest.currentProgress}/{quest.target}</dd></div>}<div><dt>XP</dt><dd>{quest.baseXp} Base XP + {quest.challengeBonusPercent}% bonus</dd></div></dl></div>
 <div className="active-actions"><ChallengeControls quest={quest} busy={challengeBusy} onAction={(id, action) => void challengeAct(id, action)} /></div>
 </article>)}</div>}</section>
-    <section className="recommendation-card" aria-labelledby="next-quest-heading" data-recommended-quest-id={recommendation.playerQuestId}>
+    <section className="recommendation-card" aria-labelledby="next-quest-heading" data-recommended-quest-id={recommendation?.playerQuestId}>
 <div className="recommendation-kicker">
 <span aria-hidden="true">→</span>
 <p className="eyebrow">What should I do next?</p>
 </div>
-<div className="recommendation-content">
+{recommendation ? <><div className="recommendation-content">
 <SkillBadge code={recommendation.skillCode} name={recommendation.skillName} />
 <div>
 <h2 id="next-quest-heading">{recommendation.title}</h2>
@@ -128,6 +128,7 @@ export function StandardQuests({ initial, initialRecommendation, initialChalleng
 <div className="recommendation-reasons">{recommendation.reasonCodes.map((reason, index) => <span key={`${reason}-${index}`}>{reason}</span>)}</div>
 <div className="recommendation-actions"><button className="button" type="button" disabled={busy !== null || recommendationBusy !== null} onClick={() => void acceptRecommendation()}>{recommendationBusy === "accept" ? "Accepting…" : "Accept quest"}</button><button className="button secondary" type="button" disabled={busy !== null || recommendationBusy !== null} onClick={() => void requestDifferent()}>{recommendationBusy === "different" ? "Finding another…" : "Something different"}</button></div>
 </div>
+</> : <div className="empty-state compact"><h2 id="next-quest-heading">No quests to recommend right now</h2><p>Continue an active quest, or review your Standard quest slots below.</p></div>}
 </section>
     {challengeState && <Challenges state={challengeState} busy={challengeBusy} message={challengeMessage} error={challengeError} onAction={(id, action) => void challengeAct(id, action)} />}
     <section className="home-section" id="skill-overview" aria-labelledby="skills-heading">
