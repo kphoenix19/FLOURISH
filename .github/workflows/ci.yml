@@ -8,6 +8,23 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # Disposable service database only; never use application database secrets.
+      DATABASE_URL: postgresql://flourish_ci:flourish_ci@127.0.0.1:5432/flourish_ci
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: flourish_ci
+          POSTGRES_PASSWORD: flourish_ci
+          POSTGRES_DB: flourish_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U flourish_ci -d flourish_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -21,4 +38,6 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm exec prisma migrate deploy
+      - run: pnpm test:integration
       - run: pnpm build
