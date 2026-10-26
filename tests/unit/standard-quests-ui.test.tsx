@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { StandardQuests } from "@/components/standard-quests";
 import type { StandardState } from "@/modules/quests/standard/view";
@@ -127,7 +127,7 @@ describe("Standard quest interaction stability", () => {
 
   it("shows only accepted Challenge quests in Active Quests with pool labels and shared actions", async () => {
     const completed = { ...challenges, daily: { ...challenges.daily, quests: challenges.daily.quests.map((item) => item.id === "daily-active" ? { ...item, status: "COMPLETED" as const } : item) } } as ChallengeState;
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => completed }));
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => ({ ok: true, json: async () => url === "/api/quests/standard" ? state : url === "/api/recommendations/next" ? recommendation : completed })));
     render(<StandardQuests initial={state} initialRecommendation={recommendation} initialChallenges={challenges} />);
     expect(document.querySelectorAll("[data-active-quest-id]")).toHaveLength(3);
     expect(document.querySelector('[data-active-quest-id="daily-active"]')).toHaveTextContent("Daily Challenge");
@@ -138,5 +138,83 @@ describe("Standard quest interaction stability", () => {
     await screen.findByText("Challenge completed and rewards applied.");
     expect(document.querySelector('[data-active-quest-id="daily-active"]')).toBeNull();
     expect(document.querySelector('[data-active-quest-id="weekly-active"]')).toHaveTextContent("1/3");
+  });
+});
+
+describe("Challenge actions refresh Home progression", () => {
+  const progressed: StandardState = {
+    ...state, overallXp: 1100, overallLevel: 2,
+    overallProgress: { level: 2, currentXp: 1100, levelStartXp: 1000, nextLevelXp: 2500, xpIntoLevel: 100, xpToNextLevel: 1400, percent: 100 / 15 },
+    skills: [{ ...state.skills[0], currentXp: 350, lifetimeXp: 350, currentLevel: 2,
+      levelProgress: { level: 2, currentXp: 350, levelStartXp: 300, nextLevelXp: 700, xpIntoLevel: 50, xpToNextLevel: 350, percent: 12.5 },
+      currentStreakDays: 1, longestStreakDays: 1, streakActive: true }],
+  };
+
+  function expectProgression(home: StandardState) {
+    expect(screen.getByRole("heading", { name: `Overall Level ${home.overallLevel}` })).toBeVisible();
+    expect(screen.getByText(`${home.overallXp.toLocaleString()} Overall XP`, { exact: true })).toBeVisible();
+    expect(screen.getByRole("progressbar", { name: `Overall progress to level ${home.overallLevel + 1}` })).toHaveAttribute("aria-valuenow", String(home.overallProgress.xpIntoLevel));
+    const skill = screen.getByRole("button", { name: /Fitness/ });
+    expect(skill).toHaveTextContent(`Level ${home.skills[0].currentLevel}`);
+    expect(skill).toHaveTextContent(`${home.skills[0].levelProgress.xpToNextLevel} XP to next level`);
+    expect(skill).toHaveTextContent(`${home.skills[0].currentStreakDays}-day streak`);
+    expect(screen.getByRole("progressbar", { name: "Fitness progress" })).toHaveAttribute("aria-valuenow", String(home.skills[0].levelProgress.xpIntoLevel));
+  }
+
+  it.each([
+    { name: "SINGLE completion", pool: "daily" as const, id: "daily-active", action: "complete", button: "Complete", progress: 1 },
+    { name: "final COUNT increment", pool: "weekly" as const, id: "weekly-active", action: "increment", button: "Increase weekly-active title progress", progress: 3 },
+    { name: "partial COUNT increment", pool: "weekly" as const, id: "weekly-active", action: "increment", button: "Increase weekly-active title progress", progress: 2 },
+  ])("uses authoritative Home progression after $name", async ({ pool, id, action, button, progress }) => {
+    const settled = action === "complete" || progress === 3;
+    const initialChallenges = { ...challenges, [pool]: { ...challenges[pool], quests: challenges[pool].quests.map((q) => q.id === id ? { ...q, currentProgress: progress - 1 } : q) } };
+    const updatedChallenges = { ...initialChallenges, [pool]: { ...initialChallenges[pool],
+      completedCount: initialChallenges[pool].completedCount + (settled ? 1 : 0),
+      quests: initialChallenges[pool].quests.map((q) => q.id === id ? { ...q, status: settled ? "COMPLETED" as const : "ACCEPTED" as const, currentProgress: progress } : q) } };
+    const home = settled ? progressed : state;
+    let resolveHome!: (value: unknown) => void;
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === `/api/challenges/${id}/${action}`) return { ok: true, json: async () => updatedChallenges };
+      if (url === "/api/quests/standard") return { ok: true, json: () => new Promise((resolve) => { resolveHome = resolve; }) };
+      if (url === "/api/recommendations/next") return { ok: true, json: async () => alternative };
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} initialChallenges={initialChallenges} />);
+    fireEvent.click(screen.getByRole("button", { name: /Fitness/ }));
+    expectProgression(state);
+    const active = document.querySelector(`[data-active-quest-id="${id}"]`) as HTMLElement;
+    fireEvent.click(within(active).getByRole("button", { name: button }));
+    await waitFor(() => expect(resolveHome).toBeDefined());
+    expect(screen.getByText("Updating challenge...")).toBeVisible();
+    expectProgression(state);
+    resolveHome(home);
+    await screen.findByText(action === "complete" ? "Challenge completed and rewards applied." : "Challenge progress updated. No XP is awarded until the target is reached.");
+    expectProgression(home);
+    expect(screen.getByRole("button", { name: /Fitness/ })).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText("Different quest")).toBeVisible();
+    expect(fetcher).toHaveBeenCalledWith(`/api/challenges/${id}/${action}`, expect.objectContaining({ method: "POST", body: "{}" }));
+    if (settled) expect(document.querySelector(`[data-active-quest-id="${id}"]`)).toBeNull();
+    else expect(within(active).getByLabelText("weekly-active title current progress")).toHaveTextContent("2 / 3");
+  });
+
+  it.each(["complete", "increment"])("preserves progression and error handling after a failed %s", async (action) => {
+    const id = action === "complete" ? "daily-active" : "weekly-active";
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === `/api/challenges/${id}/${action}`) return { ok: false, json: async () => ({ error: { message: "Challenge action failed." } }) };
+      if (url === "/api/challenges") return { ok: true, json: async () => challenges };
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} initialChallenges={challenges} />);
+    fireEvent.click(screen.getByRole("button", { name: /Fitness/ }));
+    const active = document.querySelector(`[data-active-quest-id="${id}"]`) as HTMLElement;
+    const button = within(active).getByRole("button", { name: action === "complete" ? "Complete" : "Increase weekly-active title progress" });
+    fireEvent.click(button);
+    expect(await screen.findByRole("alert")).toHaveTextContent("Challenge action failed.");
+    await waitFor(() => expect(button).toBeEnabled());
+    expectProgression(state);
+    expect(fetcher).toHaveBeenCalledWith("/api/challenges");
+    expect(fetcher).not.toHaveBeenCalledWith("/api/quests/standard");
   });
 });
