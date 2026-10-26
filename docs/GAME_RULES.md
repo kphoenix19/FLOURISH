@@ -106,6 +106,8 @@ Optional feedback: `TOO_HARD`, `NO_TIME`, `NOT_INTERESTED`, `JUST_DIFFERENT`. Ge
 
 Daily and Weekly pools are independently generated. They may share a skill but the same QuestDefinition must not be simultaneously active in both pools for one player. Both require explicit acceptance, have no reroll or failure penalty, and use Easy/Medium/Hard/Epic definitions; Legendary is excluded. Unfinished quests become `EXPIRED` at window reset whether unaccepted or accepted-incomplete; `accepted_at` and progress preserve history.
 
+New Challenge acceptance revalidates the current definition under the library lock: it must be active, approved, eligible for the assigned Daily/Weekly pool, non-Legendary, and have valid Skill/tag allocations, difficulty-band XP, descriptive text, duration, and completion target. A stale ineligible offer returns HTTP 409 `OFFER_CHANGED` before acceptance or snapshot writes. Previously accepted Challenges retain their snapshots and existing retry, completion, and expiration behavior after content retirement or editing.
+
 ### Daily
 
 - Generate three Challenges in three unique skills.

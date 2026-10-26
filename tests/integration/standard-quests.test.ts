@@ -18,6 +18,8 @@ import { getHomeRecommendation } from "../../src/modules/recommendations/service
 import { createRecommendationApi } from "../../src/modules/recommendations/api";
 import { percentRoundHalfUp } from "../../src/modules/progression/math";
 import { getChallengeState, mutateChallenge } from "../../src/modules/challenges/service";
+import { createChallengeApi } from "../../src/modules/challenges/api";
+import { transitionQuest } from "../../src/modules/admin/service";
 import { runGameStateReconciliation } from "../../src/modules/jobs/reconciliation";
 import { gameConfig } from "../../src/config/game";
 
@@ -52,6 +54,106 @@ beforeEach(async () => {
   await completeOnboarding(db, userId, { timezone: "America/Denver", focus: focus() });
 });
 afterAll(async () => { await db.$disconnect(); await pool.end(); await admin.query(`DROP SCHEMA "${schema}" CASCADE`); await admin.end(); });
+
+describe("Challenge acceptance eligibility", () => {
+  const request = () => new Request("http://localhost:3000/api/challenges/accept", { method: "POST", headers: { Origin: "http://localhost:3000", "Content-Type": "application/json" }, body: "{}" });
+  const api = () => createChallengeApi({ getDb: () => db, resolveUser: async () => ({ id: userId, email: "standard@example.test", role: "PLAYER", playerId, onboardingCompletedAt: new Date().toISOString() }) });
+  async function offer(poolType: "DAILY" | "WEEKLY") {
+    const state = await getChallengeState(db, playerId, { random: () => 0.5 });
+    const quest = (poolType === "DAILY" ? state.daily : state.weekly).quests[0];
+    const stored = await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id }, include: { questDefinition: true } });
+    return { quest, definition: stored.questDefinition };
+  }
+  async function unchanged(id: string) {
+    expect(await db.playerQuest.findUniqueOrThrow({ where: { id } })).toMatchObject({ status: "AVAILABLE", acceptedAt: null, currentProgress: 0 });
+    expect(await db.playerQuestSkillSnapshot.count({ where: { playerQuestId: id } })).toBe(0);
+    expect(await db.questInteraction.count({ where: { playerQuestId: id, interactionType: "ACCEPTED" } })).toBe(0);
+    expect(await db.questReward.count({ where: { playerQuestId: id } })).toBe(0);
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
+    expect(await db.playerProgress.findUniqueOrThrow({ where: { playerId } })).toMatchObject({ overallXp: 0 });
+    expect((await db.playerSkillProgress.findMany({ where: { playerId } })).every((s) => s.currentXp === 0 && s.lifetimeXp === 0)).toBe(true);
+  }
+  it.each(["DAILY", "WEEKLY"] as const)("accepts eligible %s content through the API", async (poolType) => {
+    const { quest, definition } = await offer(poolType);
+    expect((await api().mutate(request(), quest.id, "accept")).status).toBe(200);
+    expect(await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id } })).toMatchObject({ status: "ACCEPTED", baseXpSnapshot: definition.baseXp });
+    expect(await db.playerQuestSkillSnapshot.count({ where: { playerQuestId: quest.id } })).toBeGreaterThan(0);
+    expect(await db.xpTransaction.count({ where: { playerId } })).toBe(0);
+  });
+  const invalidCases = (["DAILY", "WEEKLY"] as const).flatMap((poolType) => ["retired", "unapproved", "wrong pool", "Legendary", "invalid skills", "invalid tags", "invalid XP", "empty title"].map((reason) => ({ poolType, reason })));
+  it.each(invalidCases)("rejects stale $poolType acceptance after $reason without side effects", async ({ poolType, reason }) => {
+    const { quest, definition } = await offer(poolType);
+    if (reason === "retired") {
+      const actor = await db.user.create({ data: { email: "a03-admin@example.test", role: "ADMIN" } });
+      await transitionQuest(db, actor.id, definition.id, { action: "DEACTIVATE", expectedUpdatedAt: definition.updatedAt.toISOString() });
+    } else if (reason === "invalid skills") {
+      await db.questSkill.updateMany({ where: { questDefinitionId: definition.id }, data: { isPrimary: false } });
+    } else if (reason === "invalid tags") {
+      await db.questVarietyTag.updateMany({ where: { questDefinitionId: definition.id }, data: { isPrimary: false } });
+    } else {
+      await db.questDefinition.update({ where: { id: definition.id }, data: reason === "unapproved" ? { reviewStatus: "PENDING_REVIEW" } : reason === "wrong pool" ? { [poolType === "DAILY" ? "dailyEligible" : "weeklyEligible"]: false } : reason === "Legendary" ? { difficulty: "LEGENDARY", baseXp: 750, questFamilyId: null } : reason === "invalid XP" ? { baseXp: 1000 } : { title: " " } });
+    }
+    const response = await api().mutate(request(), quest.id, "accept");
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({ error: { code: "OFFER_CHANGED", message: "This Challenge is no longer eligible for acceptance." } });
+    await unchanged(quest.id);
+  });
+  it.each(["DAILY", "WEEKLY"] as const)("preserves %s accepted snapshots, retries and completion after retirement and edits", async (poolType) => {
+    const { quest, definition } = await offer(poolType);
+    await mutateChallenge(db, playerId, quest.id, "accept");
+    const before = await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id }, include: { skillSnapshots: true } });
+    await db.questDefinition.update({ where: { id: definition.id }, data: { active: false, reviewStatus: "PENDING_REVIEW", baseXp: 999, title: "Edited after acceptance", dailyEligible: false, weeklyEligible: false } });
+    await mutateChallenge(db, playerId, quest.id, "accept");
+    expect(await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id }, include: { skillSnapshots: true } })).toEqual(before);
+    if (before.completionTypeSnapshot === "SINGLE") await mutateChallenge(db, playerId, quest.id, "complete");
+    else for (let i = 0; i < before.completionTargetSnapshot; i++) await mutateChallenge(db, playerId, quest.id, "increment");
+    expect(await db.questReward.findUniqueOrThrow({ where: { playerQuestId: quest.id } })).toMatchObject({ baseXp: before.baseXpSnapshot });
+    expect(await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id } })).toMatchObject({ status: "COMPLETED", titleSnapshot: before.titleSnapshot });
+  });
+  it("retains authentication and account isolation before eligibility validation", async () => {
+    const { quest, definition } = await offer("DAILY");
+    await db.questDefinition.update({ where: { id: definition.id }, data: { active: false } });
+    const anonymous = createChallengeApi({ getDb: () => db, resolveUser: async () => null });
+    expect((await anonymous.mutate(request(), quest.id, "accept")).status).toBe(401);
+    const otherUser = await db.user.create({ data: { email: "a03-other@example.test" } });
+    const other = await ensurePlayerForUser(db, otherUser.id);
+    await completeOnboarding(db, otherUser.id, { timezone: "UTC", focus: focus() });
+    await expect(mutateChallenge(db, other.id, quest.id, "accept")).rejects.toMatchObject({ status: 404, code: "CHALLENGE_NOT_FOUND" });
+    await unchanged(quest.id);
+  });
+  it("waits for an in-flight retirement and rejects acceptance after its commit", async () => {
+    const { quest, definition } = await offer("DAILY");
+    const writer = await pool.connect();
+    let pending: Promise<PromiseSettledResult<unknown>[]> | undefined;
+    try {
+      await writer.query("BEGIN");
+      await writer.query("UPDATE quest_definitions SET active = false WHERE id = $1", [definition.id]);
+      pending = Promise.allSettled([mutateChallenge(db, playerId, quest.id, "accept")]);
+      await vi.waitFor(async () => {
+        const locks = await pool.query("SELECT 1 FROM pg_locks WHERE relation = 'quest_definitions'::regclass AND mode = 'ShareLock' AND NOT granted");
+        expect(locks.rowCount).toBeGreaterThan(0);
+      }, { timeout: 5000 });
+      await writer.query("COMMIT");
+      expect(await pending).toMatchObject([{ status: "rejected", reason: { status: 409, code: "OFFER_CHANGED" } }]);
+      await unchanged(quest.id);
+    } finally { await writer.query("ROLLBACK"); writer.release(); await pending; }
+  });
+  it("serializes real curator retirement racing acceptance into a valid outcome", async () => {
+    const { quest, definition } = await offer("WEEKLY");
+    const actor = await db.user.create({ data: { email: "a03-race-admin@example.test", role: "ADMIN" } });
+    const [acceptance, retirement] = await Promise.allSettled([
+      mutateChallenge(db, playerId, quest.id, "accept"),
+      transitionQuest(db, actor.id, definition.id, { action: "DEACTIVATE", expectedUpdatedAt: definition.updatedAt.toISOString() }),
+    ]);
+    expect(retirement.status).toBe("fulfilled");
+    if (acceptance.status === "rejected") { expect(acceptance.reason).toMatchObject({ status: 409, code: "OFFER_CHANGED" }); await unchanged(quest.id); }
+    else {
+      expect(await db.playerQuest.findUniqueOrThrow({ where: { id: quest.id } })).toMatchObject({ status: "ACCEPTED", baseXpSnapshot: definition.baseXp });
+      expect(await db.questInteraction.count({ where: { playerQuestId: quest.id, interactionType: "ACCEPTED" } })).toBe(1);
+    }
+    expect(await db.questDefinition.findUniqueOrThrow({ where: { id: definition.id } })).toMatchObject({ active: false });
+  });
+});
 
 describe("Phase 08 Challenge engine",()=>{
   const now=()=>new Date("2026-09-09T18:00:00Z");
