@@ -1,15 +1,16 @@
+import { openE2eDatabase } from "../support/database-safety";
 import { randomUUID } from "node:crypto";
 import { test, expect } from "@playwright/test";
 import { encode } from "next-auth/jwt";
-import { Pool } from "pg";
+import type { Pool } from "pg";
 
 test.describe("authenticated onboarding", () => {
   test.setTimeout(90_000);
   test.skip(!process.env.E2E_DATABASE_URL, "Set E2E_DATABASE_URL to a migrated, seeded disposable database.");
   let db: Pool;
   const users: string[] = [];
-  test.beforeAll(() => { db = new Pool({ connectionString: process.env.E2E_DATABASE_URL! }); });
-  test.afterAll(async () => { if (db) { await db.query("DELETE FROM users WHERE id = ANY($1::uuid[])", [users]); await db.end(); } });
+  test.beforeAll(async () => { db = await openE2eDatabase(); });
+  test.afterAll(async () => { if (db) { try { await db.query("DELETE FROM users WHERE id = ANY($1::uuid[])", [users]); } finally { await db.end(); } } });
 
   test("onboards, reloads, respecs, changes timezone, and enforces admin access", async ({ page, context }, testInfo) => {
     const browserErrors: string[] = [];

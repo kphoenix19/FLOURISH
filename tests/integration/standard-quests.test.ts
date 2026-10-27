@@ -1,7 +1,5 @@
+import { createIntegrationDatabase } from "../support/integration-database";
 import { randomUUID } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
-import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
@@ -39,11 +37,8 @@ function requireActivePools(state: Awaited<ReturnType<typeof getChallengeState>>
 async function getActiveChallengeState(...args: Parameters<typeof getChallengeState>) { return requireActivePools(await getChallengeState(...args)); }
 async function mutateActiveChallenge(...args: Parameters<typeof mutateChallenge>) { return requireActivePools(await mutateChallenge(...args)); }
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) throw new Error("DATABASE_URL must point to a disposable test database.");
-const schema = `standard_test_${randomUUID().replaceAll("-", "")}`;
-const admin = new Pool({ connectionString });
-const pool = new Pool({ connectionString, options: `-c search_path=${schema}` });
+const fixtureDb = createIntegrationDatabase();
+const { schema, pool } = fixtureDb;
 const db = new PrismaClient({ adapter: new PrismaPg(pool, { schema }) });
 vi.setConfig({ testTimeout: 120_000, hookTimeout: 120_000 });
 let playerId: string; let userId: string;
@@ -51,18 +46,15 @@ const focus = () => Object.entries({ F: 6, L: 6, O: 6, U: 6, R: 6, I: 6, S: 5, H
 const flat = (s: StandardState) => s.skills.flatMap((x) => x.slots);
 const read = () => reconcileStandardQuestSlots(db, playerId, () => 0.5);
 const action = (id: string, kind: "accept" | "reroll" | "bump", input = {}) => mutateStandardQuest(db, playerId, id, kind, input, { random: () => 0.5 });
-beforeAll(async () => {
-  await admin.query(`CREATE SCHEMA "${schema}"`);
-  for (const name of readdirSync(resolve("prisma/migrations")).sort()) if (/^\d/.test(name)) await pool.query(readFileSync(resolve("prisma/migrations", name, "migration.sql"), "utf8"));
-});
+beforeAll(() => fixtureDb.setup());
 beforeEach(async () => {
-  await pool.query("TRUNCATE users, skills, quest_families, quest_definitions CASCADE");
+  await fixtureDb.reset(["users","skills","quest_families","quest_definitions"]);
   await persistCanonicalSeed(db, loadCanonicalSeed());
   userId = (await db.user.create({ data: { email: "standard@example.test" } })).id;
   playerId = (await ensurePlayerForUser(db, userId)).id;
   await completeOnboarding(db, userId, { timezone: "America/Denver", focus: focus() });
 });
-afterAll(async () => { await db.$disconnect(); await pool.end(); await admin.query(`DROP SCHEMA "${schema}" CASCADE`); await admin.end(); });
+afterAll(async () => { try { await db.$disconnect(); } finally { await fixtureDb.dispose(); } });
 
 describe("Challenge timezone transitions A05", () => {
   const start = new Date("2026-10-26T12:00:00Z");

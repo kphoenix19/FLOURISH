@@ -1,11 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { Pool } from "pg";
-import { afterAll, beforeEach, describe, expect, it } from "vitest";
+import { createIntegrationDatabase } from "../support/integration-database";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) throw new Error("DATABASE_URL must point to the dedicated integration-test database.");
-
-const pool = new Pool({ connectionString });
+const fixtureDb = createIntegrationDatabase();
+const { pool } = fixtureDb;
+beforeAll(() => fixtureDb.setup());
 const now = () => new Date();
 
 async function userAndPlayer() {
@@ -58,13 +57,10 @@ async function playerQuest(playerId: string, questDefinitionId: string) {
 }
 
 beforeEach(async () => {
-  await pool.query(`TRUNCATE TABLE users, skills, quest_families CASCADE`);
+  await fixtureDb.reset(["users", "skills", "quest_families"]);
 });
 
-afterAll(async () => {
-  await pool.query(`TRUNCATE TABLE users, skills, quest_families CASCADE`);
-  await pool.end();
-});
+afterAll(() => fixtureDb.dispose());
 
 describe("database constraints", () => {
   it("rejects duplicate user emails", async () => {

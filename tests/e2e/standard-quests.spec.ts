@@ -1,21 +1,22 @@
+import { openE2eDatabase } from "../support/database-safety";
 import { randomUUID } from "node:crypto";
 import { test, expect } from "@playwright/test";
 import { encode } from "next-auth/jwt";
-import { Pool } from "pg";
+import type { Pool } from "pg";
 import type { StandardState } from "../../src/modules/quests/standard/view";
 
 test.describe("Standard quest experience", () => {
   test.setTimeout(240_000);
   test.skip(!process.env.E2E_DATABASE_URL, "Set E2E_DATABASE_URL to a migrated, seeded disposable database.");
   let db: Pool; const users: string[] = [];
-  test.beforeAll(() => { db = new Pool({ connectionString: process.env.E2E_DATABASE_URL! }); });
-  test.afterAll(async () => { if (db) {
+  test.beforeAll(async () => { db = await openE2eDatabase(); });
+  test.afterAll(async () => { if (db) { try {
     await db.query("DELETE FROM quest_skill_rewards WHERE quest_reward_id IN (SELECT qr.id FROM quest_rewards qr JOIN player_quests pq ON pq.id=qr.player_quest_id WHERE pq.player_id IN (SELECT id FROM players WHERE user_id=ANY($1::uuid[])))", [users]);
     await db.query("DELETE FROM quest_rewards WHERE player_quest_id IN (SELECT id FROM player_quests WHERE player_id IN (SELECT id FROM players WHERE user_id=ANY($1::uuid[])))", [users]);
     await db.query("DELETE FROM player_quest_failure_penalty_skills WHERE player_quest_id IN (SELECT id FROM player_quests WHERE player_id IN (SELECT id FROM players WHERE user_id=ANY($1::uuid[])))", [users]);
     await db.query("DELETE FROM xp_transactions WHERE player_id IN (SELECT id FROM players WHERE user_id=ANY($1::uuid[]))", [users]);
     await db.query("DELETE FROM quest_interactions WHERE player_id IN (SELECT id FROM players WHERE user_id=ANY($1::uuid[]))", [users]);
-    await db.query("DELETE FROM users WHERE id = ANY($1::uuid[])", [users]); await db.end();
+    await db.query("DELETE FROM users WHERE id = ANY($1::uuid[])", [users]); } finally { await db.end(); }
   } });
   test("runs the Standard accept, complete, abandon, expire, and clear loop", async ({ page, context }, testInfo) => {
     const errors: string[] = []; page.on("pageerror", (e) => errors.push(e.message));

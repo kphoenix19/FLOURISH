@@ -1,7 +1,5 @@
+import { createIntegrationDatabase } from "../support/integration-database";
 import { randomUUID } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
-import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
@@ -9,32 +7,18 @@ import { loadCanonicalSeed } from "../../src/modules/quests/seed/load";
 import { validateCanonicalSeed } from "../../src/modules/quests/seed/validate";
 import { persistCanonicalSeed } from "../../src/modules/quests/seed/persist";
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) throw new Error("DATABASE_URL must point to the dedicated integration-test database.");
-// These tests own a random schema. Never truncate the application's public tables.
-const schema = `seed_test_${randomUUID().replaceAll("-", "")}`;
-const admin = new Pool({ connectionString });
-const pool = new Pool({ connectionString, options: `-c search_path=${schema}` });
+const fixtureDb = createIntegrationDatabase();
+const { schema, pool } = fixtureDb;
 const db = new PrismaClient({ adapter: new PrismaPg(pool, { schema }) });
 const canonical = validateCanonicalSeed(loadCanonicalSeed());
 // Several cases import the complete library three times on local Docker PostgreSQL.
 vi.setConfig({ testTimeout: 120_000, hookTimeout: 120_000 });
 
-beforeAll(async () => {
-  await admin.query(`CREATE SCHEMA "${schema}"`);
-  for (const name of readdirSync(resolve("prisma/migrations")).sort()) {
-    if (/^\d/.test(name)) await pool.query(readFileSync(resolve("prisma/migrations", name, "migration.sql"), "utf8"));
-  }
-});
+beforeAll(() => fixtureDb.setup());
 beforeEach(async () => {
-  await pool.query("TRUNCATE users, skills, quest_families, quest_definitions, context_tags CASCADE");
+  await fixtureDb.reset(["users","skills","quest_families","quest_definitions","context_tags"]);
 });
-afterAll(async () => {
-  await db.$disconnect();
-  await pool.end();
-  await admin.query(`DROP SCHEMA "${schema}" CASCADE`);
-  await admin.end();
-});
+afterAll(async () => { try { await db.$disconnect(); } finally { await fixtureDb.dispose(); } });
 
 async function snapshot() {
   const [skills, tags, families, quests, allocations, variety, context] = await Promise.all([

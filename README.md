@@ -151,23 +151,27 @@ corepack.cmd pnpm test
 corepack.cmd pnpm build
 ```
 
-**Integration tests perform destructive fixture cleanup, including truncation of public tables. Never use a valuable development or production database.** In a separate PowerShell terminal, start a disposable instance on a different port. Replace the test-password placeholder consistently in both commands:
+Integration tests use **only `TEST_DATABASE_URL`**, never the application's `DATABASE_URL` or `.env`. The harness accepts local PostgreSQL database `flourish_test` with the restricted `flourish_test` role, no URL query options, and an administrator-owned disposable-target marker. It rejects superusers, database owners, role memberships, and public-schema access before creating test schemas. Each suite migrates and resets its own random schema. Resets enumerate same-schema foreign-key dependencies with TRUNCATE RESTRICT; cross-schema dependencies and search-path drift are rejected. Cleanup validates ownership and external dependencies before dropping its schema. The constraint suite uses the same isolation and retains all constraint checks.
+
+Start a fresh disposable instance (not the development Compose service). Replace both password placeholders consistently; URL-encode special characters in URLs:
 
 ```powershell
-docker run --detach --rm --name flourish-tests --publish 127.0.0.1:55433:5432 --env POSTGRES_USER=flourish_test --env POSTGRES_PASSWORD=REPLACE_WITH_TEST_PASSWORD --env POSTGRES_DB=flourish_test postgres:17-alpine
-docker exec flourish-tests pg_isready -U flourish_test -d flourish_test
+docker run --detach --rm --name flourish-tests --publish 127.0.0.1:55433:5432 --env POSTGRES_USER=postgres --env POSTGRES_PASSWORD=REPLACE_WITH_TEST_ADMIN_PASSWORD --env POSTGRES_DB=flourish_test postgres:17-alpine
+docker exec flourish-tests pg_isready -U postgres -d flourish_test
 ```
 
-Wait until `pg_isready` reports that connections are accepted, then run:
+After PostgreSQL is ready, provision it once and run tests:
 
 ```powershell
-$env:DATABASE_URL = 'postgresql://flourish_test:REPLACE_WITH_TEST_PASSWORD@127.0.0.1:55433/flourish_test'
-corepack.cmd pnpm exec prisma migrate deploy
+$env:TEST_DATABASE_ADMIN_URL = 'postgresql://postgres:REPLACE_WITH_TEST_ADMIN_PASSWORD@127.0.0.1:55433/flourish_test'
+$env:TEST_DATABASE_URL = 'postgresql://flourish_test:REPLACE_WITH_TEST_PASSWORD@127.0.0.1:55433/flourish_test'
+corepack.cmd pnpm exec tsx scripts/setup-test-database.ts
+Remove-Item Env:TEST_DATABASE_ADMIN_URL
 corepack.cmd pnpm test:integration
 docker stop flourish-tests
 ```
 
-URL-encode special characters in the password portion of the connection URL. Close that test terminal afterward so its `DATABASE_URL` does not affect later development commands. Tests create their own fixtures; no canonical seed step is needed for integration tests.
+Stop if provisioning fails. The provisioner rejects a nonempty database or an existing test role; use a fresh disposable instance rather than relaxing the checks. Test runs can repeat after successful provisioning without provisioning again. No manual migration/seed step is needed for integration tests. Do not change the normal application configuration. If a process is forcibly terminated before teardown, discard its disposable container; do not run manual cleanup against an application database.
 
 | Test layer | Coverage |
 | --- | --- |
@@ -175,9 +179,24 @@ URL-encode special characters in the password portion of the connection URL. Clo
 | PostgreSQL integration | Schema constraints, transactions and rollback, concurrent settlement, seed imports, onboarding, API authorization, admin audits, and reconciliation |
 | Playwright | Public smoke checks and authenticated desktop/Pixel 7 viewport journeys for onboarding, settings, quest lifecycle, Challenges, and administration |
 
-For browser tests, provision a separate migrated **and seeded** disposable database, set `E2E_DATABASE_URL` in the shell, install Chromium with `corepack.cmd pnpm exec playwright install chromium`, and run `corepack.cmd pnpm test:e2e`. The [harness](playwright.config.ts) serves port 3103 and uses encrypted test sessions rather than live Google consent. Without `E2E_DATABASE_URL`, authenticated cases are explicitly skipped. Screenshots/traces go to ignored `test-results/`; live OAuth still needs a manual check.
+For authenticated browser tests, use a **separate fresh instance** named `flourish_e2e`. The application uses public tables there, so the restricted role is granted public-schema access only in this E2E database. Both server startup and fixture connections verify its dedicated E2E marker before any application or cleanup operation.
 
-[GitHub Actions](.github/workflows/ci.yml) runs on pushes and pull requests: frozen dependency install, lint, TypeScript route generation/checking, unit tests, migrations against a disposable PostgreSQL 17 service, integration tests, and production build. Playwright is not part of that workflow. CI uses inline disposable database credentials and requires no application secrets.
+```powershell
+docker run --detach --rm --name flourish-browser-tests --publish 127.0.0.1:55434:5432 --env POSTGRES_USER=postgres --env POSTGRES_PASSWORD=REPLACE_WITH_TEST_ADMIN_PASSWORD --env POSTGRES_DB=flourish_e2e postgres:17-alpine
+docker exec flourish-browser-tests pg_isready -U postgres -d flourish_e2e
+$env:TEST_DATABASE_ADMIN_URL = 'postgresql://postgres:REPLACE_WITH_TEST_ADMIN_PASSWORD@127.0.0.1:55434/flourish_e2e'
+$env:E2E_DATABASE_URL = 'postgresql://flourish_test:REPLACE_WITH_TEST_PASSWORD@127.0.0.1:55434/flourish_e2e'
+corepack.cmd pnpm exec tsx scripts/setup-test-database.ts --e2e
+Remove-Item Env:TEST_DATABASE_ADMIN_URL
+corepack.cmd pnpm exec tsx scripts/prepare-e2e-database.ts
+corepack.cmd pnpm exec playwright install chromium
+corepack.cmd pnpm test:e2e
+docker stop flourish-browser-tests
+```
+
+Wait for readiness and stop on any command failure. Guarded preparation runs migrations and canonical seeding without changing the application `DATABASE_URL`. The [harness](playwright.config.ts) serves port 3103 and uses encrypted test sessions rather than live Google consent. Without `E2E_DATABASE_URL`, authenticated cases skip and the smoke-test server receives a nonfunctional test URL instead of inheriting application credentials. Screenshots/traces go to ignored `test-results/`; live OAuth still needs a manual check.
+
+[GitHub Actions](.github/workflows/ci.yml) provisions a fresh PostgreSQL 17 service, runs the same guarded setup with temporary admin credentials, then runs integration tests using only the restricted role and `TEST_DATABASE_URL`. Public application migrations are no longer needed for the constraint suite. Frozen install, lint, types, unit tests, and production build remain in CI; Playwright is not part of that workflow. No application secrets are used.
 
 ## Operations and limitations
 

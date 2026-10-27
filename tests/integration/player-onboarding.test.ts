@@ -1,7 +1,5 @@
+import { createIntegrationDatabase } from "../support/integration-database";
 import { randomUUID } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
-import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
@@ -10,27 +8,21 @@ import { createPlayerApi } from "../../src/modules/player/api";
 import { flourishAdapter } from "../../src/modules/auth/adapter";
 import skills from "../../data/seeds/skills.json";
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) throw new Error("DATABASE_URL must point to a dedicated test database.");
-const schema = `onboarding_test_${randomUUID().replaceAll("-", "")}`;
-const admin = new Pool({ connectionString });
-const pool = new Pool({ connectionString, options: `-c search_path=${schema}` });
+const fixtureDb = createIntegrationDatabase();
+const { schema, pool } = fixtureDb;
 const db = new PrismaClient({ adapter: new PrismaPg(pool, { schema }) });
 const input = () => ({ timezone: "America/Denver", focus: Object.entries({ F: 6, L: 6, O: 6, U: 6, R: 6, I: 6, S: 5, H: 5 }).map(([skillCode, points]) => ({ skillCode, points })) });
 let userId: string;
 let playerId: string;
 
-beforeAll(async () => {
-  await admin.query(`CREATE SCHEMA "${schema}"`);
-  for (const name of readdirSync(resolve("prisma/migrations")).sort()) if (/^\d/.test(name)) await pool.query(readFileSync(resolve("prisma/migrations", name, "migration.sql"), "utf8"));
-});
+beforeAll(() => fixtureDb.setup());
 beforeEach(async () => {
-  await pool.query("TRUNCATE users, skills CASCADE");
+  await fixtureDb.reset(["users","skills"]);
   await db.skill.createMany({ data: skills });
   const user = await db.user.create({ data: { email: "player@example.test" } });
   userId = user.id; playerId = (await ensurePlayerForUser(db, userId)).id;
 });
-afterAll(async () => { await db.$disconnect(); await pool.end(); await admin.query(`DROP SCHEMA "${schema}" CASCADE`); await admin.end(); });
+afterAll(async () => { try { await db.$disconnect(); } finally { await fixtureDb.dispose(); } });
 
 async function counts() {
   return { focus: await db.playerSkillFocus.count(), history: await db.playerSkillFocusHistory.count(), progress: await db.playerProgress.count(), skillProgress: await db.playerSkillProgress.count(), streaks: await db.playerSkillStreak.count(), slots: await db.playerQuestSlot.count(), quests: await db.playerQuest.count() };
