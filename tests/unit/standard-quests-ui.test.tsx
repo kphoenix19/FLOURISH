@@ -50,12 +50,12 @@ describe("Standard quest interaction stability", () => {
 
   it("clears the recommendation card after accepting the last available quest", async () => {
     const occupied = { ...state, skills: [{ ...state.skills[0], slots: state.skills[0].slots.map((slot) => ({ ...slot, quest: quest(slot.quest.id, "ACCEPTED", slot.quest.title) })) }] } as StandardState;
-    const fetcher = vi.fn().mockResolvedValueOnce({ ok: true, json: async () => occupied }).mockResolvedValueOnce({ ok: true, json: async () => null }).mockResolvedValueOnce({ ok: true, json: async () => occupied }).mockResolvedValueOnce({ ok: true, json: async () => null });
+    const fetcher = vi.fn().mockResolvedValueOnce({ ok: true, json: async () => occupied }).mockResolvedValueOnce({ ok: true, json: async () => null });
     vi.stubGlobal("fetch", fetcher);
     render(<StandardQuests initial={state} initialRecommendation={recommendation} />);
     fireEvent.click(screen.getByRole("button", { name: "Accept quest" }));
     await screen.findByRole("heading", { name: "No quests to recommend right now" });
-    await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
     expect(screen.queryByRole("button", { name: "Accept quest" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Complete quest" })).toHaveLength(2);
   });
@@ -261,5 +261,115 @@ describe("Challenge actions refresh Home progression", () => {
     expectProgression(state);
     expect(fetcher).toHaveBeenCalledWith("/api/challenges");
     expect(fetcher).not.toHaveBeenCalledWith("/api/quests/standard");
+  });
+});
+
+
+describe("A08 request budgets", () => {
+  it.each(["complete", "abandon"] as const)("uses the authoritative Standard %s response without refetching progression", async (action) => {
+    const updated = { ...state, overallXp: action === "complete" ? 1100 : 0, overallLevel: action === "complete" ? 2 : 1,
+      skills: [{ ...state.skills[0], currentLevel: 2, currentXp: 350, currentStreakDays: 3,
+        slots: state.skills[0].slots.map((slot) => slot.quest.id === "accepted" ? { ...slot, quest: quest("replacement", "AVAILABLE", "Replacement quest") } : slot) }] } as StandardState;
+    const fetcher = vi.fn(async (url: string) => ({ ok: true, json: async () => url === "/api/recommendations/next" ? null : updated }));
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} />);
+    fireEvent.click(screen.getByRole("button", { name: action === "complete" ? "Complete quest" : "Abandon" }));
+    if (action === "abandon") fireEvent.click(screen.getByRole("button", { name: "Abandon quest" }));
+    await screen.findByText(action === "complete" ? "Quest complete. XP, levels, and streaks are updated." : "Quest abandoned. The Skill XP penalty was applied and a replacement is ready.");
+    expect(screen.getByRole("heading", { name: `Overall Level ${updated.overallLevel}` })).toBeVisible();
+    expect(screen.getByText(`${updated.overallXp.toLocaleString()} Overall XP`)).toBeVisible();
+    expect(screen.getByRole("button", { name: /Fitness/ })).toHaveTextContent("Level 2");
+    expect(screen.getByRole("button", { name: /Fitness/ })).toHaveTextContent("3-day streak");
+    expect(document.querySelector('[data-active-quest-id="accepted"]')).toBeNull();
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual([`/api/quests/standard/accepted/${action}`, "/api/recommendations/next"]);
+  });
+
+  it.each(["progression", "recommendation"])("retains successful refresh data when %s refresh fails", async (failed) => {
+    const changed = { ...state, overallXp: 1100, overallLevel: 2 };
+    const updatedChallenges = { ...challenges, daily: null, nextDailyStartsAt: "2026-10-28T06:00:00Z" };
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === "/api/quests/standard") {
+        if (failed === "progression") throw new Error("Progression network failure");
+        return { ok: true, json: async () => changed };
+      }
+      if (url === "/api/recommendations/next") return { ok: failed !== "recommendation", json: async () => alternative };
+      return { ok: true, json: async () => updatedChallenges };
+    });
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} initialChallenges={challenges} />);
+    fireEvent.click(within(document.querySelector('[data-active-quest-id="daily-active"]') as HTMLElement).getByRole("button", { name: "Complete" }));
+    await screen.findByRole("alert");
+    await waitFor(() => expect(screen.getByRole("button", { name: "Complete quest" })).toBeEnabled());
+    expect(screen.getByText("No active daily period.")).toBeVisible();
+    expect(screen.getByRole("heading", { name: `Overall Level ${failed === "progression" ? 1 : 2}` })).toBeVisible();
+    if (failed === "progression") expect(screen.getByText("Different quest")).toBeVisible();
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(["/api/challenges/daily-active/complete", "/api/quests/standard", "/api/recommendations/next", "/api/challenges"]);
+  });
+
+  it("serializes Home actions through delayed refreshes to prevent stale cross-action responses", async () => {
+    let resolveHome!: (value: unknown) => void;
+    const changed = { ...state, overallXp: 1100, overallLevel: 2 };
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === "/api/quests/standard") return { ok: true, json: () => new Promise((resolve) => { resolveHome = resolve; }) };
+      return { ok: true, json: async () => url === "/api/recommendations/next" ? alternative : challenges };
+    });
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} initialChallenges={challenges} />);
+    fireEvent.click(within(document.querySelector('[data-active-quest-id="daily-active"]') as HTMLElement).getByRole("button", { name: "Complete" }));
+    await waitFor(() => expect(resolveHome).toBeDefined());
+    for (const name of ["Complete quest", "Accept quest", "Something different", "Increase weekly-active title progress"]) {
+      const button = screen.getByRole("button", { name });
+      expect(button).toBeDisabled(); fireEvent.click(button);
+    }
+    expect(fetcher).toHaveBeenCalledTimes(2); // Recommendation waits for the Standard response body.
+    resolveHome(changed);
+    await screen.findByText("Challenge completed and rewards applied.");
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(screen.getByRole("heading", { name: "Overall Level 2" })).toBeVisible();
+    const different = screen.getByRole("button", { name: "Something different" });
+    fireEvent.click(different);
+    await screen.findByText("Here is another available quest.");
+    await waitFor(() => expect(different).toBeEnabled());
+    fireEvent.click(different);
+    await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(5));
+  });
+
+  it("recovers a failed recommendation acceptance once and retains the original error on partial recovery", async () => {
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === "/api/quests/standard") throw new Error("Recovery network failure");
+      if (url === "/api/recommendations/next") return { ok: true, json: async () => null };
+      return { ok: false, json: async () => ({ error: { message: "This slot has changed." } }) };
+    });
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} />);
+    fireEvent.click(screen.getByRole("button", { name: "Accept quest" }));
+    await screen.findByRole("heading", { name: "No quests to recommend right now" });
+    expect(screen.getByRole("alert")).toHaveTextContent("This slot has changed.");
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(["/api/quests/standard/available/accept", "/api/quests/standard", "/api/recommendations/next"]);
+  });
+
+  it("uses server-provided initial Home data without client fetches", () => {
+    const fetcher = vi.fn(); vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={null} initialChallenges={{ ...challenges, daily: null, nextDailyStartsAt: "2026-10-28T06:00:00Z" }} />);
+    expect(screen.getByRole("heading", { name: "Overall Level 1" })).toBeVisible();
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+  it.each([
+    { action: "recommendation accept", button: "Accept quest", count: 2, message: "Quest accepted. Your deadline has started." },
+    { action: "Standard complete", button: "Complete quest", count: 2, message: "Quest complete. XP, levels, and streaks are updated." },
+    { action: "Standard abandon", button: "Abandon", count: 2, message: "Quest abandoned. The Skill XP penalty was applied and a replacement is ready." },
+    { action: "Challenge complete", button: "Complete", count: 3, message: "Challenge completed and rewards applied." },
+    { action: "Challenge increment", button: "Increase weekly-active title progress", count: 3, message: "Challenge progress updated. No XP is awarded until the target is reached." },
+  ])("measures fetch calls for $action", async ({ action, button, count, message }) => {
+    const fetcher = vi.fn(async (url: string) => ({ ok: true, json: async () => url.startsWith("/api/challenges") ? challenges : url === "/api/recommendations/next" ? null : state }));
+    vi.stubGlobal("fetch", fetcher);
+    render(<StandardQuests initial={state} initialRecommendation={recommendation} initialChallenges={challenges} />);
+    const controls = action === "Challenge complete" ? within(document.querySelector('[data-active-quest-id="daily-active"]') as HTMLElement) : screen;
+    fireEvent.click(controls.getByRole("button", { name: button }));
+    if (action === "Standard abandon") fireEvent.click(screen.getByRole("button", { name: "Abandon quest" }));
+    await screen.findByText(message);
+    await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(count));
+    expect(screen.getByRole("heading", { name: "No quests to recommend right now" })).toBeVisible();
+    console.log("A08 fetch count", action, fetcher.mock.calls.length);
   });
 });

@@ -42,6 +42,7 @@ export async function replaceStandardSlotQuest(context: StandardContext, slot: S
 export async function reconcileInTransaction(context: StandardContext, random: RandomSource) {
   const slots = await ensureSlotsInTransaction(context);
   const occupied = occupiedDefinitions(slots);
+  let replaced = false;
   if (occupied.size !== slots.filter((s) => s.currentPlayerQuest).length) throw new ServiceError(409, "DUPLICATE_ASSIGNMENT", "Duplicate current quests require repair.");
   for (const slot of slots) {
     const q = slot.currentPlayerQuest;
@@ -50,11 +51,13 @@ export async function reconcileInTransaction(context: StandardContext, random: R
     if (q?.status === "AVAILABLE" && context.valid(q.questDefinition, slot.skillId)) continue;
     const target = selectCandidate(context.candidates(slot.skillId), { ...await context.selection(slot.skillId, occupied), excluded: new Set(q ? [q.questDefinitionId] : []), avoidTagId: q ? primaryTag(q.questDefinition) : null }, random);
     await replaceStandardSlotQuest(context, slot, target);
+    replaced = true;
     if (q) occupied.delete(q.questDefinitionId);
     occupied.add(target.id);
   }
-  return standardState(context);
+  // Reuse the locked snapshot unless a replacement changed its relations.
+  return replaced ? currentSlots(context) : slots;
 }
 export function reconcileStandardQuestSlots(db: PrismaClient, playerId: string, random: RandomSource = Math.random, now: () => Date = () => new Date()) {
-  return standardTransaction(db, playerId, async (context) => { const at = now(); await reconcileExpiredInTransaction(context, at); await reconcileInTransaction(context, random); return standardState(context, at); });
+  return standardTransaction(db, playerId, async (context) => { const at = now(); await reconcileExpiredInTransaction(context, at); const slots = await reconcileInTransaction(context, random); return standardState(context, at, null, slots); });
 }

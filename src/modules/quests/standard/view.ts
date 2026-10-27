@@ -1,11 +1,13 @@
-import { currentSlots, occupiedDefinitions, type StandardContext } from "./context";
+import { currentSlots, occupiedDefinitions, type StandardContext, type Slot } from "./context";
 import { nextFamilyTier } from "./selection";
 import { overallProgressWithinLevel, skillProgressWithinLevel } from "../../progression/levels";
 import { effectiveStreakDays, nextStreakTier, streakBonusPercent } from "../../progression/streaks";
 import type { ResolutionFeedback } from "./resolution";
 
-export async function standardState(context: StandardContext, now = new Date(), resolution: ResolutionFeedback | null = null) {
-  const slots = await currentSlots(context);
+// Optional slots must be the current snapshot from reconciliation in this locked
+// transaction. Mutation callers read fresh slots after completing their writes.
+export async function standardState(context: StandardContext, now = new Date(), resolution: ResolutionFeedback | null = null, reconciledSlots?: Slot[]) {
+  const slots = reconciledSlots ?? await currentSlots(context);
   const occupied = occupiedDefinitions(slots);
   const progress = await context.tx.playerProgress.findUniqueOrThrow({ where: { playerId: context.playerId } });
   const streaks = await context.tx.playerSkillStreak.findMany({ where: { playerId: context.playerId } });

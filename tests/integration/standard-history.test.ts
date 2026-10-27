@@ -34,6 +34,42 @@ beforeEach(async () => {
 });
 afterAll(async () => { try { await db.$disconnect(); } finally { await fixture.dispose(); } });
 
+it("A08 constructs one Standard view and no discarded view on recommendation hits", async () => {
+  const now = () => new Date("2026-10-27T18:00:00Z");
+  const first = await reconcileStandardQuestSlots(db, playerId, () => 0.5, now);
+  const recommendation = await getHomeRecommendation(db, playerId, () => 0.5, now);
+  queries = [];
+  expect(await reconcileStandardQuestSlots(db, playerId, () => 0.5, now)).toEqual(first);
+  const selects = (table: string) => queries.filter((q) => q.startsWith("SELECT") && q.includes(`"${table}"`));
+  expect(selects("player_quest_slots")).toHaveLength(2); // Expiration and reconciliation snapshots.
+  expect(selects("player_progress")).toHaveLength(2); // Integrity validation and one view.
+  expect(historyQueries()).toHaveLength(0);
+  queries = [];
+  expect(await getHomeRecommendation(db, playerId, () => { throw new Error("Unexpected recomputation"); }, now)).toEqual(recommendation);
+  expect(selects("player_quest_slots")).toHaveLength(2);
+  expect(selects("player_progress")).toHaveLength(1); // Integrity validation only.
+  expect(historyQueries()).toHaveLength(0);
+});
+
+it("A08 returns fresh replacement relations and expired blockers after reconciliation", async () => {
+  const now = new Date("2026-10-27T18:00:00Z");
+  const first = await reconcileStandardQuestSlots(db, playerId, () => 0.5, () => now);
+  const slots = first.skills.flatMap((skill) => skill.slots);
+  const replaced = slots[0]; const accepted = slots[1];
+  await mutateStandardQuest(db, playerId, accepted.quest.id, "accept", {}, { now: () => now });
+  await db.questDefinition.update({ where: { id: replaced.quest.definitionId }, data: { active: false } });
+  const later = new Date("2026-11-10T18:00:00Z");
+  const result = await reconcileStandardQuestSlots(db, playerId, () => 0.5, () => later);
+  const updated = result.skills.flatMap((skill) => skill.slots);
+  expect(updated).toHaveLength(24);
+  expect(updated.find((slot) => slot.id === replaced.id)!.quest.definitionId).not.toBe(replaced.quest.definitionId);
+  expect(updated.find((slot) => slot.id === accepted.id)!.quest).toMatchObject({ id: accepted.quest.id, status: "EXPIRED" });
+  expect(result.overallXp).toBe(first.overallXp);
+  const recommendation = await getHomeRecommendation(db, playerId, () => 0.5, () => later);
+  expect(recommendation).not.toBeNull();
+  expect(updated.some((slot) => slot.quest.id === recommendation!.playerQuestId && slot.quest.status === "AVAILABLE")).toBe(true);
+});
+
 it.each([0, 9, 1000, 10000])("matches original full-history filtering and selection with %i completions", async (count) => {
   await insertHistory(db, playerId, count);
   await reconcileStandardQuestSlots(db, playerId, () => 0.5);

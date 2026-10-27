@@ -1,7 +1,7 @@
 import type { PrismaClient } from "../../generated/prisma/client";
 import { gameConfig } from "../../config/game";
 import { ServiceError } from "../../lib/service-error";
-import { currentSlots, standardTransaction } from "../quests/standard/context";
+import { standardTransaction } from "../quests/standard/context";
 import { reconcileExpiredInTransaction } from "../quests/standard/resolution";
 import { reconcileInTransaction } from "../quests/standard/slots";
 import { catchUpModifiers, primaryTag, weightedChoice, type RandomSource } from "../quests/standard/selection";
@@ -14,8 +14,8 @@ export type HomeRecommendationResult = (HomeRecommendation & { differentAvailabl
 
 export function getHomeRecommendation(db: PrismaClient, playerId: string, random: RandomSource = Math.random, now: () => Date = () => new Date(), excludePlayerQuestId?: string): Promise<HomeRecommendationResult> {
   return standardTransaction(db, playerId, async (context) => {
-    const at = now(); await reconcileExpiredInTransaction(context, at); await reconcileInTransaction(context, random);
-    const slots = await currentSlots(context); const allEligible = slots.filter((s) => s.currentPlayerQuest?.status === "AVAILABLE" && context.valid(s.currentPlayerQuest.questDefinition, s.skillId));
+    const at = now(); await reconcileExpiredInTransaction(context, at); const slots = await reconcileInTransaction(context, random);
+    const allEligible = slots.filter((s) => s.currentPlayerQuest?.status === "AVAILABLE" && context.valid(s.currentPlayerQuest.questDefinition, s.skillId));
     const persisted = await context.tx.playerRecommendation.findUnique({ where: { playerId } });
     const persistedSlot = persisted && !persisted.invalidatedAt ? allEligible.find((s) => s.currentPlayerQuestId === persisted.playerQuestId) : undefined;
     if (excludePlayerQuestId && persistedSlot?.currentPlayerQuestId !== excludePlayerQuestId) throw new ServiceError(409, "STALE_RECOMMENDATION", "That recommendation is no longer current. Your Home recommendation has been refreshed.");

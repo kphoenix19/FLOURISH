@@ -34,6 +34,21 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("Player Home loading", () => {
+  it("loads the Player-locked services sequentially and forwards their results once", async () => {
+    let resolveProgression!: (value: unknown) => void;
+    mocks.progression.mockImplementation(() => new Promise((resolve) => { resolveProgression = resolve; }));
+    const loading = PlayerHome();
+    await vi.waitFor(() => expect(resolveProgression).toBeDefined());
+    expect(mocks.recommendation).not.toHaveBeenCalled();
+    expect(mocks.challenges).not.toHaveBeenCalled();
+    resolveProgression(progression);
+    render(await loading);
+    for (const stage of stages) expect(mocks[stage]).toHaveBeenCalledTimes(1);
+    expect(mocks.progression.mock.invocationCallOrder[0]).toBeLessThan(mocks.recommendation.mock.invocationCallOrder[0]);
+    expect(mocks.recommendation.mock.invocationCallOrder[0]).toBeLessThan(mocks.challenges.mock.invocationCallOrder[0]);
+    expect(screen.getByRole("heading", { name: "Loaded Home" })).toBeVisible();
+  });
+
   it("renders all Home data when recommendation lookup succeeds with null", async () => {
     mocks.recommendation.mockResolvedValue(null);
     render(await PlayerHome());
