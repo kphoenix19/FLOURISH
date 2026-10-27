@@ -1,8 +1,8 @@
 import type { Prisma, PrismaClient } from "../../../generated/prisma/client";
 import { assertOnboardingIntegrity } from "../../player/services";
 import { ServiceError } from "../../../lib/service-error";
-import { gameConfig } from "../../../config/game";
-import { catchUpModifiers, primaryTag, type SelectionContext } from "./selection";
+import { loadRecentHistory } from "./history";
+import { catchUpModifiers, type SelectionContext } from "./selection";
 import { definitionInclude, validDefinition } from "./content";
 
 export const slotInclude = { skill: true, currentPlayerQuest: { include: { questDefinition: { include: definitionInclude }, skillSnapshots: true, failurePenaltySkills: true } } } satisfies Prisma.PlayerQuestSlotInclude;
@@ -19,13 +19,11 @@ export async function standardContext(tx: Prisma.TransactionClient, playerId: st
   const ids = new Set(state.skills.map((s) => s.id));
   const focus = Object.fromEntries(state.rows.map((r) => [r.skillId, r.focusPoints]));
   const catchUp = catchUpModifiers(progress.map((p) => ({ ...p, code: state.skills.find((s) => s.id === p.skillId)!.code })));
-  const recent = new Map<string, SelectionContext["recent"]>();
-  const completed = await tx.playerQuest.findMany({ where: { playerId, status: "COMPLETED" }, orderBy: [{ completedAt: "desc" }, { id: "asc" }], include: { skillSnapshots: true, questDefinition: { include: definitionInclude } } });
-  for (const skill of state.skills) {
-    recent.set(skill.id, completed.filter((q) => q.skillSnapshots.some((snapshot) => snapshot.skillId === skill.id)).slice(0, gameConfig.recommendations.varietyHistoryWindow).map((q) => ({ definitionId: q.questDefinitionId, primaryTagId: primaryTag(q.questDefinition) })));
-  }
-  return { tx, playerId, state, progress, candidates: (skillId: string) => definitions.filter((q) => validDefinition(q, skillId, ids)),
-    selection: (skillId: string, occupied: Set<string>): SelectionContext => ({ level: progress.find((p) => p.skillId === skillId)!.currentLevel, focus, catchUp, occupied, recent: recent.get(skillId)! }),
+  // Transaction-local only; reads and valid persisted recommendations need no history.
+  let recent: ReturnType<typeof loadRecentHistory> | undefined;
+  const history = () => recent ??= loadRecentHistory(tx, playerId, state.skills.map((s) => s.id));
+  return { tx, playerId, state, progress, history, candidates: (skillId: string) => definitions.filter((q) => validDefinition(q, skillId, ids)),
+    selection: async (skillId: string, occupied: Set<string>): Promise<SelectionContext> => ({ level: progress.find((p) => p.skillId === skillId)!.currentLevel, focus, catchUp, occupied, recent: (await history()).get(skillId)! }),
     valid: (q: Parameters<typeof validDefinition>[0], skillId: string) => validDefinition(q, skillId, ids) };
 }
 export type StandardContext = Awaited<ReturnType<typeof standardContext>>;

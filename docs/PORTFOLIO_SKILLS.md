@@ -81,3 +81,29 @@ This guide maps engineering decisions to the current implementation and its test
 **Evidence:** [Home loading tests](../tests/unit/player-home.test.tsx) verify safe handling of each service failure and propagation of unexpected failures. [Home interaction tests](../tests/unit/standard-quests-ui.test.tsx) verify authoritative progression refresh after Challenge settlement. [Scheduled reconciliation integration cases](../tests/integration/standard-quests.test.ts) test repeat and overlapping runs without hidden XP/penalty changes. [Browser journeys](../tests/e2e/) cover onboarding through gameplay and admin curation.
 
 **Tradeoff:** browser tests require a separately migrated/seeded disposable database and skip authenticated cases when it is absent; they are not in the current CI workflow. The reconciliation command needs an external scheduler for unattended operation. Automated passing checks demonstrate covered behavior, not deployment availability or load capacity.
+
+## 9. Measured query optimization with behavior preservation
+
+**Result:** at 10,000 completed quests, local median recommendation recomputation latency fell **89%**, from **559.60 ms to 62.54 ms**. Standard reads and persisted recommendation hits each improved by approximately **85?86%**. This work demonstrates profiling, SQL query design, control of data materialization, and regression testing around transactional code.
+
+**Problem:** Standard operations fetched the player's entire completed-quest history and related records while holding the Player lock, then filtered that history in application code. Recommendation recomputation fetched it a second time. Even a valid persisted recommendation paid the full history-loading cost. Query counts stayed constant as history grew, hiding an increase in rows transferred and materialized.
+
+**Approach and code:** trace the consumers to establish the actual requirement—five recent completions per Skill—then optimize the data access without changing the selection rules:
+
+- [`recentHistoryQuery`](../src/modules/quests/standard/history.ts) uses a parameterized PostgreSQL lateral query with an independent limit for each Skill. A global limit would lose relevant history for less-active Skills. Membership comes from completion Skill snapshots, so multi-Skill activities count correctly; completion time and quest ID preserve deterministic ordering.
+- [`standardContext`](../src/modules/quests/standard/context.ts) loads that bounded history only when selection needs it and shares it within the transaction. Unchanged Standard reads and persisted recommendation hits fetch no completion history. Recalculation returns at most 40 narrow history rows rather than materializing two full quest-history graphs.
+- [`complete`](../src/modules/quests/standard/resolution.ts) captures history before recording completion, preserving the existing immediate-refill behavior. Player/library locks, atomic rewards, and recommendation invalidation remain intact. No cross-request cache, dependency upgrade, or schema migration was needed.
+
+**Measured evidence:** the same local Windows host and disposable PostgreSQL 17 container were used for before/after runs with 0, 1,000, and 10,000 synthetic completions. Each measurement used three discarded warmups followed by 20 serial samples. At 10,000 completions:
+
+| Service operation | Median before → after | p95 before → after | SQL statements before → after |
+| --- | ---: | ---: | ---: |
+| Standard state read | 304.89 → 43.45 ms | 319.51 → 46.63 ms | 55 → 50 |
+| Persisted recommendation hit | 299.98 → 43.82 ms | 310.58 → 49.11 ms | 54 → 49 |
+| Recommendation recomputation | 559.60 → 62.54 ms | 594.53 → 75.15 ms | 66 → 57 |
+
+The [A07 audit record](PERFORMANCE_AND_RISK_AUDIT.md#a07--full-completion-history-fetched-repeatedly-under-player-lock) preserves the original findings, all dataset sizes, precise timing methodology, row counts, and `EXPLAIN ANALYZE` evidence. The [benchmark script](../scripts/benchmark-standard-history.ts) uses the repository's guarded disposable-database workflow; setup and invalidation are outside the timed region.
+
+**Correctness evidence:** eight [PostgreSQL history regressions](../tests/integration/standard-history.test.ts) compare results with the original full-history implementation, including uneven Skill histories, multi-Skill snapshots, equal-timestamp tie-breaking, persisted reuse, invalidation, expiration, concurrent acceptance, and completion/refill. Verification at implementation passed **209 unit tests and 179 PostgreSQL integration tests**, plus lint, TypeScript, production build, and diff checks.
+
+**Tradeoff and next measurement:** returned history and application materialization are bounded, but PostgreSQL still scans and sorts completion history internally. The measured 10,000-row plan took approximately 12.5 ms and visited matching completion rows across eight Skill scans. An additional index was deferred until a representative multi-player workload can establish its benefit and write cost. Player serialization and repeated slot/library reads remain. These local service benchmarks demonstrate an improvement on the measured workload; they do not establish production throughput or end-to-end page latency, and 20 samples provide only a limited tail-latency estimate.

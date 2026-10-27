@@ -4,6 +4,8 @@ FLOURISH is a gamified personal development progression application. Players com
 
 The application combines a curated quest library with persistent assignments, player-local Daily/Weekly Challenges, and rule-based recommendations. Completion is self-reported; the server owns quest transitions and reward calculations.
 
+> **Measured performance improvement:** at 10,000 completed quests, recommendation recomputation fell from **560 ms to 63 ms median (89% lower latency)** in local PostgreSQL benchmarks. Standard reads and persisted recommendation hits improved by approximately **85?86%**, while preserving selection behavior and transaction safety. See the [performance engineering case study](docs/PORTFOLIO_SKILLS.md#9-measured-query-optimization-with-behavior-preservation) for the implementation, benchmark methodology, regression tests, and remaining limits.
+
 ## Screenshots
 
 ### Home dashboard
@@ -37,6 +39,7 @@ These features are implemented. Future scope is tracked separately in the [backl
 
 | Decision | Implementation evidence |
 | --- | --- |
+| Measure history growth and eliminate unnecessary query/materialization work | [Bounded per-Skill history queries](src/modules/quests/standard/history.ts) and [lazy loading](src/modules/quests/standard/context.ts) avoid full-history reads on persisted recommendation hits. [Before/after benchmarks](docs/PORTFOLIO_SKILLS.md#9-measured-query-optimization-with-behavior-preservation) include latency, SQL counts, and correctness evidence. |
 | Serialize gameplay mutations for each player inside PostgreSQL transactions | [`standardContext` and `standardTransaction`](src/modules/quests/standard/context.ts) use a Player row lock and shared content-library locks. |
 | Settle rewards once, including competing requests | [`resolveStandardQuest`](src/modules/quests/standard/resolution.ts) and [`mutateChallenge`](src/modules/challenges/service.ts) combine status checks, transactions, reward records, XP ledger entries, and slot/set updates. |
 | Preserve acceptance-time facts and reward breakdowns | [`mutateStandardQuest`](src/modules/quests/standard/actions.ts) captures gameplay/text snapshots; [`QuestReward` and `QuestSkillReward`](prisma/schema.prisma) retain calculated reward details. |

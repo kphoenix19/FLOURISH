@@ -42,7 +42,7 @@ export function mutateStandardQuest(db: PrismaClient, playerId: string, questId:
     } else {
       const occupied = occupiedDefinitions(slots);
       const candidates = context.candidates(slot.skillId);
-      const target = action === "bump" ? nextFamilyTier(q.questDefinition, candidates, occupied) : selectCandidate(candidates, { ...context.selection(slot.skillId, occupied), excluded: new Set([q.questDefinitionId]), avoidTagId: primaryTag(q.questDefinition) }, options.random ?? Math.random);
+      const target = action === "bump" ? nextFamilyTier(q.questDefinition, candidates, occupied) : selectCandidate(candidates, { ...await context.selection(slot.skillId, occupied), excluded: new Set([q.questDefinitionId]), avoidTagId: primaryTag(q.questDefinition) }, options.random ?? Math.random);
       if (!target) throw new ServiceError(409, "NO_HIGHER_TIER", "No higher available family tier exists.");
       await replaceStandardSlotQuest(context, slot, target, { operationId, action: action === "bump" ? "UPGRADED" : "REROLLED", feedback });
     }

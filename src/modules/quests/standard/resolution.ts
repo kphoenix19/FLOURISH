@@ -40,7 +40,7 @@ export function reconcileExpiredStandardQuests(db: PrismaClient, playerId: strin
 }
 async function refill(context: StandardContext, slot: Slot, random: RandomSource) {
   const occupied = occupiedDefinitions(await currentSlots(context)); occupied.delete(slot.currentPlayerQuest!.questDefinitionId);
-  const target = selectCandidate(context.candidates(slot.skillId), { ...context.selection(slot.skillId, occupied), occupied, excluded: new Set([slot.currentPlayerQuest!.questDefinitionId]), avoidTagId: primaryTag(slot.currentPlayerQuest!.questDefinition) }, random);
+  const target = selectCandidate(context.candidates(slot.skillId), { ...await context.selection(slot.skillId, occupied), occupied, excluded: new Set([slot.currentPlayerQuest!.questDefinitionId]), avoidTagId: primaryTag(slot.currentPlayerQuest!.questDefinition) }, random);
   await replaceStandardSlotQuest(context, slot, target);
 }
 async function applyPenalty(context: StandardContext, q: NonNullable<Slot["currentPlayerQuest"]>, now: Date, operationId: string) {
@@ -61,6 +61,8 @@ async function applyPenalty(context: StandardContext, q: NonNullable<Slot["curre
 }
 async function complete(context: StandardContext, slot: Slot, now: Date, random: RandomSource) {
   const q = slot.currentPlayerQuest!; assertAcceptedSnapshots(q);
+  // Preserve the original pre-completion history used by immediate slot refill.
+  await context.history();
   const operationId = randomUUID();
   const codes = Object.fromEntries(context.state.skills.map((s) => [s.id, s.code]));
   const base = allocateLargestRemainder(q.baseXpSnapshot, q.skillSnapshots.map((s) => ({ key: codes[s.skillId], weight: s.rewardPercent })));

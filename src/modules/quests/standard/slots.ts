@@ -48,7 +48,7 @@ export async function reconcileInTransaction(context: StandardContext, random: R
     if (q && (q.playerId !== context.playerId || q.poolType !== "STANDARD")) throw new ServiceError(409, "SLOT_INTEGRITY", "The current slot needs repair.");
     if (q?.status === "ACCEPTED" || (q?.status === "EXPIRED" && !q.clearedAt)) continue;
     if (q?.status === "AVAILABLE" && context.valid(q.questDefinition, slot.skillId)) continue;
-    const target = selectCandidate(context.candidates(slot.skillId), { ...context.selection(slot.skillId, occupied), excluded: new Set(q ? [q.questDefinitionId] : []), avoidTagId: q ? primaryTag(q.questDefinition) : null }, random);
+    const target = selectCandidate(context.candidates(slot.skillId), { ...await context.selection(slot.skillId, occupied), excluded: new Set(q ? [q.questDefinitionId] : []), avoidTagId: q ? primaryTag(q.questDefinition) : null }, random);
     await replaceStandardSlotQuest(context, slot, target);
     if (q) occupied.delete(q.questDefinitionId);
     occupied.add(target.id);
