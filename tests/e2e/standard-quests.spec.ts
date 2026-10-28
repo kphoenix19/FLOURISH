@@ -63,9 +63,11 @@ test.describe("Standard quest experience", () => {
     if (testInfo.project.name === "chromium") expect(dailyBox!.height).toBeGreaterThan(weeklyBox!.height);
     await page.screenshot({ path: testInfo.outputPath("home-overview.png"), fullPage: true, caret: "initial" });
     const dailyChallenge = page.getByRole("region", { name: "Daily Challenges", exact: true }).locator("[data-challenge-id]").first();
-    await dailyChallenge.getByRole("button", { name: "Accept", exact: true }).click();
-    await expect(page.getByText("Challenge accepted.", { exact: true })).toBeVisible();
     const dailyChallengeId = await dailyChallenge.getAttribute("data-challenge-id");
+    const dailyAccepted = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/challenges/${dailyChallengeId}/accept` && response.request().method() === "POST");
+    await dailyChallenge.getByRole("button", { name: "Accept", exact: true }).click();
+    expect((await dailyAccepted).status()).toBe(200);
+    await expect(page.getByText("Challenge accepted.", { exact: true })).toBeVisible();
     await expect(dailyTrigger).toHaveAttribute("aria-expanded", "true");
     await expect(page.locator(`[data-active-quest-id="${dailyChallengeId}"]`)).toContainText("Daily Challenge");
     const weeklyId = await page.getByRole("region", { name: "Weekly Challenges", exact: true }).locator("[data-challenge-id]").first().getAttribute("data-challenge-id");
@@ -74,7 +76,10 @@ test.describe("Standard quest experience", () => {
     const refreshedWeeklyTrigger = page.getByRole("region", { name: "Weekly Challenges", exact: true }).getByRole("button", { name: /Weekly Challenges/ });
     await refreshedWeeklyTrigger.click();
     const weeklyCount = page.locator(`[data-challenge-id="${weeklyId}"]`);
+    const weeklyAccepted = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/challenges/${weeklyId}/accept` && response.request().method() === "POST");
     await weeklyCount.getByRole("button", { name: "Accept", exact: true }).click();
+    expect((await weeklyAccepted).status()).toBe(200);
+    await expect(page.locator(`[data-active-quest-id="${weeklyId}"]`)).toContainText("Weekly Challenge");
     await weeklyCount.getByRole("button", { name: /Increase .* progress/ }).click();
     await expect(weeklyCount.getByText(/^1\/\d+$/)).toBeVisible();
     await expect(page.locator(`[data-active-quest-id="${weeklyId}"]`)).toContainText("Weekly Challenge");

@@ -4,7 +4,7 @@ FLOURISH is a gamified personal development progression application. Players com
 
 The application combines a curated quest library with persistent assignments, player-local Daily/Weekly Challenges, and rule-based recommendations. Completion is self-reported; the server owns quest transitions and reward calculations.
 
-> **Measured performance improvement:** at 10,000 completed quests, recommendation recomputation fell from **560 ms to 63 ms median (89% lower latency)** in local PostgreSQL benchmarks. Standard reads and persisted recommendation hits improved by approximately **85?86%**, while preserving selection behavior and transaction safety. See the [performance engineering case study](docs/PORTFOLIO_SKILLS.md#9-measured-query-optimization-with-behavior-preservation) for the implementation, benchmark methodology, regression tests, and remaining limits.
+> **Measured performance improvement:** at 10,000 completed quests, recommendation recomputation fell from **560 ms to 63 ms median (89% lower latency)** in local PostgreSQL benchmarks. Standard reads and persisted recommendation hits improved by approximately **85–86%**, while preserving selection behavior and transaction safety. See the [performance engineering case study](docs/PORTFOLIO_SKILLS.md#9-measured-query-optimization-with-behavior-preservation) for the implementation, benchmark methodology, regression tests, and remaining limits.
 
 ## Screenshots
 
@@ -55,8 +55,8 @@ See [Portfolio engineering skills](docs/PORTFOLIO_SKILLS.md) for specific functi
 | Layer | Repository configuration |
 | --- | --- |
 | Runtime/package manager | Node.js 22+ required; CI uses Node 24. Locally verified: Node 24.22.1 and pnpm 11.25.0. |
-| Application | Next.js 16.3.4, React 19.2.8, TypeScript 5.9.3 |
-| Styling/validation | Tailwind CSS 4.3.3, Zod 4.5.4 |
+| Application | Next.js 16.4.1, React 19.2.8, TypeScript 5.9.3 |
+| Styling/validation | Tailwind CSS 4.3.3, Zod 4.6.6 |
 | Authentication | NextAuth.js 4.24.15 (Auth.js), Google OAuth |
 | Persistence | PostgreSQL 17, Prisma 7.10.0, PostgreSQL driver adapter |
 | Testing | Vitest, React Testing Library, Playwright |
@@ -197,7 +197,7 @@ corepack.cmd pnpm test:e2e
 docker stop flourish-browser-tests
 ```
 
-Wait for readiness and stop on any command failure. Guarded preparation runs migrations and canonical seeding without changing the application `DATABASE_URL`. The [harness](playwright.config.ts) serves port 3103 and uses encrypted test sessions rather than live Google consent. Without `E2E_DATABASE_URL`, authenticated cases skip and the smoke-test server receives a nonfunctional test URL instead of inheriting application credentials. Screenshots/traces go to ignored `test-results/`; live OAuth still needs a manual check.
+Wait for readiness and stop on any command failure. Guarded preparation runs migrations and canonical seeding without changing the application `DATABASE_URL`. The [harness](playwright.config.ts) validates the disposable target, builds production code, then serves port 3103 using encrypted test sessions rather than live Google consent. Building before browser readiness avoids compiling routes inside assertion deadlines; the existing Next development server uses separate `.next/dev` output and can remain running. Run other production builds and E2E sequentially because they share `.next` production output. Without `E2E_DATABASE_URL`, authenticated cases skip and the smoke-test server receives a nonfunctional test URL instead of inheriting application credentials. Failures retain traces and screenshots in ignored `test-results/`, without automatic retries; live OAuth still needs a manual check.
 
 [GitHub Actions](.github/workflows/ci.yml) provisions a fresh PostgreSQL 17 service, runs the same guarded setup with temporary admin credentials, then runs integration tests using only the restricted role and `TEST_DATABASE_URL`. Public application migrations are no longer needed for the constraint suite. Frozen install, lint, types, unit tests, and production build remain in CI; Playwright is not part of that workflow. No application secrets are used.
 
@@ -212,6 +212,7 @@ Wait for readiness and stop on any command failure. Guarded preparation runs mig
 ## Further documentation
 
 - [Engineering competencies and evidence](docs/PORTFOLIO_SKILLS.md)
+- [Public release readiness and dependency advisory policy](docs/PUBLIC_RELEASE_READINESS.md#dependency-advisory-review-policy)
 - [Architecture](docs/ARCHITECTURE.md), [data model](docs/DATA_MODEL.md), and [game rules](docs/GAME_RULES.md)
 - [Product scope](docs/PRODUCT_SPEC.md), [recommendations](docs/RECOMMENDATION_ENGINE.md), and [admin curation](docs/ADMIN_SPEC.md)
 - [Quest content guide](docs/QUEST_CONTENT_GUIDE.md) and [acceptance criteria](docs/BUILD1_ACCEPTANCE.md)
@@ -219,3 +220,9 @@ Wait for readiness and stop on any command failure. Guarded preparation runs mig
 - [Contributor/agent instructions](AGENTS.md)
 
 Phase documents retain implementation history and planning context. Read them alongside current code; future plans are not claims of delivered functionality.
+
+### License
+
+Copyright © 2026. All rights reserved.
+
+FLOURISH is publicly available for portfolio viewing and evaluation. The source code is not licensed for copying, modification, redistribution, or commercial use without prior permission.

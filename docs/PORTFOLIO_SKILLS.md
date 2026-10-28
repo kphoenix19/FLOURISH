@@ -84,7 +84,7 @@ This guide maps engineering decisions to the current implementation and its test
 
 ## 9. Measured query optimization with behavior preservation
 
-**Result:** at 10,000 completed quests, local median recommendation recomputation latency fell **89%**, from **559.60 ms to 62.54 ms**. Standard reads and persisted recommendation hits each improved by approximately **85?86%**. This work demonstrates profiling, SQL query design, control of data materialization, and regression testing around transactional code.
+**Result:** at 10,000 completed quests, local median recommendation recomputation latency fell **89%**, from **559.60 ms to 62.54 ms**. Standard reads and persisted recommendation hits each improved by approximately **85–86%**. This work demonstrates profiling, SQL query design, control of data materialization, and regression testing around transactional code.
 
 **Problem:** Standard operations fetched the player's entire completed-quest history and related records while holding the Player lock, then filtered that history in application code. Recommendation recomputation fetched it a second time. Even a valid persisted recommendation paid the full history-loading cost. Query counts stayed constant as history grew, hiding an increase in rows transferred and materialized.
 

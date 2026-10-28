@@ -4,7 +4,24 @@ Audit date: **2026-10-26 (America/Denver)**. Audited commit: **`84e91ef800801521
 
 Scope: audit only. Application source, tests, dependencies, schemas, and configuration were not edited. This report is the only intentional repository change. Test/build tools produced ignored output. No commit or push was performed. Database writes were confined to a newly created, disposable PostgreSQL container with no existing volumes attached.
 
-## 1. Executive summary
+## Current remediation status — 2026-10-27
+
+This section describes the current implementation after the original audit. The numbered sections below, including their findings, measurements and release conclusion, retain the **2026-10-26 historical baseline** unless explicitly labeled as later remediation. Statements such as "None was implemented" describe that original audit-only pass, not today's code.
+
+| Findings | Current status |
+|---|---|
+| A01 | Application dependency remediation implemented: Next 16.4.1, Sharp 0.35.5, Zod 4.6.6 and source-map-js 1.2.2. Three advisories remain on optional Prisma tooling paths: deepmerge-ts (high) and mysql2 (high/moderate). No application HTTP reachability has been demonstrated; the graph is not advisory-free. |
+| A02 | Implemented: absent recommendations are valid nullable Home state, while actual failures retain error handling. |
+| A03 | Implemented: Challenge acceptance revalidates active/approved content and existing pool eligibility under library locking, preserving accepted snapshots. |
+| A04 | Implemented: Challenge mutations initialize required response pools within their transaction, preserving rollover and commit-before-expiration-error behavior. |
+| A05 | Implemented: existing Challenge periods remain fixed; timezone transitions wait for the next full local-calendar period and permit nullable gap pools. |
+| A07–A08 | Implemented and locally benchmarked: bounded per-Skill history, lazy history loading, authoritative state reuse and fewer acceptance refreshes. Detailed methods, before/after measurements and limitations remain in their remediation sections below. |
+| A12 | Implemented: explicit disposable targets, restricted credentials, administrator-owned marker, isolated integration schemas and guarded cleanup. |
+| A06, A09–A11, A13–A15 | Deferred/open. Standard COUNT, library lock contention, COUNT retry identity, balance-version settlement, resource admission, client validation payload and admin search remain subject to the original limitations. |
+
+See [public release readiness](PUBLIC_RELEASE_READINESS.md) for advisory disposition, current verification and the distinction between public portfolio source publication and live application deployment. These status updates do not replace the original findings or imply that deferred work was completed.
+
+## 1. Executive summary (historical baseline)
 
 FLOURISH is responsive on this local machine with a small player history, and its existing transactional protections are substantial. **174 unit tests and 111 PostgreSQL integration tests passed**, along with lint and a production build. Completion, penalty clearing, overlapping rewards, and Challenge set bonuses have useful concurrency coverage. No cross-account access, SQL injection, duplicate reward settlement, or credential disclosure vulnerability was demonstrated.
 
@@ -319,21 +336,21 @@ Each item below provides the impact/consequence and recommended correction for t
 
 The transaction-local promise is shared by slot generation and recommendation recomputation; unchanged Standard reads, valid persisted recommendation hits, acceptance, and expiration-only reconciliation do not fetch history. Completion explicitly captures history before recording the completion, preserving the original immediate-refill selection behavior. Library/Player lock order, reward settlement, transaction boundaries, invalidation and interaction-history scoring remain unchanged. No cross-request cache, schema/index migration, dependency, API, UI, or gameplay change was introduced. The library and slot-validation work remains in scope for A08 separately.
 
-**Reproducible local comparison:** baseline source was clean HEAD `d4da6491f2fc798ac7127a25fbc2a2da422a01e6` (including A01?A05/A12). Both runs used the same Windows host described in section 2, Node 24.22.1, Prisma 7.10.0, and the same fresh PostgreSQL 17 container over loopback. Each run used a new A12-guarded schema with the six migrations, canonical seed, and three players with 0/1,000/10,000 synthetic completions. The fixture repeats one definition for 80% of records and distributes the rest across canonical definitions, including multi-Skill snapshots; completion timestamps tie in groups of three. It lacks historical reward ledgers and is not a production workload. UUIDs are regenerated; fixture structure/distribution, fixed random source, clock, operation order and timing method are identical.
+**Reproducible local comparison:** baseline source was clean HEAD `d4da6491f2fc798ac7127a25fbc2a2da422a01e6` (including A01–A05/A12). Both runs used the same Windows host described in section 2, Node 24.22.1, Prisma 7.10.0, and the same fresh PostgreSQL 17 container over loopback. Each run used a new A12-guarded schema with the six migrations, canonical seed, and three players with 0/1,000/10,000 synthetic completions. The fixture repeats one definition for 80% of records and distributes the rest across canonical definitions, including multi-Skill snapshots; completion timestamps tie in groups of three. It lacks historical reward ledgers and is not a production workload. UUIDs are regenerated; fixture structure/distribution, fixed random source, clock, operation order and timing method are identical.
 
 Measured service calls serially using `performance.now()`, after initial slot/recommendation creation and three discarded warmups per operation; 20 recorded samples per cell. Median is the mean of samples 10/11; p95 is nearest-rank sample 19. Explicit recommendation invalidation, seeding, ANALYZE and EXPLAIN are outside the timed region. No other verification suites were running during these timings. These are local service measurements, not HTTP/browser or production capacity claims; p95 from 20 samples is descriptive, not a robust tail-capacity estimate.
 
-| Completions | Operation | Before median / p95 (ms) | After median / p95 (ms) | SQL statements before ? after |
+| Completions | Operation | Before median / p95 (ms) | After median / p95 (ms) | SQL statements before → after |
 |---:|---|---:|---:|---:|
-| 0 | Standard state | 49.28 / 56.80 | 44.95 / 51.72 | 55 ? 50 |
-| 0 | Persisted recommendation hit | 46.31 / 56.46 | 43.71 / 50.25 | 54 ? 49 |
-| 0 | Recommendation recomputation | 56.65 / 61.92 | 53.41 / 80.86 | 66 ? 57 |
-| 1,000 | Standard state | 76.05 / 100.66 | 44.55 / 51.53 | 55 ? 50 |
-| 1,000 | Persisted recommendation hit | 74.53 / 85.70 | 42.93 / 46.51 | 54 ? 49 |
-| 1,000 | Recommendation recomputation | 115.55 / 126.55 | 49.41 / 53.84 | 66 ? 57 |
-| 10,000 | Standard state | 304.89 / 319.51 | 43.45 / 46.63 | 55 ? 50 |
-| 10,000 | Persisted recommendation hit | 299.98 / 310.58 | 43.82 / 49.11 | 54 ? 49 |
-| 10,000 | Recommendation recomputation | 559.60 / 594.53 | 62.54 / 75.15 | 66 ? 57 |
+| 0 | Standard state | 49.28 / 56.80 | 44.95 / 51.72 | 55 → 50 |
+| 0 | Persisted recommendation hit | 46.31 / 56.46 | 43.71 / 50.25 | 54 → 49 |
+| 0 | Recommendation recomputation | 56.65 / 61.92 | 53.41 / 80.86 | 66 → 57 |
+| 1,000 | Standard state | 76.05 / 100.66 | 44.55 / 51.53 | 55 → 50 |
+| 1,000 | Persisted recommendation hit | 74.53 / 85.70 | 42.93 / 46.51 | 54 → 49 |
+| 1,000 | Recommendation recomputation | 115.55 / 126.55 | 49.41 / 53.84 | 66 → 57 |
+| 10,000 | Standard state | 304.89 / 319.51 | 43.45 / 46.63 | 55 → 50 |
+| 10,000 | Persisted recommendation hit | 299.98 / 310.58 | 43.82 / 49.11 | 54 → 49 |
+| 10,000 | Recommendation recomputation | 559.60 / 594.53 | 62.54 / 75.15 | 66 → 57 |
 
 Prisma query events count SQL including transaction/lock statements; counts were constant within each cell. Before, reads/hits materialized N completed PlayerQuests plus their related records, and recomputation materialized 2N. After, reads/hits materialize zero history rows; recomputation returns 0/40/40 narrow per-Skill history rows in these fixtures (verified directly), with no completed-quest relation graph. This is a history-only cardinality comparison, not a count of all response rows or transferred bytes.
 
@@ -341,7 +358,7 @@ Prisma query events count SQL including transaction/lock statements; counts were
 
 **Regression coverage:** eight new PostgreSQL tests compare bounded results and deterministic selection with the original full-history filter at 0, 9, 1,000 and 10,000 completions; cover uneven Skill histories, tied timestamps, multi-Skill snapshot membership independent of current definition membership, all-pool completion history, actual Home selection/reasons, persisted reuse, invalidation, concurrent acceptance, expiration, and pre-completion capture with atomic refill. The existing Standard concurrency, completion, failure/rollback and recommendation suites remain in the complete run.
 
-**Verification:** all eight A07 PostgreSQL regressions passed; the complete unit suite passed 209 tests (18 files), and the complete integration suite passed 179 tests (seven files), including existing A02?A05/A12 and Standard concurrency/rollback coverage. Lint, TypeScript, production build and `git diff --check` passed. A redirected PowerShell invocation reported a wrapper error despite all tests passing; the complete suite was rerun without redirection to confirm the process exit status. The benchmark and integration tests use only the A12 disposable database helper and restricted test role. Re-run the measurements with the README's disposable setup and `pnpm exec tsx scripts/benchmark-standard-history.ts after`; the script writes timings and query plans under ignored `test-results/a07-*.json`. The before label records the implementation currently checked out; it does not switch source versions. Baseline timings were captured before the implementation edit; plan capture was added afterward without changing the timed operations.
+**Verification:** all eight A07 PostgreSQL regressions passed; the complete unit suite passed 209 tests (18 files), and the complete integration suite passed 179 tests (seven files), including existing A02–A05/A12 and Standard concurrency/rollback coverage. Lint, TypeScript, production build and `git diff --check` passed. A redirected PowerShell invocation reported a wrapper error despite all tests passing; the complete suite was rerun without redirection to confirm the process exit status. The benchmark and integration tests use only the A12 disposable database helper and restricted test role. Re-run the measurements with the README's disposable setup and `pnpm exec tsx scripts/benchmark-standard-history.ts after`; the script writes timings and query plans under ignored `test-results/a07-*.json`. The before label records the implementation currently checked out; it does not switch source versions. Baseline timings were captured before the implementation edit; plan capture was added afterward without changing the timed operations.
 
 ### A08 — Redundant reconciliation/state reads and post-action requests
 
@@ -353,15 +370,15 @@ Prisma query events count SQL including transaction/lock statements; counts were
 
 Recommendation acceptance now uses the Standard mutation's full authoritative response plus one recommendation GET. Its unconditional extra Standard GET and second recommendation GET are removed, including duplicate recovery after failed acceptance. Standard completion/abandonment still use their mutation response plus one recommendation refresh. Challenge completion and every COUNT increment retain both Standard and recommendation refreshes (F1): the existing Challenge response cannot prove that progression/reconciliation refresh is unnecessary. The refreshes now run sequentially because both services acquire the same Player lock; each successful result is retained even if the other fails, and failures remain visible. A synchronous component action guard and disabled action controls serialize Standard, recommendation and Challenge actions through their refreshes, preventing an older action response from overwriting a later action in the same Home instance. It adds no server-side gameplay restriction. A02 null recommendations and A05 null pools remain valid states; Challenge eligibility/rollover services are unchanged.
 
-**Investigation boundaries:** Home still loads Standard ? recommendation ? Challenges sequentially on the server, then passes all three results to the client without initial client fetches. These services overlap in Player/onboarding/Skill reads but retain separate transactions and validation. This change reuses data only inside the owning transaction; it does not trust a previous service response across a lock release or combine the services into a new aggregate API.
+**Investigation boundaries:** Home still loads Standard → recommendation → Challenges sequentially on the server, then passes all three results to the client without initial client fetches. These services overlap in Player/onboarding/Skill reads but retain separate transactions and validation. This change reuses data only inside the owning transaction; it does not trust a previous service response across a lock release or combine the services into a new aggregate API.
 
 **Local service measurements:** same Windows host/runtime as A07; fresh PostgreSQL 17 container `flourish-a08-20261027`, restricted A12 test role, separate guarded schemas per run, canonical seed, two players with 24 Standard slots and initialized Daily/Weekly pools, no completed history. Fixed clock/random source; three discarded warmups and 20 recorded serial samples per operation. Median averages samples 10/11; p95 is nearest-rank sample 19. SQL counts include transaction and lock statements and were constant within each operation. Initialization and recommendation lookup used to select the next acceptance target are outside timing. No other test suites ran during measurements.
 
-| Operation | Before SQL ? after SQL | Before median / p95 (ms) | After median / p95 (ms) |
+| Operation | Before SQL → after SQL | Before median / p95 (ms) | After median / p95 (ms) |
 |---|---:|---:|---:|
-| Standard reconciliation/state read | 50 ? 32 | 45.55 / 49.38 | 30.06 / 36.50 |
-| Warm Home: Standard + persisted recommendation + Challenges | 126 ? 90 | 105.84 / 126.18 | 81.86 / 102.06 |
-| Recommendation acceptance service sequence | 192 ? 75 | 169.21 / 177.82 | 69.72 / 84.56 |
+| Standard reconciliation/state read | 50 → 32 | 45.55 / 49.38 | 30.06 / 36.50 |
+| Warm Home: Standard + persisted recommendation + Challenges | 126 → 90 | 105.84 / 126.18 | 81.86 / 102.06 |
+| Recommendation acceptance service sequence | 192 → 75 | 169.21 / 177.82 | 69.72 / 84.56 |
 
 Acceptance timing models the UI's service sequence: before = mutation + recommendation + Standard + recommendation; after = mutation + recommendation. Both are executed serially in the benchmark; the old UI issued its final two GETs concurrently. This measures service work, not actual HTTP round-trip time, authentication, browser rendering, or observed click-to-ready latency. Warm Home excludes page authentication/shell work. Twenty local samples do not establish production capacity or robust tail latency.
 
@@ -376,7 +393,7 @@ Acceptance timing models the UI's service sequence: before = mutation + recommen
 | Challenge completion | 3 | 3 |
 | Challenge COUNT increment | 3 | 3 |
 
-**Regression coverage:** 13 new unit/component cases cover sequential server Home loading, no client mount requests, exact action request budgets, authoritative progression/Skill/streak and slot updates, null recommendations, null Challenge pools, independent partial-refresh success, mutation failure recovery, pending-action exclusion and guard release. Two new PostgreSQL cases assert no discarded Standard view on persisted hits, one Standard view on reads, and fresh replacement/expiration state. Existing F1/F2/F3, A02?A05 and A07 tests remain in the complete suites.
+**Regression coverage:** 13 new unit/component cases cover sequential server Home loading, no client mount requests, exact action request budgets, authoritative progression/Skill/streak and slot updates, null recommendations, null Challenge pools, independent partial-refresh success, mutation failure recovery, pending-action exclusion and guard release. Two new PostgreSQL cases assert no discarded Standard view on persisted hits, one Standard view on reads, and fresh replacement/expiration state. Existing F1/F2/F3, A02–A05 and A07 tests remain in the complete suites.
 
 **Verification:** targeted UI and PostgreSQL regressions passed; the complete unit/component suite passed 222 tests (18 files), and the complete PostgreSQL integration suite passed 181 tests (seven files), including existing correctness, concurrency, rollback and database-safety cases. Lint, TypeScript, production build and `git diff --check` passed. All database work uses disposable infrastructure; no application database configuration was changed. Reproduce via the README's guarded disposable setup and `pnpm exec tsx scripts/benchmark-home.ts before` or `after` against the corresponding source revision. JSON timing results are written to ignored `test-results/a08-before.json` and `a08-after.json`; the label selects the modeled acceptance sequence but does not switch source revisions.
 

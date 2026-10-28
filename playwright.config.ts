@@ -6,17 +6,22 @@ const authenticatedTests = Boolean(process.env.E2E_DATABASE_URL);
 if (authenticatedTests) testDatabaseTarget(process.env.E2E_DATABASE_URL, "e2e");
 const baseURL = "http://127.0.0.1:3103";
 // Test-only code mints normal Auth.js encrypted cookies. The application has no bypass.
-if (authenticatedTests) process.env.AUTH_SECRET ??= randomBytes(32).toString("hex");
+if (authenticatedTests) {
+  // Workers reload this config; inherit one test-only key instead of rotating it.
+  process.env.E2E_AUTH_SECRET ??= randomBytes(32).toString("hex");
+  process.env.AUTH_SECRET = process.env.E2E_AUTH_SECRET;
+}
 
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
   workers: 1,
-  retries: process.env.CI ? 2 : 0,
+  retries: 0,
   reporter: "html",
   use: {
     baseURL,
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure",
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
